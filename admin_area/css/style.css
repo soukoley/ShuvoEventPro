@@ -1,0 +1,329 @@
+/* ===============================
+   GLOBAL STYLE
+================================ */
+body{
+	margin-top: 100px;
+	background-color: #F9F7F3;
+	position: relative;
+	font-family: "Segoe UI", Arial, sans-serif;
+}
+
+@media (min-width: 768px){
+	body{
+		margin-top: 50px;
+	}
+}
+
+#wrapper{
+	padding-left: 0;
+	position: relative;
+	z-index: 1;
+}
+
+#page-wrapper{
+	width: 100%;
+	padding: 15px;
+	background-color: #F9F7F3;
+	position: relative;
+	z-index: 1;
+}
+
+/* ===============================
+   WATERMARK LOGO (ALL PAGES)
+================================ */
+body::after{
+	content: "";
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 580px;
+	height: 480px;
+	background: url("../../img/ShuvoEventPro.png") no-repeat center;
+	background-size: contain;
+	opacity: 0.25;
+	z-index: 0;
+	pointer-events: none;
+}
+
+/* Mobile watermark size */
+@media (max-width: 768px){
+	body::after{
+		width: 180px;
+		height: 180px;
+		opacity: 0.06;
+	}
+}
+
+/* ===============================
+   TOP NAVBAR / HEADER
+================================ */
+.navbar,
+.navbar-inverse{
+	background-color: #7B1E2B !important;
+	border: none !important;
+}
+
+.navbar-brand{
+	color: #7B1E2B !important;
+	font-weight: bold;
+	font-size: 18px;
+}
+
+.navbar-inverse .navbar-nav>li>a{
+	color: #7B1E2B !important;
+}
+
+.navbar-inverse .navbar-nav>li>a:hover,
+.navbar-inverse .navbar-nav>li>a:focus{
+	color: #380214 !important;
+	background: transparent !important;
+}
+
+/* ===============================
+   TOP NAV RIGHT MENU
+================================ */
+.top-nav{
+	padding: 0 15px;
+	display: flex;
+	align-items: center;
+}
+
+.top-nav>li{
+	float: none;
+}
+
+.top-nav>li>a{
+	padding-top: 15px;
+	padding-bottom: 15px;
+	line-height: 20px;
+	color: #F9F7F3;
+}
+
+/* ===============================   SIDEBAR  ================================ */
+/* ===============================
+   Common Sidebar Styles (All sizes)
+   =============================== */
+
+.sidebar-nav {
+    background-color: #7B1E2B;
+    /* font-weight: bold; */
+}
+
+/* =====================================
+   MAIN & SUB MENU LINKS (FORCE WHITE)
+   ===================================== */
+
+.sidebar-nav > li > a,
+.sidebar-nav > li > a i,
+.sidebar-nav > li > ul > li > a,
+.sidebar-nav > li > ul > li > a i {
+    color: #ffffff !important;
+    text-decoration: none;
+}
+
+/* =====================================
+   HOVER & FOCUS STATES
+   ===================================== */
+
+.sidebar-nav > li > a:hover,
+.sidebar-nav > li > a:focus,
+.sidebar-nav > li > ul > li > a:hover,
+.sidebar-nav > li > ul > li > a:focus {
+    background-color: #D4A017;
+    color: #f8f6f7 !important;
+    outline: none;
+}
+
+/* =====================================
+   ACTIVE MENU ITEM
+   ===================================== */
+
+.sidebar-nav > li.active > a,
+.sidebar-nav > li.active > a i,
+.sidebar-nav > li > ul > li.active > a {
+    background-color: #6A1824;
+    color: #ffffff !important;
+}
+
+/* =====================================
+   SUBMENU STRUCTURE
+   ===================================== */
+
+.sidebar-nav > li > ul {
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-nav > li > ul > li > a {
+    display: block;
+    padding: 10px 15px 10px 38px;
+    font-size: 13px;
+}
+
+/* =====================================
+   DESKTOP ONLY (≥ 768px)
+   ===================================== */
+
+@media (min-width: 768px) {
+
+    .sidebar-nav {
+        position: fixed;
+        top: 70px;
+        bottom: 0;
+        width: 255px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding-bottom: 40px;
+        z-index: 2;
+    }
+
+    .sidebar-nav > li > a {
+        width: 255px;
+        font-size: 14px;
+    }
+}
+
+
+
+/* ===============================
+   PANELS / DASHBOARD
+================================ */
+.huge{
+	font-size: 40px;
+	line-height: normal;
+}
+
+.panel{
+	border-radius: 10px;
+	border: none;
+}
+
+.panel-heading{
+	background-color: #7B1E2B !important;
+	color: #FFFFFF !important;
+	font-weight: bold;
+}
+
+.panel a{
+	color: #D4A017;
+}
+
+.corporate-heading {
+	font-family: 'Montserrat', sans-serif;
+	font-size: 15px;
+	background-color: #7B1E2B !important;
+	color: #FFFFFF	 !important;
+	font-weight: bold;
+	text-transform: uppercase;
+	text-align: center;
+	letter-spacing: 3px;
+}
+
+/* ===============================
+   TABLES
+================================ */
+.table{
+	margin-bottom: 0 !important;
+	background-color: #FFFFFF;
+}
+
+.table thead{
+	background-color: #7B1E2B;
+	color: #FFFFFF;
+}
+
+.table tbody tr:hover{
+	background-color: #F3E6EA;
+}
+
+/* ===============================
+   IMAGES
+================================ */
+.row .table-responsive .table tbody tr td img{
+	width: 50px;
+	border-radius: 6px;
+}
+
+/* ===============================
+   BUTTONS
+================================ */
+.btn-primary{
+	background-color: #7B1E2B;
+	border-color: #7B1E2B;
+}
+
+.btn-primary:hover{
+	background-color: #D4A017;
+	border-color: #D4A017;
+	color: #3A0D1C;
+}
+
+/* ===============================
+   FOOTER (OPTIONAL)
+================================ */
+.footer{
+	background-color: #1E1E1E;
+	color: #D4A017;
+	padding: 10px;
+	text-align: center;
+}
+
+.breadcrumb {
+	background-color: #7B1E2B;
+	position: relative;
+	border-radius: 4px;
+	padding: 10px 15px;
+	font-size: 14px;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between; /* Or use start/center as needed */
+	align-items: center;
+}
+
+/* LI text color */
+.breadcrumb > li,
+.breadcrumb > li.active {
+    color: #e9c140ff;
+}
+
+/* Icon color */
+.breadcrumb > li i {
+    color: #e9c140ff;
+}
+
+/* ===============================
+   FORCE SIDEBAR TEXT VISIBILITY
+   =============================== */
+
+/* Main menu links */
+.nav.sidebar-nav > li > a {
+    color: #F5F5F5 !important;
+    background-color: transparent;
+}
+
+/* Icons inside links */
+.nav.sidebar-nav > li > a i {
+    color: #F5F5F5 !important;
+}
+
+/* Submenu links */
+.nav.sidebar-nav > li > ul > li > a {
+    color: #F5F5F5 !important;
+}
+
+/* Hover / Focus */
+.nav.sidebar-nav > li > a:hover,
+.nav.sidebar-nav > li > a:focus,
+.nav.sidebar-nav > li > ul > li > a:hover,
+.nav.sidebar-nav > li > ul > li > a:focus {
+    background-color: #D4A017;
+    color: #F5F5F5 !important;
+}
+
+/* Active item */
+.nav.sidebar-nav > li.active > a,
+.nav.sidebar-nav > li.active > a i {
+    background-color: #6A1824;
+    color: #F5F5F5 !important;
+}
