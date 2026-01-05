@@ -104,7 +104,7 @@ if(!isset($_SESSION['admin_email'])){
 
                 <div class="table-responsive" style="padding-top: 3px;">
                     <table class="table table-bordered table-striped table-hover">
-                        <thead style="background-color:rgba(45, 32, 68, 1); color:rgba(198, 195, 202, 1);">
+                        <thead>
                             <tr>
                                 <th class="text-center">#</th>
                                 <th class="text-center">Booking ID</th>
@@ -141,7 +141,7 @@ if(!isset($_SESSION['admin_email'])){
                                         </td>
                                         <td class="text-center">
                                             <?php if($bk['status'] == "Pending"){ ?>
-                                                <a href="confirm_booking.php?id=<?php echo $bk['booking_id']; ?>"
+                                                <a href="index.php?confirm_booking=0 & id=<?php echo $bk['booking_id']; ?>"
                                                     class="btn btn-success btn-xs"
                                                     style="background-color: #7A1E3A; color: #ffffffff;">
                                                     <i class="fa fa-edit"></i> Confirm

@@ -133,6 +133,8 @@ $cur_finance_year = $c_fyear_row['f_year'];
 						'view_event'            => 'view_event.php',
 						'edit_event'            => 'edit_event.php',
 
+						'user_profile'			=>	'user_profile.php',
+
 						'insert_event_gallery'  => 'insert_event_gallery.php',
 						'view_gallery'          => 'view_gallery.php',
 						'edit_gallery'          => 'edit_gallery.php',

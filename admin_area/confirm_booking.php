@@ -50,12 +50,12 @@ if(!isset($_SESSION['admin_email'])){
     $facilities = [];
     $fac_sql = "
     SELECT 
-        f.facility_name,
+        f.fName,
         bf.qty,
         bf.rate,
         bf.tot_amt
     FROM booking_facilities bf
-    JOIN facilities f ON bf.facility_id = f.id
+    JOIN facility f ON bf.facility_id = f.id
     WHERE bf.booking_id = '$booking_id'
     ";
 
@@ -87,71 +87,72 @@ if(!isset($_SESSION['admin_email'])){
 		<div class="panel panel-primary">
 			<div class="panel-heading corporate-heading">
 				<h3 class="panel-title">
-					Select&nbsp;&nbsp;Date&nbsp;&nbsp;Range
+					Customer&nbsp;&nbsp;Booking&nbsp;&nbsp;Details
 				</h3>
 			</div>
 			<div class="panel-body" style="padding-top: 20px;">
 
                 <!-- Event -->
-                <h4><strong>Event Name:</strong> <?php echo $data['e_name']; ?></h4>
+                <h4><strong>Event Name :</strong> <?php echo $data['e_name']; ?></h4>
                 <hr>
-
-                <!-- Customer -->
-                <h4>Customer Details</h4>
-                <p>
-                    <strong>Name:</strong> <?php echo $data['c_name']; ?><br>
-                    <strong>Address:</strong> <?php echo $data['c_addr']; ?><br>
-                    <strong>Contact:</strong> <?php echo $data['c_mobile']; ?>
-                </p>
+                    <!-- Customer -->
+                    <h4>Customer Details</h4>
+                    <p>
+                        <strong>Name :</strong> <?php echo $data['c_name']; ?><br>
+                        <strong>Address :</strong> <?php echo $data['c_addr']; ?><br>
+                        <strong>Contact :</strong> <?php echo $data['c_mobile']; ?>
+                    </p>
                 <hr>
 
                 <!-- Guest -->
-                <p><strong>Maximum Guest:</strong> <?php echo $data['max_guest']; ?></p>
+                <p><strong>Maximum Guest :</strong> <?php echo $data['max_guest']; ?></p>
 
                 <!-- Date Time -->
                 <p>
-                    <strong>Check-In:</strong>
+                    <strong>Check-In :</strong>
                     <?php echo date("d M Y", strtotime($data['start_date'])) . " " . $data['start_time']; ?>
                     <br>
-                    <strong>Check-Out:</strong>
+                    <strong>Check-Out :</strong>
                     <?php echo date("d M Y", strtotime($data['end_date'])) . " " . $data['end_time']; ?>
                 </p>
 
                 <!-- Facilities -->
-                <h4>Facilities</h4>
+                <hr>
+                <h4><strong>List of Facilities</strong></h4>
+                <hr>
 
                 <?php if (mysqli_num_rows($fac_res) > 0) { ?>
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped">
-                            <thead style="background:#2d2044; color:#fff;">
+                            <thead>
                                 <tr>
                                     <th class="text-center">#</th>
-                                    <th>Facility Name</th>
+                                    <th class="text-left">Facility Name</th>
                                     <th class="text-center">Quantity</th>
-                                    <th class="text-center">Rate</th>
-                                    <th class="text-center">Total Amount</th>
+                                    <th class="text-right">Rate</th>
+                                    <th class="text-right">Total Amount</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php 
                                 $i = 1;
                                 $grand_total = 0;
-                                while ($fac = mysqli_fetch_assoc($fac_res)) { 
-                                    $grand_total += $fac['total_amt'];
+                                while ($fac = mysqli_fetch_array($fac_res)) { 
+                                    $grand_total += $fac['tot_amt'];
                                 ?>
                                 <tr>
                                     <td class="text-center"><?php echo $i++; ?></td>
-                                    <td><?php echo htmlspecialchars($fac['facility_name']); ?></td>
+                                    <td class="text-left"><?php echo htmlspecialchars($fac['fName']); ?></td>
                                     <td class="text-center"><?php echo $fac['qty']; ?></td>
-                                    <td class="text-center"><?php echo number_format($fac['rate'], 2); ?></td>
-                                    <td class="text-center"><?php echo number_format($fac['tot_amt'], 2); ?></td>
+                                    <td class="text-right"><?php echo number_format($fac['rate'], 2); ?></td>
+                                    <td class="text-right"><?php echo number_format($fac['tot_amt'], 2); ?></td>
                                 </tr>
                                 <?php } ?>
                             </tbody>
                             <tfoot>
                                 <tr>
                                     <th colspan="4" class="text-right">Grand Total</th>
-                                    <th class="text-center">
+                                    <th class="text-right">
                                         <?php echo number_format($grand_total, 2); ?>
                                     </th>
                                 </tr>
