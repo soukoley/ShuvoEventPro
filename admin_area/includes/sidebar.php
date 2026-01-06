@@ -108,8 +108,40 @@ if(!isset($_SESSION['admin_email'])){
     <!-- Top Right -->
     <ul class="nav navbar-right top-nav">
         <li class="dropdown">
-            <a href="#" class="dropdown-toggle" style="color : #E2D9F3; font-weight : bold;" data-toggle="dropdown">
+            <a href="#" class="dropdown-toggle" style="color : rgba(180, 157, 209, 1); font-weight : bold;" data-toggle="dropdown">
                 <!-- PROFILE IMAGE -->
+                <img 
+                    src="<?php echo $admin_image; ?>" 
+                    alt="Profile" 
+                    style="width:25px; height:25px; border-radius:50%; object-fit:cover; margin-right:5px;"
+                >
+                <?php echo $admin_name; ?> <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+                <li>
+                    <a href="index.php?user_profile&id=<?php echo $admin_id; ?>">
+                        <i class="fa fa-user-circle"></i> Profile
+                    </a>
+                </li>
+                <li>
+                    <a href="change_password.php">
+                        <i class="fa fa-key"></i> Change Password
+                    </a>
+                </li>
+                <li class="divider"></li>
+                <li>
+                    <a href="logout.php" class="text-danger">
+                        <i class="fa fa-power-off"></i> Logout
+                    </a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+
+    <!-- <ul class="nav navbar-right top-nav">
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" style="color : #E2D9F3; font-weight : bold;" data-toggle="dropdown">
+                
                 <img 
                     src="<?php echo $admin_image; ?>" 
                     alt="Profile" 
@@ -151,7 +183,7 @@ if(!isset($_SESSION['admin_email'])){
                 </li>
             </ul>
         </li>
-    </ul>
+    </ul> -->
 
     <!-- Sidebar -->
     <div class="collapse navbar-collapse navbar-ex1-collapse">
