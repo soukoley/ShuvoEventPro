@@ -145,6 +145,7 @@ $cur_finance_year = $c_fyear_row['f_year'];
 						'view_booking'        	=> 'view_booking.php',
 						'booking_result'        => 'view_booking_result.php',
 						'confirm_booking'   	=> 'confirm_booking.php',
+						'booking_calendar'   	=> 'booking_calendar.php',
 					];
 
 					foreach ($pages as $key => $file) {

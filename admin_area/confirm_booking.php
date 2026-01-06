@@ -40,6 +40,39 @@ WHERE bf.booking_id='$booking_id'
 <html>
 <head>
     <title>Confirm Booking</title>
+    <script>
+        $(function(){
+
+            $("#start_date").datepicker({
+                dateFormat: "dd/mm/yy",
+                changeMonth: true,
+                changeYear: true,
+                minDate: 0,
+                onSelect: function(dateText){
+                    // start date select হলে end date minimum সেট হবে
+                    $("#end_date").datepicker("option", "minDate", dateText);
+                }
+            });
+
+            $("#end_date").datepicker({
+                dateFormat: "dd/mm/yy",
+                changeMonth: true,
+                changeYear: true,
+                minDate: 0
+            });
+
+            // 📅 icon click করলে calendar open হবে
+            $("#start_date_icon").click(function(){
+                $("#start_date").datepicker("show");
+            });
+
+            $("#end_date_icon").click(function(){
+                $("#end_date").datepicker("show");
+            });
+
+        });
+    </script>
+
 </head>
 <body>
 
@@ -88,54 +121,84 @@ WHERE bf.booking_id='$booking_id'
                     <strong>Check-Out :</strong>
                     <?php echo date("d M Y", strtotime($end_date)) . " " . $end_time; ?>
                 </p> -->
-                <hr>
-<h4>Edit Booking Details</h4>
+                <h4>Edit Booking Details</h4>
 
-<div class="row">
-    <div class="col-md-3">
-        <label>Check-In Date</label>
-        <input type="date" id="start_date" class="form-control"
-               value="<?= $data['start_date'] ?>">
-    </div>
+                <div class="row">
+                    <!-- Check-In -->
+                    <div class="col-md-3">
+                        <label>Check-In Date</label>
+                        <div class="input-group">
+                            <input type="text"
+                                id="start_date"
+                                name="start_date"
+                                class="form-control"
+                                placeholder="dd/mm/yyyy"
+                                value="<?= date('d/m/Y', strtotime($start_date)) ?>"
+                                autocomplete="off">
+                            <span class="input-group-addon" id="start_date_icon" style="cursor:pointer">
+                                <i class="fa fa-calendar"></i>
+                            </span>
+                        </div>
+                    </div>
 
-    <div class="col-md-2">
-        <label>Check-In Time</label>
-        <input type="time" id="start_time" class="form-control"
-               value="<?= $data['start_time'] ?>">
-    </div>
+                    <div class="col-md-2">
+                        <label>Check-In Time</label>
+                        <input type="time"
+                            id="start_time"
+                            name="start_time"
+                            class="form-control"
+                            value="<?= $start_time ?>">
+                    </div>
 
-    <div class="col-md-3">
-        <label>Check-Out Date</label>
-        <input type="date" id="end_date" class="form-control"
-               value="<?= $data['end_date'] ?>">
-    </div>
+                    <!-- Check-Out -->
+                    <div class="col-md-3">
+                        <label>Check-Out Date</label>
+                        <div class="input-group">
+                            <input type="text"
+                                id="end_date"
+                                name="end_date"
+                                class="form-control"
+                                placeholder="dd/mm/yyyy"
+                                value="<?= date('d/m/Y', strtotime($end_date)) ?>"
+                                autocomplete="off">
+                            <span class="input-group-addon" id="end_date_icon" style="cursor:pointer">
+                                <i class="fa fa-calendar"></i>
+                            </span>
+                        </div>
+                    </div>
 
-    <div class="col-md-2">
-        <label>Check-Out Time</label>
-        <input type="time" id="end_time" class="form-control"
-               value="<?= $data['end_time'] ?>">
-    </div>
+                    <div class="col-md-2">
+                        <label>Check-Out Time</label>
+                        <input type="time"
+                            id="end_time"
+                            name="end_time"
+                            class="form-control"
+                            value="<?= $end_time ?>">
+                    </div>
 
-    <div class="col-md-2">
-    <label>Max Guest</label>
-    <select class="form-control" id="maxPeople" name="max_guest">
-        <option value="">-- Select Guest --</option>
 
-        <?php
-        $fqry = "SELECT g_range FROM guest";
-        $r = mysqli_query($con, $fqry);
+                    <div class="col-md-2">
+                        <label>Max Guest</label>
+                        <select class="form-control" id="maxPeople" name="max_guest">
+                            <option value="">-- Select Guest --</option>
 
-        while ($x = mysqli_fetch_assoc($r)) {
-            $selected = ($x['g_range'] == $old_max_guest) ? 'selected' : '';
-            echo "<option value='{$x['g_range']}' $selected>
-                    {$x['g_range']}
-                  </option>";
-        }
-        ?>
-    </select>
-</div>
+                            <?php
+                            $fqry = "SELECT * FROM guest";
+                            $r = mysqli_query($con, $fqry);
 
-</div>
+                            while ($x = mysqli_fetch_assoc($r)) {
+
+                                $value = $x['max_guest']; // cast
+                                $selected = ($value == $old_max_guest) ? 'selected' : '';
+
+                                echo "<option value='$value' $selected>$value</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+
+
+                </div>
 
 
                 <!-- Facilities -->
@@ -145,10 +208,10 @@ WHERE bf.booking_id='$booking_id'
 
                 <!-- RESPONSIVE TABLE -->
                 <div class="table-responsive">
-                    <table class="table table-bordered table-striped">
+                    <table class="table table-bordered table-striped" id="facilityTable">
                         <thead>
                             <tr>
-                                <th class="text-center">#</th>
+                                <!-- <th class="text-center">#</th> -->
                                 <th class="text-left">Facility</th>
                                 <th class="text-center">Quantity</th>
                                 <th class="text-right">Rate</th>
@@ -158,11 +221,11 @@ WHERE bf.booking_id='$booking_id'
                         </thead>
                         <tbody>
                     <?php
-                        $i=1;
+                        //$i=1;
                         while($f=mysqli_fetch_assoc($fac_res)){
                     ?>
                         <tr data-id="<?= $f['facility_id'] ?>" data-rate="<?= $f['rate'] ?>">
-                            <td class="text-center"><?= $i++ ?></td>
+                            <!-- <td class="text-center"><?= $i++ ?></td> -->
                             <td class="text-left"><?= $f['fName'] ?></td>
                             <td class="text-center"><input type="number" class="form-control qty" value="<?= $f['qty'] ?>" min="1"></td>
                             <td class="rate text-right"><?= $f['rate'] ?></td>
@@ -179,7 +242,7 @@ WHERE bf.booking_id='$booking_id'
                         </tbody>
                         <tfoot>
                         <tr>
-                            <th colspan="4" class="text-right">Grand Total</th>
+                            <th colspan="3" class="text-right">Grand Total</th>
                             <th class="text-right" id="grandTotal"></th>
                             <th></th>
                         </tr>
@@ -232,13 +295,13 @@ function recalc(){
         let qty  = parseInt($(this).find(".qty").val()) || 1;
 
         let total = rate * qty;
-
         $(this).find(".total").text(total.toFixed(2));
         grand += total;
     });
 
     $("#grandTotal").text(grand.toFixed(2));
 }
+
 
 // qty change
 $(document).on("input",".qty",function(){
@@ -266,11 +329,11 @@ $("#addFacility").click(function(){
     }
 
     let total = rate * qty;
+    let cleanName = fname.split('(')[0].trim();
 
     let row = `
     <tr data-id="${fid}" data-rate="${rate}">
-        <td>#</td>
-        <td>${fname}</td>
+        <td class="fac_name text-left">${cleanName}</td>
         <td>
             <input type="number" class="form-control qty" value="${qty}" min="1">
         </td>
@@ -291,6 +354,69 @@ $("#addFacility").click(function(){
     recalc();
 });
 
+$("#maxPeople").on("change", function(){
+
+    let maxGuest = $(this).val();
+    let eventName = "<?= $e_name ?>";
+
+    if(!maxGuest) return;
+
+    $.ajax({
+        url: "fetch_facility_by_guest.php",
+        type: "POST",
+        data: {
+            max_guest: maxGuest,
+            e_name: eventName
+        },
+        dataType: "json",
+        success: function(facilities){
+
+            /* ===============================
+               1️⃣ UPDATE FACILITY DROPDOWN
+               =============================== */
+            let options = `<option value="">-- Select Facility --</option>`;
+            facilities.forEach(f => {
+                options += `
+                    <option value="${f.id}" data-rate="${parseFloat(f.fPrice)}">
+                        ${f.fName} (₹${parseFloat(f.fPrice).toFixed(2)})
+                    </option>`;
+            });
+            $("#facility_id").html(options);
+
+
+            /* =========================================
+               2️⃣ UPDATE EXISTING FACILITY TABLE RATES
+               (Garden included)
+               ========================================= */
+            $("#facilityTable tbody tr").each(function(){
+
+                let row = $(this);
+                let fid = row.data("id");
+
+                let match = facilities.find(f => f.id == fid);
+
+                if(match){
+                    let newRate = parseFloat(match.fPrice);
+                    let qty = parseInt(row.find(".qty").val()) || 1;
+
+                    // 🔥 CRITICAL: update BOTH data-rate & text
+                    row.attr("data-rate", newRate);
+                    row.data("rate", newRate);
+
+                    row.find(".rate").text(newRate.toFixed(2));
+                    row.find(".total").text((qty * newRate).toFixed(2));
+                }
+            });
+
+            /* ===============================
+               3️⃣ RECALCULATE GRAND TOTAL
+               =============================== */
+            recalc();
+        }
+    });
+});
+
+
 // INITIAL
 recalc();
 
@@ -309,7 +435,7 @@ Swal.fire({
 
         $("#facilityTable tbody tr").each(function(){
             facilities.push({
-                facility_id: $(this).data("id"),
+                facility_name: $(this).data("fac_name"),
                 qty: $(this).find(".qty").val(),
                 rate: $(this).data("rate")
             });
