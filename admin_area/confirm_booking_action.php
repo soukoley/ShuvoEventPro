@@ -36,8 +36,10 @@ try{
 
     // insert facilities
     foreach($facilities as $f){
+        $facility_name = $f['facility_name'];
         $qty = $f['qty'];
         $rate = $f['rate'];
+        //$total = $f['total'];
         $total = $qty * $rate;
 
         mysqli_query($con,"
@@ -52,10 +54,16 @@ try{
 
     echo json_encode([
         "status"=>"OK",
-        "invoice"=>"invoice_pdf.php?id=$booking_id"
+        //"invoice"=>"invoice_pdf.php?id=$booking_id"
+        'success'   => true,
+        'booking_id'   => $booking_id,
     ]);
 
 }catch(Exception $e){
     mysqli_rollback($con);
-    http_response_code(500);
+    //http_response_code(500);
+    echo json_encode([
+        'success' => false,
+        'error'   => 'Transaction failed: ' . $e->getMessage()
+    ]);
 }

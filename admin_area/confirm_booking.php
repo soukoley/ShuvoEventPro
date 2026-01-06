@@ -280,13 +280,45 @@ WHERE bf.booking_id='$booking_id'
                 <hr>
 
             <button id="confirmBooking" class="btn btn-success btn-lg">
-            Confirm & Print Invoice
+            Confirm
             </button>
 
         </div>
     </div>
 </div>
 <script>
+
+$(function(){
+
+    $("#start_date").datepicker({
+        dateFormat: "dd/mm/yy",
+        changeMonth: true,
+        changeYear: true,
+        minDate: 0,
+        onSelect: function(dateText){
+            // start date select হলে end date minimum সেট হবে
+            $("#end_date").datepicker("option", "minDate", dateText);
+        }
+    });
+
+    $("#end_date").datepicker({
+        dateFormat: "dd/mm/yy",
+        changeMonth: true,
+        changeYear: true,
+        minDate: 0
+    });
+
+    // 📅 icon click করলে calendar open হবে
+    $("#start_date_icon").click(function(){
+        $("#start_date").datepicker("show");
+    });
+
+    $("#end_date_icon").click(function(){
+        $("#end_date").datepicker("show");
+    });
+
+});
+
 function recalc(){
     let grand = 0;
 
@@ -421,47 +453,71 @@ $("#maxPeople").on("change", function(){
 recalc();
 
 $("#confirmBooking").click(function(){
+    Swal.fire({
+        title:'Confirm Booking?',
+        text:'All changes will be saved permanently',
+        icon:'warning',
+        showCancelButton:true,
+        confirmButtonText:'Yes, Confirm'
+    }).then((r)=>{
+        if(r.isConfirmed){
 
-Swal.fire({
-    title:'Confirm Booking?',
-    text:'All changes will be saved permanently',
-    icon:'warning',
-    showCancelButton:true,
-    confirmButtonText:'Yes, Confirm'
-}).then((r)=>{
-    if(r.isConfirmed){
+            let facilities = [];
 
-        let facilities = [];
-
-        $("#facilityTable tbody tr").each(function(){
-            facilities.push({
-                facility_name: $(this).data("fac_name"),
-                qty: $(this).find(".qty").val(),
-                rate: $(this).data("rate")
+            $("#facilityTable tbody tr").each(function(){
+                facilities.push({
+                    facility_id: $(this).data("id"),
+                    qty: $(this).find(".qty").val(),
+                    rate: $(this).data("rate")
+                });
             });
-        });
 
-        let bookingData = {
-            booking_id: "<?= $booking_id ?>",
-            start_date: $("#start_date").val(),
-            start_time: $("#start_time").val(),
-            end_date: $("#end_date").val(),
-            end_time: $("#end_time").val(),
-            max_guest: $("#max_guest").val(),
-            facilities: JSON.stringify(facilities)
-        };
+            let bookingData = {
+                booking_id: "<?= $booking_id ?>",
+                start_date: $("#start_date").val(),
+                start_time: $("#start_time").val(),
+                end_date: $("#end_date").val(),
+                end_time: $("#end_time").val(),
+                max_guest: $("#max_guest").val(),
+                facilities: JSON.stringify(facilities)
+            };
 
-        $.post("confirm_booking_action.php", bookingData, function(res){
-            let r = JSON.parse(res);
+            /* $.post("confirm_booking_action.php", bookingData, function(res){
+                let r = JSON.parse(res);
 
-            Swal.fire("Confirmed","Booking Confirmed","success")
-            .then(()=>{
-                window.open(r.invoice,"_blank");
-                window.location="index.php?view_booking";
+                Swal.fire("Confirmed","Booking Confirmed","success")
+                .then(()=>{
+                    window.open(r.invoice,"_blank");
+                    window.location="index.php?view_booking";
+                });
+            }); */
+
+            $.ajax({
+                url: 'confirm_booking_action.php',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(bookingData),
+                success: function (response) {
+                    if (response.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Confirmed',
+                            text: 'Booking Confirmed',
+                            showConfirmButton: false,
+                            timer: 1000
+                        }).then(() => {
+                            window.location.href = "index.php?view_booking";
+                        });
+                    } else {
+                        Swal.fire('Error', response.error || "Confirmation failed.", 'error');
+                    }
+                },
+                error: function (xhr) {
+                    Swal.fire('Error', "Error while confirming booking: " + xhr.responseText, 'error');
+                }
             });
-        });
-    }
-});
+        }
+    });
 });
 
 </script>

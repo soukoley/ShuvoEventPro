@@ -62,6 +62,11 @@ $cur_finance_year = $c_fyear_row['f_year'];
 	<link rel="icon" type="image/png" sizes="16x16" href="../images/favicon_io/favicon-16x16.png">
 	<link rel="manifest" href="../images/favicon_io/site.webmanifest">
 
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+
+	<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+
+
 	<style>
 		body {
             margin: 0;
