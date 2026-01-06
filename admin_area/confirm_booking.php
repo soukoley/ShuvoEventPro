@@ -22,7 +22,7 @@ $e_name = $data['e_name'];
 $c_name = $data['c_name'];
 $c_addr = $data['c_addr'];
 $c_mobile = $data['c_mobile'];
-$max_guest = $data['max_guest'];
+$old_max_guest = $data['max_guest'];
 $start_date = $data['start_date'];
 $end_date = $data['end_date'];
 $start_time = $data['start_time']; 
@@ -78,7 +78,7 @@ WHERE bf.booking_id='$booking_id'
                 <hr>
 
                 <!-- Guest -->
-                <!-- <p><strong>Maximum Guest :</strong> <?php echo $max_guest; ?></p> -->
+                <!-- <p><strong>Maximum Guest :</strong> <?php echo $old_max_guest; ?></p> -->
 
                 <!-- Date Time -->
                 <!-- <p>
@@ -117,21 +117,24 @@ WHERE bf.booking_id='$booking_id'
     </div>
 
     <div class="col-md-2">
-        <label>Max Guest</label>
-        <select class="form-control" id="maxPeople">
-            
-        <option>-- Select Guest --</option>
-            <?php
-            $fqry = "SELECT g_range FROM guest";
-            $r=mysqli_query($con, $fqry);
-            while($x=mysqli_fetch_assoc($r)){
-                echo "<option value='{$x['g_range']}'>
-                        {$x['g_range']}
-                    </option>";
-            }
-            ?>
-        </select>
-    </div>
+    <label>Max Guest</label>
+    <select class="form-control" id="maxPeople" name="max_guest">
+        <option value="">-- Select Guest --</option>
+
+        <?php
+        $fqry = "SELECT g_range FROM guest";
+        $r = mysqli_query($con, $fqry);
+
+        while ($x = mysqli_fetch_assoc($r)) {
+            $selected = ($x['g_range'] == $old_max_guest) ? 'selected' : '';
+            echo "<option value='{$x['g_range']}' $selected>
+                    {$x['g_range']}
+                  </option>";
+        }
+        ?>
+    </select>
+</div>
+
 </div>
 
 
@@ -191,7 +194,7 @@ WHERE bf.booking_id='$booking_id'
                         <select id="facility_id" class="form-control">
                         <option value="">-- Select Facility --</option>
                         <?php
-                        $fqry = "SELECT * FROM facility WHERE max_people=$max_guest or eName='ALL' ORDER BY fName ASC";
+                        $fqry = "SELECT * FROM facility WHERE (max_people=$old_max_guest and eName='$e_name') or eName='ALL' ORDER BY fName ASC";
                         $r=mysqli_query($con, $fqry);
                         while($x=mysqli_fetch_assoc($r)){
                             echo "<option value='{$x['id']}' data-rate='{$x['fPrice']}'>
@@ -222,75 +225,119 @@ WHERE bf.booking_id='$booking_id'
 </div>
 <script>
 function recalc(){
-    let g=0;
+    let grand = 0;
+
     $("#facilityTable tbody tr").each(function(){
-        let rate=parseFloat($(this).data("rate"));
-        let qty=parseInt($(this).find(".qty").val());
-        let t=rate*qty;
-        $(this).find(".total").text(t.toFixed(2));
-        g+=t;
+        let rate = parseFloat($(this).data("rate")) || 0;
+        let qty  = parseInt($(this).find(".qty").val()) || 1;
+
+        let total = rate * qty;
+
+        $(this).find(".total").text(total.toFixed(2));
+        grand += total;
     });
-    $("#grandTotal").text(g.toFixed(2));
+
+    $("#grandTotal").text(grand.toFixed(2));
 }
-recalc();
 
-$(document).on("input",".qty",recalc);
+// qty change
+$(document).on("input",".qty",function(){
+    recalc();
+});
 
+// remove
 $(document).on("click",".removeRow",function(){
     $(this).closest("tr").remove();
     recalc();
 });
 
+// ADD NEW FACILITY (FIXED)
 $("#addFacility").click(function(){
-    let o=$("#facility_id option:selected");
-    if(!o.val()) return;
 
-    $("#facilityTable tbody").append(`
-    <tr data-id="${o.val()}" data-rate="${o.data("rate")}">
+    let opt = $("#facility_id option:selected");
+    let fid = opt.val();
+    let fname = opt.text();
+    let rate = parseFloat(opt.data("rate")) || 0;
+    let qty = parseInt($("#new_qty").val()) || 1;
+    
+    if(!fid){
+        alert("Select facility");
+        return;
+    }
+
+    let total = rate * qty;
+
+    let row = `
+    <tr data-id="${fid}" data-rate="${rate}">
         <td>#</td>
-        <td>${o.text()}</td>
-        <td><input type="number" class="form-control qty" value="${$("#new_qty").val()}"></td>
-        <td>${o.data("rate")}</td>
-        <td class="total"></td>
-        <td><button class="btn btn-danger btn-xs removeRow">X</button></td>
-    </tr>
-    `);
+        <td>${fname}</td>
+        <td>
+            <input type="number" class="form-control qty" value="${qty}" min="1">
+        </td>
+        <td class="rate text-right">${rate.toFixed(2)}</td>
+        <td class="total text-right">${total.toFixed(2)}</td>
+        <td class="text-center">
+            <button class="btn btn-danger btn-xs removeRow">
+                <i class="fa fa-trash"></i>
+            </button>
+        </td>
+    </tr>`;
+
+    $("#facilityTable tbody").append(row);
+
+    $("#new_qty").val("");
+    $("#facility_id").val("");
+
     recalc();
 });
+
+// INITIAL
+recalc();
 
 $("#confirmBooking").click(function(){
 
 Swal.fire({
     title:'Confirm Booking?',
-    text:'Facilities will be saved permanently.',
+    text:'All changes will be saved permanently',
     icon:'warning',
     showCancelButton:true,
-    confirmButtonText:'Yes Confirm'
+    confirmButtonText:'Yes, Confirm'
 }).then((r)=>{
     if(r.isConfirmed){
 
-        let items=[];
+        let facilities = [];
+
         $("#facilityTable tbody tr").each(function(){
-            items.push({
-                facility_id:$(this).data("id"),
-                qty:$(this).find(".qty").val(),
-                rate:$(this).data("rate")
+            facilities.push({
+                facility_id: $(this).data("id"),
+                qty: $(this).find(".qty").val(),
+                rate: $(this).data("rate")
             });
         });
 
-        $.post("confirm_booking_action.php",{
-            booking_id:"<?= $booking_id ?>",
-            items:JSON.stringify(items)
-        },function(res){
-            Swal.fire("Success","Booking Confirmed","success")
+        let bookingData = {
+            booking_id: "<?= $booking_id ?>",
+            start_date: $("#start_date").val(),
+            start_time: $("#start_time").val(),
+            end_date: $("#end_date").val(),
+            end_time: $("#end_time").val(),
+            max_guest: $("#max_guest").val(),
+            facilities: JSON.stringify(facilities)
+        };
+
+        $.post("confirm_booking_action.php", bookingData, function(res){
+            let r = JSON.parse(res);
+
+            Swal.fire("Confirmed","Booking Confirmed","success")
             .then(()=>{
-                window.open("print_invoice.php?id=<?= $booking_id ?>","_blank");
+                window.open(r.invoice,"_blank");
                 window.location="index.php?view_booking";
             });
         });
     }
 });
 });
+
 </script>
 
 </body>
