@@ -2,7 +2,6 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-include('./includes/db.php'); // or whatever your connection file is
 
 if(!isset($_SESSION['admin_email'])){
     echo "<script>window.open('login.php','_self')</script>";

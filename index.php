@@ -209,15 +209,26 @@ include ("header.php");
                             <!-- Form Group -->
                             <div class="form-group">
                                 <label for="select4">Maximum People</label>
+                                <option>-- Select Guest --</option>
                                 <select class="form-control" id="maxPeople">
-                                    <option>50</option>
+                                    <?php
+                                    $fqry = "SELECT g_range FROM guest WHERE";
+                                    $r=mysqli_query($con, $fqry);
+                                    while($x=mysqli_fetch_assoc($r)){
+                                        echo "<option value='{$x['g_range']}'>
+                                                {$x['g_range']}
+                                            </option>";
+                                    }
+                                    ?>
+
+                                    <!-- <option>50</option>
                                     <option>100</option>
                                     <option>200</option>
                                     <option>300</option>
                                     <option>400</option>
                                     <option>500</option>
                                     <option>700</option>
-                                    <option>1000</option>
+                                    <option>1000</option> -->
                                 </select>
                             </div>
 
