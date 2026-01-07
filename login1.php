@@ -21,11 +21,13 @@ include ("includes/db.php");
     <style>
         :root {
             --brand: #7B1E2B;
+            --bg: #ffffff;
             --text: #222;
             --card-bg: #ffffff;
         }
 
         body.dark {
+            --bg: #1c1c1c;
             --text: #f2f2f2;
             --card-bg: #2a2a2a;
         }
@@ -46,9 +48,9 @@ include ("includes/db.php");
             border-radius: 14px;
             padding: 25px 22px;
             box-shadow: 0 12px 30px rgba(0,0,0,.25);
-            transition: all .4s ease;
         }
 
+        /* Desktop center */
         @media (min-width: 768px) {
             body {
                 display: flex;
@@ -72,43 +74,6 @@ include ("includes/db.php");
             color: var(--brand);
             font-weight: 700;
             margin-bottom: 10px;
-        }
-
-        /* Golden brand text */
-        .brand-highlight {
-            background: linear-gradient(135deg, #D4A017, #FFD966);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: 800;
-            text-shadow: 0 0 6px rgba(212,160,23,0.45);
-            transition: all .3s ease;
-        }
-
-        body.dark .brand-highlight {
-            text-shadow:
-                0 0 10px rgba(212,160,23,0.9),
-                0 0 22px rgba(212,160,23,0.6);
-        }
-
-        /* Animated underline */
-        .brand-underline {
-            position: relative;
-            display: inline-block;
-        }
-        .brand-underline::after {
-            content: "";
-            position: absolute;
-            left: 0;
-            bottom: -6px;
-            width: 0;
-            height: 3px;
-            background: linear-gradient(90deg, #D4A017, #FFD966);
-            border-radius: 3px;
-            animation: underlineGrow 1.1s ease forwards;
-        }
-        @keyframes underlineGrow {
-            from { width: 0; }
-            to { width: 100%; }
         }
 
         .form-group label {
@@ -160,7 +125,7 @@ include ("includes/db.php");
             background: #5e1522;
         }
 
-        /* Theme toggle */
+        /* Dark / Light Toggle */
         .theme-toggle {
             position: absolute;
             top: 15px;
@@ -186,42 +151,7 @@ include ("includes/db.php");
             text-align: center;
             opacity: .7;
         }
-
-        /* Login success animation */
-        .login-success {
-            animation: successPop .6s ease forwards;
-        }
-        @keyframes successPop {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.04); }
-            100% { transform: scale(.98); opacity: 0; }
-        }
-
-        .success-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(123,30,43,.85);
-            z-index: 9999;
-            animation: flashOut .8s ease forwards;
-        }
-        @keyframes flashOut {
-            from { opacity: 1; }
-            to { opacity: 0; }
-        }
-
-        /* ❌ Login failure shake */
-        .login-error {
-            animation: shake .45s ease;
-            box-shadow: 0 0 0 3px rgba(220,53,69,.35);
-        }
-        @keyframes shake {
-            0% { transform: translateX(0); }
-            20% { transform: translateX(-8px); }
-            40% { transform: translateX(8px); }
-            60% { transform: translateX(-6px); }
-            80% { transform: translateX(6px); }
-            100% { transform: translateX(0); }
-        }
+		
     </style>
 </head>
 
@@ -235,13 +165,15 @@ include ("includes/db.php");
 
     <img src="./img/ShuvoEventPro.png" class="brand-logo" alt="Logo">
 
-    <h4 class="login-title">
-        Login to 
-        <span class="brand-highlight brand-underline">ShuvoEventPro</span>
-    </h4>
+    <!-- <h4 class="login-title">Login to ShuvoEventPro</h4> -->
+	<h4 class="login-title">
+		Login to <span style="color:#D4A017;">ShuvoEventPro</span>
+	</h4>
+
     <hr>
 
     <form method="POST">
+
         <div class="form-group">
             <label>Email Address</label>
             <input type="text" name="admin_email" class="form-control" placeholder="Enter email" required>
@@ -258,6 +190,7 @@ include ("includes/db.php");
         <button type="submit" name="admin_login" class="btn btn-login btn-block">
             <i class="fa fa-sign-in"></i> Login
         </button>
+
     </form>
 
     <div class="footer-text">
@@ -267,21 +200,24 @@ include ("includes/db.php");
 </div>
 
 <script>
+/* Password toggle */
 function togglePassword() {
-    let i = document.getElementById("admin_pass");
-    i.type = i.type === "password" ? "text" : "password";
+    let input = document.getElementById("admin_pass");
+    input.type = input.type === "password" ? "text" : "password";
 }
 
+/* Theme toggle */
 function toggleTheme() {
     document.body.classList.toggle("dark");
-    let d = document.body.classList.contains("dark");
-    localStorage.setItem("theme", d ? "dark" : "light");
-    document.getElementById("themeIcon").className = d ? "fa fa-sun-o" : "fa fa-moon-o";
+    let isDark = document.body.classList.contains("dark");
+    localStorage.setItem("theme", isDark ? "dark" : "light");
+    document.getElementById("themeIcon").className = isDark ? "fa fa-sun-o" : "fa fa-moon-o";
 }
 
+/* Load saved theme */
 (function(){
-    let t = localStorage.getItem("theme");
-    if(t === "dark"){
+    let saved = localStorage.getItem("theme");
+    if(saved === "dark"){
         document.body.classList.add("dark");
         document.getElementById("themeIcon").className = "fa fa-sun-o";
     }
@@ -292,54 +228,36 @@ function toggleTheme() {
 </html>
 
 <?php
-/* LOGIN PROCESS */
+// LOGIN PROCESS PHP
 if (isset($_POST['admin_login'])) {
 
-    $email = mysqli_real_escape_string($con, $_POST['admin_email']);
-    $pass  = md5($_POST['admin_pass']); // keep as-is
+    $admin_email = mysqli_real_escape_string($con, $_POST['admin_email']);
+    $admin_pass = md5($_POST['admin_pass']);  // md5 matching
 
-    $q = "SELECT * FROM admins WHERE admin_email='$email' AND admin_pass='$pass'";
-    $r = mysqli_query($con, $q);
+    $query = "SELECT * FROM admins WHERE admin_email='$admin_email' AND admin_pass='$admin_pass'";
+    $run = mysqli_query($con, $query);
 
-    if (mysqli_num_rows($r) == 1) {
+    if (mysqli_num_rows($run) == 1) {
 
-        $_SESSION['admin_email'] = $email;
-
-        echo "<script>
+        $_SESSION['admin_email'] = $admin_email;
+		$row = mysqli_fetch_assoc($run);
+		
+		$redirect = './admin_area/index.php?dashboard';
+        
+		echo "<script>
             Swal.fire({
                 icon: 'success',
-                title: 'Login Successful',
+                title: 'Login Successful!',
                 text: 'Welcome back!',
-                timer: 900,
+                timer: 1000,
                 showConfirmButton: false
-            }).then(() => {
-                document.querySelector('.login-card').classList.add('login-success');
-                let o = document.createElement('div');
-                o.className = 'success-overlay';
-                document.body.appendChild(o);
-                setTimeout(() => {
-                    window.location='./admin_area/index.php?dashboard';
-                }, 700);
-            });
+            }).then(() => { window.location='$redirect'; });
         </script>";
 
     } else {
 
         echo "<script>
-            Swal.fire({
-                icon: 'error',
-                title: 'Login Failed',
-                text: 'Invalid Email or Password',
-                timer: 900,
-                showConfirmButton: false
-            }).then(() => {
-                let card = document.querySelector('.login-card');
-                card.classList.add('login-error');
-                document.getElementById('admin_pass').focus();
-                setTimeout(() => {
-                    card.classList.remove('login-error');
-                }, 500);
-            });
+            Swal.fire('Error','Invalid Email or Password!'.$query,'error');
         </script>";
     }
 }

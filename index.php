@@ -35,6 +35,10 @@ include ("header.php");
 
     <!-- For calendar -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
     <style>
@@ -209,26 +213,15 @@ include ("header.php");
                             <!-- Form Group -->
                             <div class="form-group">
                                 <label for="select4">Maximum People</label>
-                                <option>-- Select Guest --</option>
                                 <select class="form-control" id="maxPeople">
-                                    <?php
-                                    $fqry = "SELECT g_range FROM guest WHERE";
-                                    $r=mysqli_query($con, $fqry);
-                                    while($x=mysqli_fetch_assoc($r)){
-                                        echo "<option value='{$x['g_range']}'>
-                                                {$x['g_range']}
-                                            </option>";
-                                    }
-                                    ?>
-
-                                    <!-- <option>50</option>
+                                    <option>50</option>
                                     <option>100</option>
                                     <option>200</option>
                                     <option>300</option>
                                     <option>400</option>
                                     <option>500</option>
                                     <option>700</option>
-                                    <option>1000</option> -->
+                                    <option>1000</option>
                                 </select>
                             </div>
 

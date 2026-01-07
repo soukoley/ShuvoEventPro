@@ -142,7 +142,7 @@ body::after{
 .sidebar-nav > li.active > a,
 .sidebar-nav > li.active > a i,
 .sidebar-nav > li > ul > li.active > a {
-    background-color: #6A1824;
+    background-color: #7B1E2B;
     color: #ffffff !important;
 }
 
@@ -284,12 +284,12 @@ body::after{
 /* LI text color */
 .breadcrumb > li,
 .breadcrumb > li.active {
-    color: #e9c140ff;
+    color: #D4A017;
 }
 
 /* Icon color */
 .breadcrumb > li i {
-    color: #e9c140ff;
+    color: #D4A017;
 }
 
 /* ===============================
@@ -324,6 +324,182 @@ body::after{
 /* Active item */
 .nav.sidebar-nav > li.active > a,
 .nav.sidebar-nav > li.active > a i {
-    background-color: #6A1824;
+    background-color: #7B1E2B;
     color: #F5F5F5 !important;
+}
+
+#start_date, #start_time {
+    background: #fff7e6;
+    border: 1px solid #7B1E2B;
+	padding: 8px;
+}
+
+#end_date, #end_time {
+    background: #e8f5e9;
+    border: 1px solid #369739;
+	padding: 8px;
+}
+
+#start_date:focus,
+#end_date:focus {
+    outline: none;
+    box-shadow: 0 0 6px rgba(123,30,43,0.5);
+}
+/* =========================
+   BASE DATEPICKER
+========================= */
+.ui-datepicker {
+    font-family: "Segoe UI", sans-serif;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+/* Datepicker header background */
+.ui-datepicker .ui-datepicker-header {
+    background: linear-gradient(135deg, #7B1E2B, #9c2738);
+    border: none;
+    color: #fff;
+    border-radius: 8px;
+}
+
+/* Month & Year text */
+.ui-datepicker .ui-datepicker-title {
+    color: #3b1111;
+    font-weight: bold;
+	font-weight: 600;
+}
+
+/* Prev / Next arrow */
+.ui-datepicker .ui-datepicker-prev span,
+.ui-datepicker .ui-datepicker-next span {
+    filter: brightness(0) invert(1); /* white arrow */
+}
+
+/* =========================
+   WEEK DAY HEADER
+========================= */
+.ui-datepicker th {
+    color: #7B1E2B;
+    font-weight: 600;
+}
+
+/* All date cells */
+.ui-datepicker td a {
+    background: #f4f4f4;
+    color: #333;
+    border-radius: 6px;
+    padding: 6px;
+    transition: all 0.2s ease;
+}
+
+/* Hover date */
+.ui-datepicker td a:hover {
+    background: #7B1E2B;   /* hover yellow */
+    color: #000;
+}
+/*  WEEKEND RED */
+.weekend-date a {
+    background: #ffe5e5 !important;
+    color: #c62828 !important;
+    font-weight: 600;
+}
+
+/* Today's date */
+.ui-datepicker .ui-datepicker-today a {
+    background: #4CAF50 !important;
+    color: #fff !important;
+    font-weight: bold;
+}
+
+/* SELECTED */
+.ui-datepicker .ui-datepicker-current-day a {
+    background: #7B1E2B !important;
+    color: #fff !important;
+}
+
+/* Disabled dates */
+.ui-datepicker .ui-state-disabled span {
+    background: #a1a1a1;
+    color: #414040;
+    border-radius: 6px;
+}
+
+/* ===============================
+   CONFIRM BOOKING BUTTON
+================================ */
+.confirm-btn {
+    background: linear-gradient(135deg, #af8721, #c9aa5b);
+    border: none;
+    padding: 14px 36px;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    border-radius: 50px;
+    box-shadow: 0 8px 18px rgba(46,125,50,0.4);
+    transition: all 0.25s ease;
+}
+
+/* Hover */
+.confirm-btn:hover {
+    background: linear-gradient(135deg, #1b5e20, #2e7d32);
+    box-shadow: 0 12px 25px rgba(27,94,32,0.55);
+    transform: translateY(-2px);
+}
+
+/* Active click */
+.confirm-btn:active {
+    transform: scale(0.96);
+    box-shadow: 0 6px 12px rgba(27,94,32,0.4);
+}
+
+/* Focus */
+.confirm-btn:focus {
+    outline: none;
+}
+
+/* Optional – Full width on mobile */
+@media (max-width: 768px) {
+    .confirm-btn {
+        width: 100%;
+        padding: 16px;
+    }
+}
+/* Discount section */
+#discountType,
+#discountValue,
+#payableAmount {
+    border-radius: 6px;
+    padding: 8px;
+}
+
+#payableAmount {
+    background: #f1f8e9;
+    border: 1px solid #2e7d32;
+    font-weight: 600;
+}
+
+#finalPayable {
+    background: #e8f5e9;
+    border: 1px solid #2e7d32;
+    font-weight: 600;
+}
+
+/* ADVANCE / DUE PAYMENT */
+#advancePaid {
+    border: 1px solid #1565c0;
+}
+
+#dueAmount {
+    background: #fff3e0;
+    border: 1px solid #ef6c00;
+    font-weight: 600;
+}
+
+.payment-box {
+    margin-top: 15px;
+    padding: 10px;
+    background: #f9f9f9;
+    border-left: 4px solid #7B1E2B;
+    border-radius: 4px;
 }

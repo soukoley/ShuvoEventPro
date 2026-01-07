@@ -198,6 +198,7 @@ if(!isset($_SESSION['admin_email'])){
                 <ul id="eventMenu" class="collapse">
                     <li><a href="index.php?insert_event">New Event</a></li>
                     <li><a href="index.php?view_event">View Event</a></li>
+                    <li><a href="index.php?booking_calendar">Event Calander</a></li>
                 </ul>
             </li>
 
