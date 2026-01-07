@@ -43,8 +43,7 @@ $cur_finance_year = $c_fyear_row['f_year'];
 	<!-- Bootstrap & Font Awesome -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css">
-	
+
 	<!-- jQuery library -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	
@@ -54,18 +53,12 @@ $cur_finance_year = $c_fyear_row['f_year'];
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 	
 	<!-- Favicon Logo -->
 	<link rel="apple-touch-icon" sizes="180x180" href="../images/favicon_io/apple-touch-icon.png">
 	<link rel="icon" type="image/png" sizes="32x32" href="../images/favicon_io/favicon-32x32.png">
 	<link rel="icon" type="image/png" sizes="16x16" href="../images/favicon_io/favicon-16x16.png">
 	<link rel="manifest" href="../images/favicon_io/site.webmanifest">
-
-	<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-
-	<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
-
 
 	<style>
 		body {
@@ -140,30 +133,18 @@ $cur_finance_year = $c_fyear_row['f_year'];
 						'view_event'            => 'view_event.php',
 						'edit_event'            => 'edit_event.php',
 
-						'insert_facility'	  	=> 'insert_facility.php',
-						'view_facility'       	=> 'view_facility.php',
-						'delete_facility'   	=> 'delete_facility.php',
-
-						'user_profile'			=>	'user_profile.php',
-
 						'insert_event_gallery'  => 'insert_event_gallery.php',
 						'view_gallery'          => 'view_gallery.php',
 						'edit_gallery'          => 'edit_gallery.php',
 						'delete_gallery'        => 'delete_gallery.php',
-						
-						'view_booking'        	=> 'view_booking.php',
-						'booking_result'        => 'view_booking_result.php',
-						'confirm_booking'   	=> 'confirm_booking.php',
-						'booking_calendar'   	=> 'booking_calendar.php',
+						'calendar'       		=> 'calendar.php',
+						'booking_popup'       	=> 'booking_popup.php',
 					];
 
 					foreach ($pages as $key => $file) {
 						if (isset($_GET[$key])) {
-							if (file_exists($file)) {
-								include $file;
-							} else {
-								echo "<h3 style='color:red'>Page not found: $file</h3>";
-							}
+							include $file;
+							break; // একটাই page load হবে
 						}
 					}
 

@@ -24,6 +24,8 @@ try{
     $end_date       = $data['end_date'];
     $end_time       = $data['end_time'];
     $max_guest      = $data['max_guest'];
+    $start_date  = date('Y-m-d', strtotime($start_date));
+    $end_date    = date('Y-m-d', strtotime($end_date));
 
     $discount_type  = $data['discount_type'];
     $discount_value = $data['discount_value'];
@@ -35,6 +37,8 @@ try{
     $payment_details= $data['payment_details']; // array
 
     $facilities     = json_decode($data['facilities'], true);
+    
+    $url = "index.php?confirm_booking=0&id=" . urlencode(trim($booking_id));
 
     // update booking
     $update_bookingDetails = "UPDATE booking_details SET
@@ -134,7 +138,7 @@ try{
     $p_type = $payment_type;              // CASH / UPI / NEFT / CHEQUE
 
     // Default NULL values
-    $transaction_id   = 'NA';
+    /* $transaction_id   = 'NA';
     $transaction_date = $payment_date; // today
     $neftid           = 'NA';
     $bank             = 'NA';
@@ -142,7 +146,7 @@ try{
     $chk_no           = 'NA';
     $chk_dt           = $payment_date;
     $acc_no           = 'NA';
-    $acc_name         = 'NA';
+    $acc_name         = 'NA'; */
 
     /* -------- CASH -------- */
     if ($p_type === 'CASH') {
@@ -154,40 +158,83 @@ try{
     /* -------- UPI -------- */
     elseif ($p_type === 'UPI') {
 
-        $transaction_id   = $payment_details['transaction_ref'];
+        $transaction_id   = mysqli_real_escape_string($con, $payment_details['transaction_ref']);
         $transaction_date = $payment_details['transaction_date'];
+        $transaction_date  = date('Y-m-d', strtotime($transaction_date));
 
     }
 
     /* -------- NEFT -------- */
     elseif ($p_type === 'NEFT') {
 
+        $neftid           = mysqli_real_escape_string($con, $payment_details['reference_number']);
+        $bank             = mysqli_real_escape_string($con, $payment_details['bank_name']);
+        $ifsc             = mysqli_real_escape_string($con, $payment_details['ifsc_code']);
+        $acc_no           = mysqli_real_escape_string($con, $payment_details['account_number']);
+        $acc_name         = mysqli_real_escape_string($con, $payment_details['account_name']);
         $transaction_date = $payment_details['transaction_date'];
-        $neftid           = $payment_details['reference_number'];
-        $bank             = $payment_details['bank_name'];
-        $ifsc             = $payment_details['ifsc_code'];
-        $acc_no           = $payment_details['account_number'];
-        $acc_name         = $payment_details['account_name'];
-
+        $transaction_date = date('Y-m-d', strtotime($transaction_date));
+        
     }
 
     /* -------- CHEQUE -------- */
     elseif ($p_type === 'CHEQUE') {
 
-        $neftid   = $payment_details['neft_ref_no'];
-        $bank     = $payment_details['bank_name'];
-        $ifsc     = $payment_details['ifsc_code'];
-        $acc_no   = $payment_details['account_number'];
-        $acc_name = $payment_details['account_name'];
-        $chk_no   = $payment_details['cheque_number'];
+        $neftid   = mysqli_real_escape_string($con, $payment_details['neft_ref_no']);
+        $bank     = mysqli_real_escape_string($con, $payment_details['bank_name']);
+        $ifsc     = mysqli_real_escape_string($con, $payment_details['ifsc_code']);
+        $acc_no   = mysqli_real_escape_string($con, $payment_details['account_number']);
+        $acc_name = mysqli_real_escape_string($con, $payment_details['account_name']);
+        $chk_no   = mysqli_real_escape_string($con, $payment_details['cheque_number']);
         $chk_dt   = $payment_details['cheque_date'];
+        $chk_dt   = date('Y-m-d', strtotime($chk_dt));
+    } else {
+        throw new Exception("Invalid payment type");
     }
 
     /* ===============================
     INSERT INTO payment_details
     ================================ */
 
-    $paySql = "
+    if($p_type == "CHEQUE") {
+
+        $insert_payment_details = "INSERT INTO payment_details (booking_id, blAmt, pdAmt, dueAmt, neftid, 
+                bank, ifsc, chk_no, chk_dt, acc_no, acc_name, p_type, payment_date)
+        VALUES ('$booking_id', $blAmt, $pdAmt, $dueAmt, 
+                '$neftid', '$bank', '$ifsc', '$chk_no', '$chk_dt', 
+                '$acc_no', '$acc_name', '$p_type', '$payment_date')";
+
+    } else if($p_type == "NEFT") {
+
+        $insert_payment_details = "INSERT INTO payment_details (booking_id, blAmt, pdAmt, dueAmt, 
+        transaction_date, neftid, bank, ifsc, acc_no, acc_name, p_type, payment_date)
+        VALUES ('$booking_id', $blAmt, $pdAmt, $dueAmt, 
+                '$transaction_date', '$neftid', '$bank', '$ifsc', 
+                '$acc_no', '$acc_name', '$p_type', '$payment_date')";
+
+    } else if($p_type == "UPI") {
+
+        $insert_payment_details = "INSERT INTO payment_details (booking_id, blAmt, pdAmt, dueAmt, 
+        transaction_id, transaction_date, p_type, payment_date)
+        VALUES ('$booking_id', $blAmt, $pdAmt, $dueAmt, 
+                '$transaction_id', '$transaction_date', '$p_type', '$payment_date')";
+    } else {
+
+        $insert_payment_details = "INSERT INTO payment_details (booking_id, blAmt, pdAmt, dueAmt, 
+        p_type, payment_date)
+        VALUES ('$booking_id', $blAmt, $pdAmt, $dueAmt, 
+                '$p_type', '$payment_date')";  // For cash or other modes
+
+    }
+    //$executed_queries[] = $insert_payment_details;
+    if (!mysqli_query($con, $insert_payment_details)) {
+        $_SESSION['error'] = "Error inserting payment details: " . mysqli_error($con);
+        mysqli_rollback($con); // 🔁 Roll back all changes
+        header("Location: $url");
+        exit();
+    }
+
+    /* $paySql = "
     INSERT INTO payment_details (
         booking_id,
         blAmt,
@@ -225,7 +272,7 @@ try{
 
     if (!mysqli_query($con, $paySql)) {
         throw new Exception("Payment details insert failed");
-    }
+    } */
 
 
     mysqli_commit($con);

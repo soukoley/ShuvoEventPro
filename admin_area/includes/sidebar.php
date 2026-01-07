@@ -202,6 +202,15 @@ if(!isset($_SESSION['admin_email'])){
                 </ul>
             </li>
 
+			<!-- Facility Menu -->
+            <li>
+                <a href="#" data-toggle="collapse" data-target="#facilityMenu"><i class="fa fa-hotel"></i> Facility <i class="fa fa-fw fa-caret-down"></i></a>
+                <ul id="facilityMenu" class="collapse">
+                    <li><a href="index.php?insert_facility">New Facility</a></li>
+                    <li><a href="index.php?view_facility">View Facility</a></li>
+                </ul>
+            </li>
+
 			<!-- Gallery Menu -->
             <li>
                 <a href="#" data-toggle="collapse" data-target="#galleryMenu"><i class="fa fa-fw fa-image"></i> Gallery <i class="fa fa-fw fa-caret-down"></i></a>

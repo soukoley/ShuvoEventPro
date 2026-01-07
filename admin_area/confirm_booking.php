@@ -110,15 +110,16 @@ WHERE bf.booking_id='$booking_id'
                 <!-- Event -->
                 <h4><strong>Event Name :</strong> <?php echo $e_name; ?></h4>
                 <h4><strong>Booking Id :</strong> <?php echo $booking_id; ?></h4>
-                <hr>
-                    <!-- Customer -->
-                    <h4>Customer Details</h4>
-                    <p>
-                        <strong>Name :</strong> <?php echo $c_name; ?><br>
-                        <strong>Address :</strong> <?php echo $c_addr; ?><br>
-                        <strong>Contact :</strong> <?php echo $c_mobile; ?>
-                    </p>
-                <hr>
+                <hr style="border: none; height: 1px; background: #D4A017;">
+
+                <!-- Customer -->
+                <h4><strong>Customer Details</strong></h4>
+                <p>
+                    <strong>Name :</strong> <?php echo $c_name; ?><br>
+                    <strong>Address :</strong> <?php echo $c_addr; ?><br>
+                    <strong>Contact :</strong> <?php echo $c_mobile; ?>
+                </p>
+                <hr style="border: none; height: 1px; background: #D4A017;">
 
                 <!-- Guest -->
                 <!-- <p><strong>Maximum Guest :</strong> <?php echo $old_max_guest; ?></p> -->
@@ -131,8 +132,7 @@ WHERE bf.booking_id='$booking_id'
                     <strong>Check-Out :</strong>
                     <?php echo date("d M Y", strtotime($end_date)) . " " . $end_time; ?>
                 </p> -->
-                <h4>Edit Booking Details</h4>
-
+                <h4><strong>Edit Booking Details</strong></h4>
                 <div class="row">
                     <!-- Check-In -->
                     <div class="col-md-3">
@@ -206,15 +206,12 @@ WHERE bf.booking_id='$booking_id'
                             ?>
                         </select>
                     </div>
-
-
                 </div>
-
+                <hr style="border: none; height: 1px; background: #D4A017;">
 
                 <!-- Facilities -->
-                <hr>
+                
                 <h4><strong>List of Facilities</strong></h4>
-                <hr>
 
                 <!-- RESPONSIVE TABLE -->
                 <div class="table-responsive">
@@ -259,12 +256,10 @@ WHERE bf.booking_id='$booking_id'
                         </tfoot>
                     </table>
                 </div>
-                <hr>
+                <hr style="border: none; height: 1px; background: #D4A017;">
 
                 <!-- ADD NEW FACILITY -->
                 <h4><strong>Addition of Facilities</strong></h4>
-                <hr>
-
                 <div class="row">
                     <div class="col-sm-4">
                         <select id="facility_id" class="form-control">
@@ -289,13 +284,10 @@ WHERE bf.booking_id='$booking_id'
                     <button id="addFacility" class="btn btn-primary">Add</button>
                     </div>
                 </div>
-
-                <hr>
+                <hr style="border: none; height: 1px; background: #D4A017;">
 
                 <!-- DISCOUNT SECTION -->
                 <h4><strong>Discount Section</strong></h4>
-                <hr>
-
                 <div class="row" style="margin-top:20px;">
                     <div class="col-md-4">
                         <label>Discount Type</label>
@@ -316,12 +308,10 @@ WHERE bf.booking_id='$booking_id'
                         <input type="text" id="payableAmount" class="form-control" readonly>
                     </div>
                 </div>
-                <hr>
+                <hr style="border: none; height: 1px; background: #D4A017;">
 
                 <!-- ADVANCE / DUE PAYMENT -->
                 <h4><strong>Payment Section</strong></h4>
-                <hr>
-
                 <div class="row" style="margin-top:20px;">
                     <div class="col-md-4">
                         <label>Payable Amount</label>
@@ -338,13 +328,11 @@ WHERE bf.booking_id='$booking_id'
                         <input type="text" id="dueAmount" class="form-control" readonly>
                     </div>
                 </div>
-                <hr>
+                <!-- <hr style="border: none; height: 1px; background: #D4A017;"> -->
 
                 <!-- PAYMENT DETAILS -->
-                <h4><strong>Payment Details</strong></h4>
-                <hr>
-
-                <div class="row">
+                <!-- <h4><strong>Payment Details</strong></h4> -->
+                <div class="row" style="margin-top:10px;">
                     <div class="col-md-4">
                         <label>Payment Type</label>
                         <select id="paymentType" class="form-control">
@@ -356,7 +344,6 @@ WHERE bf.booking_id='$booking_id'
                         </select>
                     </div>
                 </div>
-                <hr>
 
                 <!-- ================= CASH ================= -->
                 <div class="row payment-box" id="cashBox" style="display:none;">
@@ -441,7 +428,7 @@ WHERE bf.booking_id='$booking_id'
                         <input type="text" id="chequeNeftRef" class="form-control">
                     </div>
                 </div>
-                <hr>
+                <hr style="border: none; height: 1px; background: #D4A017;">
                     
                 <!-- CONFIRM BUTTON SECTION -->
                 <button id="confirmBooking" class="btn btn-success btn-lg confirm-btn">
@@ -766,6 +753,7 @@ $("#confirmBooking").click(function(){
                 url: 'confirm_booking_action.php',
                 type: 'POST',
                 contentType: 'application/json',
+                dataType: 'json',
                 data: JSON.stringify(bookingData),
                 success: function (response) {
                     if (response.success) {
