@@ -29,7 +29,7 @@ $start_time = $data['start_time'];
 $end_time = $data['end_time'];
 
 $fac_res = mysqli_query($con,"
-SELECT bf.*,f.fName 
+SELECT bf.*, f.fName, f.gst_rate
 FROM booking_facilities bf
 JOIN facility f ON bf.facility_id=f.id
 WHERE bf.booking_id='$booking_id'
@@ -222,7 +222,10 @@ WHERE bf.booking_id='$booking_id'
                                 <th class="text-left">Facility</th>
                                 <th class="text-center">Quantity</th>
                                 <th class="text-right">Rate</th>
-                                <th class="text-right">Total Amount</th>
+                                <th class="text-right">Taxable Amount</th>
+                                <th class="text-right">GST Rate</th>
+                                <th class="text-right">GST Amount</th>
+                                <th class="text-right">Net Amount</th>
                                 <th class="text-center">Action</th>
                             </tr>
                         </thead>
@@ -231,12 +234,16 @@ WHERE bf.booking_id='$booking_id'
                         //$i=1;
                         while($f=mysqli_fetch_assoc($fac_res)){
                     ?>
-                        <tr data-id="<?= $f['facility_id'] ?>" data-rate="<?= $f['rate'] ?>">
-                            <!-- <td class="text-center"><?= $i++ ?></td> -->
+                        <tr data-id="<?= $f['facility_id'] ?>" data-rate="<?= $f['rate'] ?>" 
+                            data-gst-rate="<?= $f['gst_rate'] ?>" data-taxable="<?= $f['taxableAmt'] ?>"
+                            data-tax-amt="<?= $f['gstAmt'] ?>" data-net-amt="<?= $f['netAmt'] ?>">
                             <td class="text-left"><?= $f['fName'] ?></td>
                             <td class="text-center"><input type="number" class="form-control qty" value="<?= $f['qty'] ?>" min="1"></td>
                             <td class="rate text-right"><?= $f['rate'] ?></td>
-                            <td class="total text-right"><?= $f['tot_amt'] ?></td>
+                            <td class="taxable text-right"><?= $f['taxableAmt'] ?></td>
+                            <td class="taxRate text-right"><?= $f['gst_rate'] ?></td>
+                            <td class="gst text-right"><?= $f['gstAmt'] ?></td>
+                            <td class="total text-right"><?= $f['netAmt'] ?></td>
                             <td class="text-center">
                                 <button class="btn btn-danger btn-xs removeRow">
                                     <i class="glyphicon glyphicon-trash"></i>
@@ -250,6 +257,9 @@ WHERE bf.booking_id='$booking_id'
                         <tfoot>
                         <tr>
                             <th colspan="3" class="text-right">Grand Total</th>
+                            <th class="text-right" id="grandTaxable"></th>
+                            <th class="text-center"></th>
+                            <th class="text-right" id="grandGST"></th>
                             <th class="text-right" id="grandTotal"></th>
                             <th></th>
                         </tr>
@@ -268,7 +278,7 @@ WHERE bf.booking_id='$booking_id'
                         $fqry = "SELECT * FROM facility WHERE (max_people=$old_max_guest and eName='$e_name') or eName='ALL' ORDER BY fName ASC";
                         $r=mysqli_query($con, $fqry);
                         while($x=mysqli_fetch_assoc($r)){
-                            echo "<option value='{$x['id']}' data-rate='{$x['fPrice']}'>
+                            echo "<option value='{$x['id']}' data-rate='{$x['fPrice']}' data-gst_rate='{$x['gst_rate']}'>
                                     {$x['fName']} (₹{$x['fPrice']})
                                 </option>";
                         }
@@ -294,7 +304,7 @@ WHERE bf.booking_id='$booking_id'
                         <select id="discountType" class="form-control">
                             <option value="">-- No Discount --</option>
                             <option value="flat">Flat (₹)</option>
-                            <option value="percent">Percentage (%)</option>
+                            <!-- <option value="percent">Percentage (%)</option> -->
                         </select>
                     </div>
 
@@ -444,18 +454,37 @@ WHERE bf.booking_id='$booking_id'
    RECALCULATE FACILITY TOTAL
 ================================ */
 function recalc(){
-    let grand = 0;
+    let totTaxable = 0;
+    let totTax = 0;
+    let totNet = 0;
 
     $("#facilityTable tbody tr").each(function(){
         let rate = parseFloat($(this).data("rate")) || 0;
+        let gstRate = parseFloat($(this).data("gst_rate")) || 0;
         let qty  = parseInt($(this).find(".qty").val()) || 1;
 
-        let total = rate * qty;
-        $(this).find(".total").text(total.toFixed(2));
-        grand += total;
+        let taxableAmt = rate * qty;
+        let gstAmt = (taxableAmt * gstRate)/100;
+        let netAmt = taxableAmt + gstAmt;
+
+        // 🔹 update UI
+        $(this).find(".taxable").text(taxableAmt.toFixed(2));
+        $(this).find(".gst").text(gstAmt.toFixed(2));
+        $(this).find(".total").text(netAmt.toFixed(2));
+
+        // 🔹 VERY IMPORTANT: store in data-attributes
+        row.data("taxable", taxableAmt);
+        row.data("tax-amt", gstAmt);
+        row.data("net-amt", netAmt);
+
+        totTaxable += taxableAmt;
+        totTax += gstAmt;
+        totNet += netAmt;
     });
 
-    $("#grandTotal").text(grand.toFixed(2));
+    $("#grandTaxable").text(totTaxable.toFixed(2));
+    $("#grandGST").text(totTax.toFixed(2));
+    $("#grandTotal").text(totNet.toFixed(2));
 
     // 🔥 always re-apply discount after recalculation
     applyDiscount();
@@ -482,6 +511,7 @@ $("#addFacility").click(function(){
     let fid  = opt.val();
     let fname= opt.text();
     let rate = parseFloat(opt.data("rate")) || 0;
+    let gstRate = parseFloat(opt.data("gst_rate")) || 0;
     let qty  = parseInt($("#new_qty").val()) || 1;
 
     if(!fid){
@@ -489,15 +519,26 @@ $("#addFacility").click(function(){
         return;
     }
 
-    let total = rate * qty;
+    let taxableAmt = parseFloat(rate * qty);
+    let gstAmt = parseFloat(taxableAmt * (gstRate/100));
+    let netAmt = parseFloat(taxableAmt + gstAmt);
     let cleanName = fname.split('(')[0].trim();
 
     let row = `
-        <tr data-id="${fid}" data-rate="${rate}">
+
+        <tr data-id="<?= $f['facility_id'] ?>" data-rate="<?= $f['rate'] ?>" 
+                            data-gst-rate="<?= $f['gst_rate'] ?>" data-taxable="<?= $f['taxableAmt'] ?>"
+                            data-tax-amt="<?= $f['gstAmt'] ?>" data-net-amt="<?= $f['netAmt'] ?>">
+
+        <tr data-id="${fid}" data-rate="${rate}" data-gst-rate="${gstRate}"
+            data-taxable="${taxableAmt}" data-tax-amt="${gstAmt}" data-net-amt="${netAmt}">
             <td class="text-left">${cleanName}</td>
             <td><input type="number" class="form-control qty" value="${qty}" min="1"></td>
             <td class="rate text-right">${rate.toFixed(2)}</td>
-            <td class="total text-right">${total.toFixed(2)}</td>
+            <td class="taxable text-right">${taxableAmt.toFixed(2)}</td>
+            <td class="taxRate text-right">${gstRate.toFixed(2)}</td>
+            <td class="gst text-right">${gstAmt.toFixed(2)}</td>
+            <td class="total text-right">${netAmt.toFixed(2)}</td>
             <td class="text-center">
                 <button class="btn btn-danger btn-xs removeRow">
                     <i class="fa fa-trash"></i>
@@ -547,13 +588,32 @@ $("#maxPeople").on("change", function(){
                 let match = facilities.find(f => f.id == fid);
                 if(match){
                     let newRate = parseFloat(match.fPrice);
+                    let gstRate = parseFloat(match.gst_rate) || 0;
                     let qty = parseInt(row.find(".qty").val()) || 1;
 
-                    row.attr("data-rate", newRate);
+                    let taxableAmt = rate * qty;
+                    let gstAmt = taxableAmt * gstRate / 100;
+                    let netAmt = taxableAmt + gstAmt;
+
+                    row.attr("data-rate", rate).data("rate", rate);
+
+                    // 🔹 update UI
+                    row.find(".rate").text(rate.toFixed(2));
+                    row.find(".taxable").text(taxableAmt.toFixed(2));
+                    row.find(".gstRate").text(gstRate.toFixed(2));
+                    row.find(".gst").text(gstAmt.toFixed(2));
+                    row.find(".total").text(netAmt.toFixed(2));
+
+                    // 🔹 VERY IMPORTANT: store in data-attributes
+                    row.data("taxable", taxableAmt);
+                    row.data("tax-amt", gstAmt);
+                    row.data("net-amt", netAmt);
+
+                    /* row.attr("data-rate", newRate);
                     row.data("rate", newRate);
 
                     row.find(".rate").text(newRate.toFixed(2));
-                    row.find(".total").text((qty * newRate).toFixed(2));
+                    row.find(".total").text((qty * newRate).toFixed(2)); */
                 }
             });
 
@@ -646,7 +706,11 @@ $("#confirmBooking").click(function(){
                 facilities.push({
                     facility_id: $(this).data("id"),
                     qty: $(this).find(".qty").val(),
-                    rate: $(this).data("rate")
+                    rate: $(this).data("rate"),
+                    taxableAmt: $(this).data("taxable"),
+                    gstRate: $(this).data("gst-rate"),
+                    gstAmt: $(this).data("tax-amt"),
+                    netAmt: $(this).data("net-amt")
                 });
             });
 
@@ -743,7 +807,7 @@ $("#confirmBooking").click(function(){
                 payment_type: paymentType,
                 payment_details: paymentDetails,
 
-                facilities: JSON.stringify(facilities)
+                facilities: facilities
             };
 
             /* ===============================

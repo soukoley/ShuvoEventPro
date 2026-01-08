@@ -1,4 +1,5 @@
 <?php
+header('Content-Type: application/json');
 session_start();
 include('./includes/db.php');
 
@@ -10,9 +11,15 @@ try{
        READ JSON INPUT
     ================================ */
     $data = json_decode(file_get_contents("php://input"), true);
-
+    echo '<pre>';
+    print_r($data);
+    exit;
     if (!$data) {
-        throw new Exception("Invalid JSON data");
+        echo json_encode([
+            'success' => false,
+            'error' => 'Invalid JSON input'
+        ]);
+        exit;
     }
 
     /* ===============================
@@ -36,7 +43,7 @@ try{
     $payment_type   = $data['payment_type'];
     $payment_details= $data['payment_details']; // array
 
-    $facilities     = json_decode($data['facilities'], true);
+    $facilities     = $data['facilities'];
     
     $url = "index.php?confirm_booking=0&id=" . urlencode(trim($booking_id));
 
@@ -60,21 +67,31 @@ try{
         throw new Exception("Reset facilities failed.");
     }
 
-    $total_amount = 0;
-
+    $totalGross = 0;
+    $totalGST = 0;
+    $totalNet = 0;
+    echo '<pre>';
+    var_dump($facilities);
+    exit;
     // insert facilities
     foreach($facilities as $f){
         $f_id = $f['facility_id'];
         $qty = $f['qty'];
         $rate = $f['rate'];
+        $taxableAmt = $f['taxableAmt'];
+        $gstRate = $f['gstRate'];
+        $gstAmt = $f['gstAmt'];
+        $netAmt = $f['netAmt'];
         //$total = $f['total'];
-        $total = $qty * $rate;
-        $total_amount += $total;
+        //$total = $qty * $rate;
+        $totalGross += $taxableAmt;
+        $totalGST += $gstAmt;
+        $totalNet += $netAmt;
 
         $insert_bf = "INSERT INTO booking_facilities
-            (booking_id, facility_id, qty, rate, tot_amt)
+            (booking_id, facility_id, qty, rate, taxableAmt, gstAmt, netAmt)
             VALUES
-            ('$booking_id',$f_id,$qty,$rate,$total)";
+            ('$booking_id',$f_id,$qty,$rate,$taxableAmt,$gstAmt,$netAmt)";
 
         if (!mysqli_query($con, $insert_bf)) {
             throw new Exception("Error inserting $f_id: " . mysqli_error($con));
@@ -88,7 +105,7 @@ try{
         $disc_amt = $discount_value;
         $disc_rate = 0.00;
     } else {
-        $disc_amt = $total_amount - $payable_amount;
+        $disc_amt = $totalNet - $payable_amount;
         $disc_rate = $discount_value;
     }
 
@@ -102,7 +119,7 @@ try{
         $updPay = "UPDATE payment 
                    SET  disc_rate = $disc_rate,
                         disc_amt = $disc_amt,
-                        gross_amt = $total_amount,
+                        gross_amt = $totalNet,
                         net_amt = $payable_amount,
                         adv_amt = $advance_paid,
                         due_amt = $due_amount,
@@ -118,7 +135,7 @@ try{
         $payQry = "INSERT INTO payment 
                 (booking_id, sgst, sgst_amt, cgst, cgst_amt, disc_rate, disc_amt, gross_amt, net_amt, adv_amt, due_amt, payment_date)
                 VALUES
-                ('$booking_id', 0.00, 0.00, 0.00, 0.00, $disc_rate, $disc_amt, $total_amount, $payable_amount, $advance_paid, $due_amount, '$today')";
+                ('$booking_id', 0.00, 0.00, 0.00, 0.00, $disc_rate, $disc_amt, $totalNet, $payable_amount, $advance_paid, $due_amount, '$today')";
 
         if (!mysqli_query($con, $payQry)) {
             throw new Exception("Failed to insert payment: " . mysqli_error($con));
