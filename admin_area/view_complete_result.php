@@ -9,7 +9,7 @@ if(!isset($_SESSION['admin_email'])){
 } else {
     $sdate = $_SESSION['sdate'];
     $edate = $_SESSION['edate'];
-    $booking_status = "Approved"; // Default to pending if not set"
+    $booking_status = "Completed"; // Default to pending if not set"
 
     $run_bookings = "SELECT bd.booking_id, bd.booking_date, c.c_name, c.c_mobile, bd.e_name, bd.start_date, bd.end_date, bd.status
                 FROM booking_details bd, customer c 
@@ -25,56 +25,6 @@ if(!isset($_SESSION['admin_email'])){
     <html>
     <head>
         <title>Booking Results</title>
-        <script>
-            $(document).ready(function() {
-                $('.reject-btn').on('click', function(e) {
-                    e.preventDefault();
-
-                    var button = $(this);
-                    var bookingId = button.data('booking-id');
-                    console.log("Booking ID selected for rejection:", bookingId);
-
-                    Swal.fire({
-                        title: 'Are you sure?',
-                        text: 'Do you really want to reject this booking?',
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonText: 'Yes, reject it!',
-                        cancelButtonText: 'No, cancel',
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            //console.log("Reject confirmed. Sending AJAX...");
-                            $.ajax({
-                            url: 'delete_booking.php',
-                            type: 'POST',
-                            data: { booking_id: bookingId },
-                            success: function(response) {
-                                // If response is JSON, parse it first
-                                if (typeof response === "string") {
-                                    response = JSON.parse(response);
-                                }
-
-                                if (response.success) {
-                                    Swal.fire({
-                                        title: 'Rejected!',
-                                        text: 'booking rejected successfully.',
-                                        icon: 'success',
-                                    }).then(() => {
-                                        location.reload(); // ✅ reload only after user closes alert
-                                    });
-                                } else {
-                                    Swal.fire('Failed', response.message || 'Failed to reject booking.', 'error');
-                                }
-                            },
-                            error: function() {
-                                Swal.fire('Error', 'Error communicating with the server.', 'error');
-                            }
-                            });
-                        }
-                    });
-                });
-            });
-        </script>
     </head>
     <body>
     <div class="row">
@@ -82,7 +32,7 @@ if(!isset($_SESSION['admin_email'])){
             <div class="breadcrumb">
                 <li class="active">
                     <i class="fa fa-fw fa-calendar-check-o"></i>
-                    Booking / Approved Booking / View Booking Results
+                    Booking / Complete Booking / View Booking Results
                 </li>
             </div>
         </div>
@@ -127,13 +77,13 @@ if(!isset($_SESSION['admin_email'])){
                                         <td class="text-center"><?php echo date("d M Y", strtotime($bk['start_date'])); ?></td>
                                         <td class="text-center"><?php echo date("d M Y", strtotime($bk['end_date'])); ?></td>
                                         <td class="text-center">
-                                            <span class="label label-success">Approved</span>
+                                            <span class="label label-success">Completed</span>
                                         </td>
                                         <td class="text-center">
-                                            <a href="index.php?complete_approval=0 & id=<?php echo $bk['booking_id']; ?>"
+                                            <a href="index.php?complete_details=0 & id=<?php echo $bk['booking_id']; ?>"
                                                 class="btn btn-success btn-xs"
                                                 style="background-color: #7A1E3A; color: #ffffffff;">
-                                                <i class="fa fa-edit"></i> Complete
+                                                <i class="fa fa-edit"></i> Details
                                             </a>
                                         </td>
                                     </tr>
@@ -146,7 +96,7 @@ if(!isset($_SESSION['admin_email'])){
                 </div>
             </div>
             <div style="margin-top: 15px;">
-            <a href="index.php?approved" class="btn" style="background-color: #7A1E3A; color: #ffffffff; font-size: 14px; font-weight: bold;">
+            <a href="index.php?complete" class="btn" style="background-color: #7A1E3A; color: #ffffffff; font-size: 14px; font-weight: bold;">
                 <i class="fa fa-arrow-left"></i> Back
             </a>
         </div>

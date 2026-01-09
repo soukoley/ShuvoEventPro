@@ -87,7 +87,7 @@ if(!isset($_SESSION['admin_email'])){
             <div class="breadcrumb">
                 <li class="active">
                     <i class="fa fa-fw fa-calendar-check-o"></i>
-                    Booking / View Booking Results
+                    Booking / Pending Booking / View Booking Results
                 </li>
             </div>
         </div>
@@ -135,7 +135,7 @@ if(!isset($_SESSION['admin_email'])){
                                             <span class="label label-warning">Pending</span>
                                         </td>
                                         <td class="text-center">
-                                            <a href="index.php?confirm_booking=0 & id=<?php echo $bk['booking_id']; ?>"
+                                            <a href="index.php?approve_pending=0 & id=<?php echo $bk['booking_id']; ?>"
                                                 class="btn btn-success btn-xs"
                                                 style="background-color: #7A1E3A; color: #ffffffff;">
                                                 <i class="fa fa-edit"></i> Approve
@@ -151,7 +151,7 @@ if(!isset($_SESSION['admin_email'])){
                 </div>
             </div>
             <div style="margin-top: 15px;">
-            <a href="index.php?view_booking" class="btn" style="background-color: #7A1E3A; color: #ffffffff; font-size: 14px; font-weight: bold;">
+            <a href="index.php?pending" class="btn" style="background-color: #7A1E3A; color: #ffffffff; font-size: 14px; font-weight: bold;">
                 <i class="fa fa-arrow-left"></i> Back
             </a>
         </div>

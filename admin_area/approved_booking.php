@@ -10,7 +10,7 @@ if(!isset($_SESSION['admin_email'])){
 <!DOCTYPE html>
 <html>
 <head>
-	<title>View Booking</title>
+	<title>Approved Booking</title>
 </head>
 <body>
 <div class="row">
@@ -28,7 +28,7 @@ if(!isset($_SESSION['admin_email'])){
 		<div class="panel panel-primary">
 			<div class="panel-heading corporate-heading">
 				<h3 class="panel-title">
-					Select&nbsp;&nbsp;Date&nbsp;&nbsp;Range
+					Date&nbsp;&nbsp;Range&nbsp;&nbsp;For&nbsp;&nbsp;Approved&nbsp;&nbsp;Booking
 				</h3>
 			</div>
 			<div class="panel-body" style="padding-top: 20px;">
@@ -44,27 +44,12 @@ if(!isset($_SESSION['admin_email'])){
 						<div class="col-md-6">
 							<input type="date" name="edate" value="<?php $currentDate = date('Y-m-d'); echo $currentDate; ?>" class="form-control" required="">
 						</div>
-					</div>
-					<!-- <div class="form-group">
-						<label class="col-md-3 control-label">Booking Status :</label>
-						<div class="col-md-6">
-							<label class="radio-inline">
-								<input type="radio" name="booking_status" value="All" checked> All
-							</label>
-							<label class="radio-inline">
-								<input type="radio" name="booking_status" value="Pending"> Pending
-							</label>
-							<label class="radio-inline">
-								<input type="radio" name="booking_status" value="Approved"> Approved
-							</label>
-						</div>
-					</div> -->
-													
+					</div>													
 					<div class="form-group">
 						<div class="col-md-3">
 						</div>
 						<div class="col-md-6">
-							<input type="submit" name="submit" value="View Order" class="btn btn-primary form-control" >
+							<input type="submit" name="submit" value="Submit" class="btn btn-primary form-control" >
 						</div>
 					</div>
 				</form>

@@ -10,7 +10,7 @@ if(!isset($_SESSION['admin_email'])){
 <!DOCTYPE html>
 <html>
 <head>
-	<title>View Booking</title>
+	<title>Complete Booking</title>
 </head>
 <body>
 <div class="row">
@@ -18,7 +18,7 @@ if(!isset($_SESSION['admin_email'])){
 		<div class="breadcrumb">
 			<li class="active">
 				<i class="fa fa-fw fa-calendar-check-o"></i>
-				Booking / Pending Booking
+				Booking / Complete Booking
 			</li>
 		</div>
     </div>
@@ -28,7 +28,7 @@ if(!isset($_SESSION['admin_email'])){
 		<div class="panel panel-primary">
 			<div class="panel-heading corporate-heading">
 				<h3 class="panel-title">
-					Date&nbsp;&nbsp;Range&nbsp;&nbsp;For&nbsp;&nbsp;Pending&nbsp;&nbsp;Booking
+					Date&nbsp;&nbsp;Range&nbsp;&nbsp;For&nbsp;&nbsp;Complete&nbsp;&nbsp;Booking
 				</h3>
 			</div>
 			<div class="panel-body" style="padding-top: 20px;">
@@ -45,20 +45,6 @@ if(!isset($_SESSION['admin_email'])){
 							<input type="date" name="edate" value="<?php $currentDate = date('Y-m-d'); echo $currentDate; ?>" class="form-control" required="">
 						</div>
 					</div>
-					<!-- <div class="form-group">
-						<label class="col-md-3 control-label">Booking Status :</label>
-						<div class="col-md-6">
-							<label class="radio-inline">
-								<input type="radio" name="booking_status" value="All" checked> All
-							</label>
-							<label class="radio-inline">
-								<input type="radio" name="booking_status" value="Pending"> Pending
-							</label>
-							<label class="radio-inline">
-								<input type="radio" name="booking_status" value="Approved"> Approved
-							</label>
-						</div>
-					</div> -->
 													
 					<div class="form-group">
 						<div class="col-md-3">
@@ -85,7 +71,7 @@ if(!isset($_SESSION['admin_email'])){
 		$_SESSION['edate']			= $edate;
 		//$_SESSION['booking_status']	= $booking_status;
 		
-		echo"<script>window.open('index.php?pending_result','_self')</script>";
+		echo"<script>window.open('index.php?complete_result','_self')</script>";
 		
 	}
 

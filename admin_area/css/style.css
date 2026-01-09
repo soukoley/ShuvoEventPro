@@ -429,34 +429,58 @@ body::after{
    CONFIRM BOOKING BUTTON
 ================================ */
 .confirm-btn {
-    background: linear-gradient(135deg, #af8721, #c9aa5b);
+    background: linear-gradient(135deg, #7B1E2B 0%, #b8963e 45%, #e2c46a 100%);
     border: none;
-    padding: 14px 36px;
+    padding: 14px 40px;
     font-size: 14px;
     font-weight: 600;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: #fff;
     border-radius: 50px;
-    box-shadow: 0 8px 18px rgba(46,125,50,0.4);
-    transition: all 0.25s ease;
+
+    box-shadow:
+        0 6px 16px rgba(123, 30, 43, 0.45),
+        inset 0 1px 0 rgba(255, 255, 255, 0.35);
+
+    transition: 
+        background 0.35s ease,
+        box-shadow 0.35s ease,
+        transform 0.2s ease;
 }
 
 /* Hover */
 .confirm-btn:hover {
-    background: linear-gradient(135deg, #1b5e20, #2e7d32);
-    box-shadow: 0 12px 25px rgba(27,94,32,0.55);
+    background: linear-gradient(135deg, #5f1520 0%, #af8721 55%, #f1d77a 100%);
+    
+    box-shadow:
+        0 12px 28px rgba(123, 30, 43, 0.6),
+        0 0 18px rgba(175, 135, 33, 0.6);
+
     transform: translateY(-2px);
 }
 
 /* Active click */
 .confirm-btn:active {
     transform: scale(0.96);
-    box-shadow: 0 6px 12px rgba(27,94,32,0.4);
+    box-shadow:
+        0 6px 14px rgba(123, 30, 43, 0.45),
+        inset 0 3px 8px rgba(0, 0, 0, 0.25);
 }
 
 /* Focus */
 .confirm-btn:focus {
     outline: none;
+    box-shadow:
+        0 0 0 3px rgba(175, 135, 33, 0.35),
+        0 8px 20px rgba(123, 30, 43, 0.5);
 }
+
+/* Optional icon support */
+.confirm-btn i {
+    margin-right: 8px;
+}
+
 
 /* Optional – Full width on mobile */
 @media (max-width: 768px) {
@@ -502,4 +526,325 @@ body::after{
     background: #f9f9f9;
     border-left: 4px solid #7B1E2B;
     border-radius: 4px;
+}
+
+/* ===============================
+   BOOKING VIEW BOX
+================================ */
+/* Remove outer styling */
+.booking-view-box {
+    padding: 0;
+    margin-top: 10px;
+}
+
+/* Label */
+.view-label {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 4px;
+    display: block;
+    font-weight: 600;
+}
+
+/* Value look (only inner boxes) */
+.view-value {
+    padding: 6px 0;
+    font-size: 15px;
+    font-weight: 600;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Icon color */
+.view-value i {
+    color: #7B1E2B;
+}
+
+@media (max-width: 767px) {
+    .view-value {
+        padding: 10px 0;
+        border-bottom: 1px dashed #ddd;
+    }
+}
+
+
+/* ===============================
+   CUSTOMER DETAILS CARD
+================================ */
+/* Section title */
+.section-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin: 10px 0 12px;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Row layout */
+.customer-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    border-bottom: 1px dashed #ddd;
+}
+
+.customer-row:last-child {
+    border-bottom: none;
+}
+
+/* Label */
+.customer-row .label {
+    font-weight: 600;
+    color: #555;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Value */
+.customer-row .value {
+    font-weight: 600;
+    color: #222;
+    text-align: right;
+    max-width: 65%;
+}
+
+/* Icon color */
+.customer-row i,
+.section-title i {
+    color: #7B1E2B;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .customer-row {
+        flex-direction: column;
+        gap: 4px;
+    }
+    .customer-row .value {
+        text-align: left;
+        max-width: 100%;
+    }
+}
+
+.booking-view-box {
+    padding: 0;
+    margin-top: 10px;
+}
+
+.view-label {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 4px;
+    display: block;
+    font-weight: 600;
+}
+
+.view-value {
+    padding: 6px 0;
+    font-size: 15px;
+    font-weight: 600;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.view-value i {
+    color: #7B1E2B;
+}
+
+/* ===============================
+   PAYMENT SUMMARY CARD
+================================ */
+/* Section title */
+.section-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #333;
+}
+
+.section-title i {
+    color: #7B1E2B;
+}
+
+/* Labels */
+.pay-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 4px;
+    display: block;
+}
+
+/* Value display */
+.pay-value {
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.pay-value.discount { color: #ef6c00; }
+.pay-value.payable  { color: #2e7d32; }
+.pay-value.due      { color: #c62828; }
+.pay-value.final      { color: #1d1aad; }
+.pay-value.advance      { color: #0b7c85; }
+
+/* Inputs */
+.received-input {
+    font-weight: 600;
+}
+
+/* Payment conditional boxes */
+.payment-box {
+    margin-top: 12px;
+}
+
+/* Cash note */
+.cash-note {
+    margin-top: 8px;
+    color: #2e7d32;
+    font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .payment-summary-row > div {
+        margin-bottom: 10px;
+    }
+}
+
+/* Table wrapper */
+.facility-table-wrap {
+    margin-top: 10px;
+}
+
+/* Table look */
+.facility-table th {
+    background: #fafafa;
+    font-weight: 700;
+    font-size: 13px;
+}
+
+.facility-table td {
+    vertical-align: middle !important;
+    font-size: 13px;
+}
+
+/* Qty input */
+.facility-table .qty {
+    padding: 4px;
+    height: 32px;
+}
+
+/* Grand total row */
+.grand-row th {
+    font-size: 14px;
+    font-weight: 800;
+    border-top: 2px solid #7B1E2B !important;
+}
+
+/* Divider */
+.soft-divider {
+    border: none;
+    height: 1px;
+    background: #D4A017;
+    margin: 18px 0;
+}
+
+/* Add facility section */
+.add-facility-row {
+    margin-top: 10px;
+}
+
+/* Action button */
+.removeRow {
+    padding: 4px 8px;
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+    .facility-table th,
+    .facility-table td {
+        font-size: 12px;
+    }
+
+    .add-facility-row .btn {
+        margin-top: 10px;
+    }
+}
+
+/* FORCE TABLE HEADER TO SHOW */
+#facilityTable thead {
+    display: table-header-group !important;
+}
+
+#facilityTable th {
+    background: #bb932f;
+    font-weight: 700;
+    font-size: 13px;
+    color: #7B1E2B;
+    vertical-align: middle !important;
+}
+
+/* Section title */
+.section-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #333;
+}
+
+.section-title i {
+    color: #7B1E2B;
+}
+
+/* Labels */
+.edit-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 4px;
+    display: block;
+}
+
+/* Row spacing */
+.booking-edit-row {
+    margin-top: 8px;
+}
+
+/* Calendar icon */
+.calendar-icon {
+    cursor: pointer;
+    background: #fff;
+}
+
+.calendar-icon i {
+    color: #7B1E2B;
+}
+
+/* Inputs */
+.booking-edit-row .form-control {
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .booking-edit-row > div {
+        margin-bottom: 10px;
+    }
 }

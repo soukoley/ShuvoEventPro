@@ -35,8 +35,8 @@ $cur_finance_year = $c_fyear_row['f_year'];
 <!DOCTYPE html>
 <html>
 <head>
-	<title> User Panel </title>
-	<link rel="shortcut icon" type="image/png" href="../images/tlogo.png">
+	<title> Admin Panel </title>
+
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	
@@ -58,8 +58,8 @@ $cur_finance_year = $c_fyear_row['f_year'];
 	
 	<!-- Favicon Logo -->
 	<link rel="apple-touch-icon" sizes="180x180" href="../images/favicon_io/apple-touch-icon.png">
-	<link rel="icon" type="image/png" sizes="32x32" href="../images/favicon_io/favicon-32x32.png">
-	<link rel="icon" type="image/png" sizes="16x16" href="../images/favicon_io/favicon-16x16.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="../logo/shuvopro-favicon-16x16.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="../logo/shuvopro-favicon-32x32.png">
 	<link rel="manifest" href="../images/favicon_io/site.webmanifest">
 
 	<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
@@ -153,11 +153,16 @@ $cur_finance_year = $c_fyear_row['f_year'];
 						
 						'pending'       		=> 'pending_booking.php',
 						'pending_result'        => 'view_pending_result.php',
-						'confirm_booking'   	=> 'confirm_booking.php',
+						'approve_pending'   	=> 'approve_pending.php',
 						'booking_calendar'   	=> 'booking_calendar.php',
 
 						'approved'      		=> 'approved_booking.php',
-						'approved_result'      	=> 'view_approved_result.php'
+						'approved_result'      	=> 'view_approved_result.php',
+						'complete_approval'		=> 'complete_approval.php',
+						
+						'complete'      		=> 'complete_booking.php',
+						'complete_result'      	=> 'view_complete_result.php',
+						'complete_details'      => 'complete_booking_details.php'
 					];
 
 					foreach ($pages as $key => $file) {

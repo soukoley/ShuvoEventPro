@@ -100,7 +100,6 @@ if(!isset($_SESSION['admin_email'])){
             <img src="../img/ShuvoEventPro.png" class="brand-logo" alt="ShuvoEventPro Logo">
             <div class="brand-text">
                 <span class="english-name">ShuvoEventPro</span>
-                <!-- <span class="bengali-name">হিসাবপ্রো</span> -->
             </div>
         </div>
     </div>
@@ -224,10 +223,9 @@ if(!isset($_SESSION['admin_email'])){
             <li>
                 <a href="#" data-toggle="collapse" data-target="#bookingMenu"><i class="fa fa-fw fa-calendar-check-o"></i> Booking <i class="fa fa-fw fa-caret-down"></i></a>
                 <ul id="bookingMenu" class="collapse">
-                    <li><a href="index.php?new_booking">New Booking</a></li>
-                    <li><a href="index.php?view_booking">View Booking</a></li>
-                    <li><a href="index.php?confirm_booking">Confirmed Booking</a></li>
-                    <li><a href="index.php?older_booking">Older Booking</a></li>
+                    <li><a href="index.php?pending">Pending Booking</a></li>
+                    <li><a href="index.php?approved">Approved Booking</a></li>
+                    <li><a href="index.php?complete">Complete Booking</a></li>
                 </ul>
             </li>
 
