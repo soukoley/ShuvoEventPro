@@ -11,9 +11,9 @@ try{
        READ JSON INPUT
     ================================ */
     $data = json_decode(file_get_contents("php://input"), true);
-    echo '<pre>';
+    /* echo '<pre>';
     print_r($data);
-    exit;
+    exit; */
     if (!$data) {
         echo json_encode([
             'success' => false,
@@ -31,8 +31,16 @@ try{
     $end_date       = $data['end_date'];
     $end_time       = $data['end_time'];
     $max_guest      = $data['max_guest'];
-    $start_date  = date('Y-m-d', strtotime($start_date));
-    $end_date    = date('Y-m-d', strtotime($end_date));
+
+    $start_date = $start_date
+        ? DateTime::createFromFormat('d/m/Y', $start_date)->format('Y-m-d')
+        : null;
+
+    $end_date = $end_date
+        ? DateTime::createFromFormat('d/m/Y', $end_date)->format('Y-m-d')
+        : null;
+    /* $start_date  = date('Y-m-d', strtotime($start_date));
+    $end_date    = date('Y-m-d', strtotime($end_date)); */
 
     $discount_type  = $data['discount_type'];
     $discount_value = $data['discount_value'];
@@ -70,18 +78,19 @@ try{
     $totalGross = 0;
     $totalGST = 0;
     $totalNet = 0;
-    echo '<pre>';
+    /* echo '<pre>';
     var_dump($facilities);
-    exit;
+    exit; */
     // insert facilities
     foreach($facilities as $f){
-        $f_id = $f['facility_id'];
-        $qty = $f['qty'];
-        $rate = $f['rate'];
-        $taxableAmt = $f['taxableAmt'];
-        $gstRate = $f['gstRate'];
-        $gstAmt = $f['gstAmt'];
-        $netAmt = $f['netAmt'];
+        $f_id = (int) $f['facility_id'];
+        $qty  = (int) ($f['qty']);
+
+        $rate = (float) ($f['rate']);
+        $taxableAmt = (float) ($f['taxableAmt']);
+        $gstRate    = (float) ($f['gstRate']);
+        $gstAmt     = (float) ($f['gstAmt']);
+        $netAmt     = (float) ($f['netAmt']);
         //$total = $f['total'];
         //$total = $qty * $rate;
         $totalGross += $taxableAmt;
@@ -92,7 +101,7 @@ try{
             (booking_id, facility_id, qty, rate, taxableAmt, gstAmt, netAmt)
             VALUES
             ('$booking_id',$f_id,$qty,$rate,$taxableAmt,$gstAmt,$netAmt)";
-
+        
         if (!mysqli_query($con, $insert_bf)) {
             throw new Exception("Error inserting $f_id: " . mysqli_error($con));
         }
@@ -112,7 +121,7 @@ try{
     $payExistQry = "SELECT * FROM payment WHERE booking_id='$booking_id'";
     $payExistRes = mysqli_query($con, $payExistQry);
     $today = date('Y-m-d');
-
+    
     if ($payExistRow = mysqli_fetch_assoc($payExistRes)) {
 
         // ✅ Payment exists → Update
@@ -125,6 +134,9 @@ try{
                         due_amt = $due_amount,
                         payment_date = '$today'
                    WHERE id='$payExistRow[id]'";
+        echo '<pre>';
+        var_dump($updPay);
+        exit;
 
         if (!mysqli_query($con, $updPay)) {
             throw new Exception("Failed to update payment: " . mysqli_error($con));

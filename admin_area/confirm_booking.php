@@ -459,18 +459,21 @@ function recalc(){
     let totNet = 0;
 
     $("#facilityTable tbody tr").each(function(){
-        let rate = parseFloat($(this).data("rate")) || 0;
-        let gstRate = parseFloat($(this).data("gst_rate")) || 0;
-        let qty  = parseInt($(this).find(".qty").val()) || 1;
+        let row = $(this);
+
+        let rate = parseFloat(row.data("rate")) || 0;
+        let gstRate = parseFloat(row.data("gst-rate")) || 0;
+        let qty = parseInt(row.find(".qty").val()) || 0;
 
         let taxableAmt = rate * qty;
         let gstAmt = (taxableAmt * gstRate)/100;
         let netAmt = taxableAmt + gstAmt;
 
         // 🔹 update UI
-        $(this).find(".taxable").text(taxableAmt.toFixed(2));
-        $(this).find(".gst").text(gstAmt.toFixed(2));
-        $(this).find(".total").text(netAmt.toFixed(2));
+        row.find(".taxable").text(taxableAmt.toFixed(2));
+        row.find(".gst").text(gstAmt.toFixed(2));
+        row.find(".total").text(netAmt.toFixed(2));
+
 
         // 🔹 VERY IMPORTANT: store in data-attributes
         row.data("taxable", taxableAmt);
@@ -525,11 +528,6 @@ $("#addFacility").click(function(){
     let cleanName = fname.split('(')[0].trim();
 
     let row = `
-
-        <tr data-id="<?= $f['facility_id'] ?>" data-rate="<?= $f['rate'] ?>" 
-                            data-gst-rate="<?= $f['gst_rate'] ?>" data-taxable="<?= $f['taxableAmt'] ?>"
-                            data-tax-amt="<?= $f['gstAmt'] ?>" data-net-amt="<?= $f['netAmt'] ?>">
-
         <tr data-id="${fid}" data-rate="${rate}" data-gst-rate="${gstRate}"
             data-taxable="${taxableAmt}" data-tax-amt="${gstAmt}" data-net-amt="${netAmt}">
             <td class="text-left">${cleanName}</td>
@@ -704,13 +702,20 @@ $("#confirmBooking").click(function(){
             let facilities = [];
             $("#facilityTable tbody tr").each(function(){
                 facilities.push({
-                    facility_id: $(this).data("id"),
+                    /*facility_id: $(this).data("id"),
                     qty: $(this).find(".qty").val(),
                     rate: $(this).data("rate"),
                     taxableAmt: $(this).data("taxable"),
                     gstRate: $(this).data("gst-rate"),
                     gstAmt: $(this).data("tax-amt"),
-                    netAmt: $(this).data("net-amt")
+                    netAmt: $(this).data("net-amt")*/
+                    facility_id: parseInt($(this).find(".id").val()) || 0,
+                    qty: parseInt($(this).find(".qty").val()) || 0,
+                    rate: parseFloat($(this).data("rate")) || 0,
+                    taxableAmt: parseFloat($(this).data("taxable")) || 0,
+                    gstRate: parseFloat($(this).data("gst-rate")) || 0,
+                    gstAmt: parseFloat($(this).data("tax-amt")) || 0,
+                    netAmt: parseFloat($(this).data("net-amt")) || 0
                 });
             });
 
