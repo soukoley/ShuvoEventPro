@@ -3,7 +3,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-if(!isset($_SESSION['admin_email'])){
+if(!isset($_SESSION['admin_email'], $_GET['receive_Payment'])){
     echo "<script>window.open('login.php','_self')</script>";
     exit;
 }
@@ -32,28 +32,36 @@ $end_time = $data['end_time'];
 $qryP = "SELECT * FROM payment WHERE booking_id='$booking_id'";
 $resultP = mysqli_query($con, $qryP);
 
-$disc_amt = 0.00;
-$adv_amt = 0.00;
-
-if ($resultP && mysqli_num_rows($resultP) > 0) {
-    $payRow = mysqli_fetch_assoc($resultP);
-
-    $disc_amt  = $payRow['disc_amt'];
-    $adv_amt   = $payRow['adv_amt'];
-}
-
 $fac_res = mysqli_query($con,"
 SELECT bf.*, f.fName, f.gst_rate
 FROM booking_facilities bf
 JOIN facility f ON bf.facility_id=f.id
 WHERE bf.booking_id='$booking_id'
 ");
+
+$disc_amt = 0.00;
+$gross_amt = 0.00;
+$net_amt = 0.00;
+$adv_amt = 0.00;
+$due_amt = 0.00;
+
+
+if ($resultP && mysqli_num_rows($resultP) > 0) {
+    $payRow = mysqli_fetch_assoc($resultP);
+
+    $disc_amt  = $payRow['disc_amt'];
+    $adv_amt   = $payRow['adv_amt'];
+    $gross_amt = $payRow['gross_amt'];
+    $net_amt   = $payRow['net_amt'];
+    $due_amt   = $payRow['due_amt'];
+}
+
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Pending Approval</title>
+    <title>Receive Payment</title>
 </head>
 <body>
 
@@ -61,8 +69,8 @@ WHERE bf.booking_id='$booking_id'
 	<div class="col-lg-12 col-md-10 col-sm-12 col-xs-12 mx-auto">
 		<div class="breadcrumb">
 			<li class="active">
-				<i class="fa fa-fw fa-calendar-check-o"></i>
-				Booking / Approved Booking / Pending Approval
+				<i class="fa fa-fw fa-credit-card"></i>
+				Payment / View Payments / Receive Payment
 			</li>
 		</div>
     </div>
@@ -193,9 +201,7 @@ WHERE bf.booking_id='$booking_id'
 
                 </div>
 
-
                 <hr class="soft-divider">
-
                 <!-- Facilities -->
                 
                 <h4 class="section-title">
@@ -213,95 +219,28 @@ WHERE bf.booking_id='$booking_id'
                                 <th class="text-right">GST %</th>
                                 <th class="text-right">GST Amt</th>
                                 <th class="text-right">Net Amt</th>
-                                <th class="text-center">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                         <?php while($f=mysqli_fetch_assoc($fac_res)){ ?>
-                            <tr data-id="<?= $f['facility_id'] ?>"
-                                data-rate="<?= $f['rate'] ?>"
-                                data-gst-rate="<?= $f['gst_rate'] ?>">
-
+                            <tr>
                                 <td><?= $f['fName'] ?></td>
-
-                                <td class="text-center" style="width:90px;">
-                                    <input type="number"
-                                        class="form-control qty text-center"
-                                        value="<?= $f['qty'] ?>"
-                                        min="1">
-                                </td>
-
+                                <td><?= $f['qty'] ?></td>
                                 <td class="text-right rate"><?= number_format($f['rate'],2) ?></td>
                                 <td class="text-right taxable"><?= number_format($f['taxableAmt'],2) ?></td>
                                 <td class="text-right taxRate"><?= $f['gst_rate'] ?>%</td>
                                 <td class="text-right gst"><?= number_format($f['gstAmt'],2) ?></td>
                                 <td class="text-right total"><?= number_format($f['netAmt'],2) ?></td>
-
-                                <td class="text-center">
-                                    <button class="btn btn-danger btn-xs removeRow">
-                                        <i class="fa fa-trash"></i>
-                                    </button>
-                                </td>
                             </tr>
                         <?php } ?>
                         </tbody>
-
-                        <tfoot>
-                            <tr class="grand-row">
-                                <th colspan="3" class="text-right">Grand Total</th>
-                                <th class="text-right" id="grandTaxable">0.00</th>
-                                <th></th>
-                                <th class="text-right" id="grandGST">0.00</th>
-                                <th class="text-right" id="grandTotal">0.00</th>
-                                <th></th>
-                            </tr>
-                        </tfoot>
                     </table>
                 </div>
-
-                <hr class="soft-divider">
-
-                <!-- ================= ADD FACILITY ================= -->
-                <h4 class="section-title">
-                    <i class="fa fa-plus-circle"></i> Addition of Facilities
-                </h4>
-
-                <div class="row add-facility-row">
-                    <div class="col-md-4">
-                        <label class="pay-label">Facility</label>
-                        <select id="facility_id" class="form-control">
-                            <option value="">-- Select Facility --</option>
-                            <?php
-                            $fqry = "SELECT * FROM facility 
-                                    WHERE (max_people=$old_max_guest AND eName='$e_name') 
-                                    OR eName='ALL'
-                                    ORDER BY fName ASC";
-                            $r=mysqli_query($con, $fqry);
-                            while($x=mysqli_fetch_assoc($r)){
-                                echo "<option value='{$x['id']}'
-                                            data-rate='{$x['fPrice']}'
-                                            data-gst_rate='{$x['gst_rate']}'>
-                                        {$x['fName']} (₹{$x['fPrice']})
-                                    </option>";
-                            }
-                            ?>
-                        </select>
-                    </div>
-
-                    <div class="col-md-2">
-                        <label class="pay-label">Quantity</label>
-                        <input type="number" id="new_qty" class="form-control" placeholder="Qty">
-                    </div>
-
-                    <div class="col-md-2" style="margin-top:24px;">
-                        <button id="addFacility" class="btn btn-primary btn-block">
-                            <i class="fa fa-plus"></i> Add
-                        </button>
-                    </div>
-                </div>
-
+                
                 <hr class="soft-divider">
                 
+                <!-- ================= PAYMENT SECTION ================= -->
+
                 <h4 class="section-title">
                     <i class="fa fa-credit-card"></i> Payment Section
                 </h4>
@@ -455,18 +394,18 @@ WHERE bf.booking_id='$booking_id'
                 <hr class="soft-divider">
                     
                 <!-- CONFIRM BUTTON SECTION -->
-                
                 <div class="action-btn-group">
 
                     <button id="backBtn" class="btn btn-back">
                         <i class="fa fa-arrow-left"></i> Back
                     </button>
 
-                    <button id="completeBooking" class="btn btn-complete">
-                        <i class="fa fa-check-circle"></i> Complete Booking
+                    <button id="paymentReceived" class="btn btn-complete">
+                        <i class="fa fa-check-circle"></i> Payment Received
                     </button>
 
                 </div>
+
             </div>
         </div>
     </div>
@@ -475,158 +414,24 @@ WHERE bf.booking_id='$booking_id'
 
 const DB_DISCOUNT = <?= (float)$disc_amt ?>;
 const DB_ADVANCE  = <?= (float)$adv_amt ?>;
+const DB_GROSS    = <?= (float)$gross_amt ?>;
+const DB_NET      = <?= (float)$net_amt ?>;
+const DB_DUE      = <?= (float)$due_amt ?>;
 
 /* ===============================
    RECALCULATE FACILITY TOTAL
 ================================ */
 function recalc(){
-    let totTaxable = 0;
-    let totTax = 0;
-    let totNet = 0;
 
-    $("#facilityTable tbody tr").each(function(){
-        let row = $(this);
-
-        let rate = parseFloat(row.data("rate")) || 0;
-        let gstRate = parseFloat(row.data("gst-rate")) || 0;
-        let qty = parseInt(row.find(".qty").val()) || 0;
-
-        let taxableAmt = rate * qty;
-        let gstAmt = (taxableAmt * gstRate)/100;
-        let netAmt = taxableAmt + gstAmt;
-
-        // 🔹 update UI
-        row.find(".taxable").text(taxableAmt.toFixed(2));
-        row.find(".gst").text(gstAmt.toFixed(2));
-        row.find(".total").text(netAmt.toFixed(2));
-
-
-        // 🔹 VERY IMPORTANT: store in data-attributes
-        row.data("taxable", taxableAmt);
-        row.data("tax-amt", gstAmt);
-        row.data("net-amt", netAmt);
-
-        totTaxable += taxableAmt;
-        totTax += gstAmt;
-        totNet += netAmt;
-    });
-
-    /*$("#discountAmount").val(DB_DISCOUNT.toFixed(2));
-    $("#advanceAmount").val(DB_ADVANCE.toFixed(2));
-
-    $("#grandTaxable").text(totTaxable.toFixed(2));
-    $("#grandGST").text(totTax.toFixed(2));
-    $("#grandTotal").text(totNet.toFixed(2));
-
-    $("#finalAmount").text(totNet.toFixed(2));*/
+    let remainingAmt = DB_NET - DB_ADVANCE;
 
     // ✅ SPANS → use .text()
+    $("#finalAmount").text(DB_GROSS.toFixed(2));
     $("#discountAmount").text(DB_DISCOUNT.toFixed(2));
     $("#advanceAmount").text(DB_ADVANCE.toFixed(2));
-
-    $("#grandTaxable").text(totTaxable.toFixed(2));
-    $("#grandGST").text(totTax.toFixed(2));
-    $("#grandTotal").text(totNet.toFixed(2));
-
-    $("#finalAmount").text(totNet.toFixed(2));
-
-    // payable = total - discount
-    let payable = totNet - DB_DISCOUNT - DB_ADVANCE;
-    if (payable < 0) payable = 0;
-
-    $("#remainingAmount").text(payable.toFixed(2));
-    $("#duePayment").text(payable.toFixed(2));
-
-    // 🔥 always re-apply discount after recalculation
+    $("#remainingAmount").text(remainingAmt.toFixed(2));
+    $("#duePayment").text(DB_DUE.toFixed(2));
 }
-
-/* ===============================
-   QTY CHANGE / REMOVE
-================================ */
-$(document).on("input", ".qty", function(){
-    recalc();
-});
-
-$(document).on("click", ".removeRow", function(){
-    $(this).closest("tr").remove();
-    recalc();
-});
-
-function findFacilityRow(fid) {
-    let found = null;
-
-    $("#facilityTable tbody tr").each(function () {
-        if (parseInt($(this).data("id")) === parseInt(fid)) {
-            found = $(this);
-            return false; // break loop
-        }
-    });
-
-    return found;
-}
-
-
-/* ===============================
-   ADD NEW FACILITY
-================================ */
-$("#addFacility").click(function(){
-
-    let opt  = $("#facility_id option:selected");
-    let fid  = parseInt(opt.val());
-    let fname= opt.text();
-    let rate = parseFloat(opt.data("rate")) || 0;
-    let gstRate = parseFloat(opt.data("gst-rate")) || 0;
-    let qty  = parseInt($("#new_qty").val()) || 1;
-
-    if(!fid){
-        alert("Select facility");
-        return;
-    }
-
-    let cleanName = fname.split('(')[0].trim();
-
-    // 🔍 check duplicate
-    let existingRow = findFacilityRow(fid);
-
-    if(existingRow){
-        // 🔁 MERGE LOGIC
-        let oldQty = parseInt(existingRow.find(".qty").val()) || 0;
-        let newQty = oldQty + qty;
-
-        existingRow.find(".qty").val(newQty);
-
-    } else {
-
-        // ➕ NEW ROW
-        let taxableAmt = rate * qty;
-        let gstAmt = taxableAmt * gstRate / 100;
-        let netAmt = taxableAmt + gstAmt;
-
-        let row = `
-            <tr data-id="${fid}" data-rate="${rate}" data-gst-rate="${gstRate}"
-                data-taxable="${taxableAmt}" data-tax-amt="${gstAmt}" data-net-amt="${netAmt}">
-                <td class="text-left">${cleanName}</td>
-                <td><input type="number" class="form-control qty" value="${qty}" min="1"></td>
-                <td class="rate text-right">${rate.toFixed(2)}</td>
-                <td class="taxable text-right">${taxableAmt.toFixed(2)}</td>
-                <td class="taxRate text-right">${gstRate.toFixed(2)}</td>
-                <td class="gst text-right">${gstAmt.toFixed(2)}</td>
-                <td class="total text-right">${netAmt.toFixed(2)}</td>
-                <td class="text-center">
-                    <button class="btn btn-danger btn-xs removeRow">
-                        <i class="fa fa-trash"></i>
-                    </button>
-                </td>
-            </tr>`;
-
-        $("#facilityTable tbody").append(row);
-    }
-
-    $("#new_qty").val("");
-    $("#facility_id").val("");
-
-    recalc(); // 🔥 always recalc
-});
 
 /* ===============================
    INITIAL LOAD
@@ -667,7 +472,7 @@ $(document).on("input", "#receivedAmount", function () {
    COMPLETE BOOKING
 ================================ */
 function startLoading(){
-    $("#completeBooking")
+    $("#paymentReceived")
         .addClass("btn-loading")
         .prop("disabled", true)
         .text("Processing...");
@@ -676,16 +481,17 @@ function startLoading(){
 }
 
 function stopLoading(){
-    $("#completeBooking")
+    $("#paymentReceived")
         .removeClass("btn-loading")
         .prop("disabled", false)
         .html('<i class="fa fa-check-circle"></i> Complete Booking');
 
     $("#backBtn").prop("disabled", false);
 }
-$("#completeBooking").click(function(){
+
+$("#paymentReceived").click(function(){
     Swal.fire({
-        title:'Complete Booking?',
+        title:'Confirm Payment?',
         text:'All changes will be saved permanently',
         icon:'warning',
         showCancelButton:true,
@@ -694,26 +500,10 @@ $("#completeBooking").click(function(){
         if(r.isConfirmed){
 
             /* ===============================
-               FACILITIES COLLECT
-            ================================ */
-            let facilities = [];
-            $("#facilityTable tbody tr").each(function(){
-                facilities.push({
-                    facility_id: parseInt($(this).data("id")) || 0,
-                    qty: parseInt($(this).find(".qty").val()) || 0,
-                    rate: parseFloat($(this).data("rate")) || 0,
-                    taxableAmt: parseFloat($(this).data("taxable")) || 0,
-                    gstRate: parseFloat($(this).data("gst-rate")) || 0,
-                    gstAmt: parseFloat($(this).data("tax-amt")) || 0,
-                    netAmt: parseFloat($(this).data("net-amt")) || 0
-                });
-            });
-
-            /* ===============================
                PAYMENT DETAILS COLLECT
                (AMOUNT FROM ADVANCE)
-
             ================================ */
+
             let paymentType = $("#paymentType").val();
             let received_amount = $("#receivedAmount").val();
             let paymentDetails = {};
@@ -788,16 +578,13 @@ $("#completeBooking").click(function(){
             ================================ */
             let bookingData = {
                 booking_id: "<?= $booking_id ?>",
+                final_amount: $("#finalAmount").text(),
+                discount_amount: $("#discountAmount").text(),
+                advance_amount: $("#advanceAmount").text(),
                 received_amount: received_amount,
                 due_amount: $("#duePayment").text(),
-                advance_amount: $("#advanceAmount").text(),
-                discount_amount: $("#discountAmount").text(),
-                final_amount: $("#finalAmount").text(),
-
                 payment_type: paymentType,
-                payment_details: paymentDetails,
-
-                facilities: facilities
+                payment_details: paymentDetails
             };
 
             startLoading();
@@ -806,7 +593,7 @@ $("#completeBooking").click(function(){
                AJAX SUBMIT
             ================================ */
             $.ajax({
-                url: 'complete_approval_action.php',
+                url: 'confirm_payment_action.php',
                 type: 'POST',
                 contentType: 'application/json',
                 dataType: 'json',
@@ -815,8 +602,8 @@ $("#completeBooking").click(function(){
                     if (response.success) {
                         Swal.fire({
                             icon: 'success',
-                            title: 'Approved',
-                            text: 'Booking Approved',
+                            title: 'Confirmed',
+                            text: 'Payment Confirmed',
                             showConfirmButton: false,
                             timer: 1000
                         }).then(() => {
@@ -824,13 +611,14 @@ $("#completeBooking").click(function(){
                         });
                     } else {
                         stopLoading();
-                        Swal.fire('Error', response.error || "Approval failed.", 'error');
+                        Swal.fire('Error', response.error || "Payment failed.", 'error');
                     }
                 },
-                error: function (xhr) {
+                error: function () {
                     stopLoading();
-                    Swal.fire('Error', "Error while approving booking: " + xhr.responseText, 'error');
+                    Swal.fire('Error', 'Server error while confirming payment', 'error');
                 }
+
             });
         }
     });

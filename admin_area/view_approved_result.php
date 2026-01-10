@@ -91,8 +91,8 @@ if(!isset($_SESSION['admin_email'])){
         <div class="col-lg-12 col-md-10 col-sm-12 col-xs-12 mx-auto">
             <div class="panel panel-primary">
                 <div class="panel-heading corporate-heading">
-				    <h3 class="panel-title">
-                        Booking&nbsp;&nbsp;History&nbsp;&nbsp;from&nbsp;&nbsp;<?php echo date("d M Y", strtotime($sdate)); ?> &nbsp;&nbsp;to&nbsp;&nbsp; <?php echo date("d M Y", strtotime($edate)); ?>
+				    <h3 class="panel-title"><i class="fa fa-check-circle"></i>
+                        Approved&nbsp;&nbsp;Booking&nbsp;&nbsp;from&nbsp;&nbsp;<?php echo date("d M Y", strtotime($sdate)); ?> &nbsp;&nbsp;to&nbsp;&nbsp; <?php echo date("d M Y", strtotime($edate)); ?>
                     </h3>
                 </div>
 
@@ -146,10 +146,10 @@ if(!isset($_SESSION['admin_email'])){
                 </div>
             </div>
             <div style="margin-top: 15px;">
-            <a href="index.php?approved" class="btn" style="background-color: #7A1E3A; color: #ffffffff; font-size: 14px; font-weight: bold;">
-                <i class="fa fa-arrow-left"></i> Back
-            </a>
-        </div>
+                <a href="index.php?approved" class="btn" style="background-color: #7A1E3A; color: #ffffffff; font-size: 14px; font-weight: bold;">
+                    <i class="fa fa-arrow-left"></i> Back
+                </a>
+            </div>
         </div>
     </div>
     </body>

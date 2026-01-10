@@ -162,7 +162,20 @@ $cur_finance_year = $c_fyear_row['f_year'];
 						
 						'complete'      		=> 'complete_booking.php',
 						'complete_result'      	=> 'view_complete_result.php',
-						'complete_details'      => 'complete_booking_details.php'
+						'complete_details'      => 'complete_booking_details.php',
+
+						'payment_report_date'   => 'payment_report_date.php',
+						'payment_report_due'    => 'payment_report_due.php',
+						'payment_report_mode'   => 'payment_report_mode.php',
+						'payment_charts'        => 'payment_charts.php',
+						'due_pay_input'       	=> 'due_payments_input.php',
+						'due_Payments'         	=> 'due_payments.php',
+						'receive_Payment'      	=> 'receive_payment.php',
+
+						'view_Payments'        	=> 'view_payments.php',
+						'view_Payments_list'    => 'view_payments_list.php',
+
+						'payment_Details'     	=> 'payment_details.php'
 					];
 
 					foreach ($pages as $key => $file) {
@@ -183,3 +196,5 @@ $cur_finance_year = $c_fyear_row['f_year'];
 </div>
 </body>
 </html>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4"></script>

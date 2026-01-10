@@ -184,6 +184,21 @@ body::after{
     }
 }
 
+/* ===============================
+   SIDEBAR ICON & SUBMENU ALIGN FIX
+================================ */
+
+/* Make all sidebar icons same width */
+.sidebar-nav li a i {
+    width: 20px;
+    text-align: center;
+}
+
+/* Submenu indentation & font */
+.sidebar-nav .collapse li a {
+    padding-left: 35px;
+    font-size: 13px;
+}
 
 
 /* ===============================
@@ -237,6 +252,9 @@ body::after{
 	background-color: #F3E6EA;
 }
 
+.table td, .table th {
+    vertical-align: middle !important;
+}
 /* ===============================
    IMAGES
 ================================ */
@@ -497,6 +515,14 @@ body::after{
     padding: 8px;
 }
 
+#discountValue {
+    border: 1px solid #7B1E2B;
+}
+
+#discountType {
+    border: 1px solid #ef6c00;
+}
+
 #payableAmount {
     background: #f1f8e9;
     border: 1px solid #2e7d32;
@@ -698,7 +724,7 @@ body::after{
 .pay-value.payable  { color: #2e7d32; }
 .pay-value.due      { color: #c62828; }
 .pay-value.final      { color: #1d1aad; }
-.pay-value.advance      { color: #0b7c85; }
+.pay-value.advance      { color: #7B1E2B; }
 
 /* Inputs */
 .received-input {
@@ -731,7 +757,8 @@ body::after{
 
 /* Table look */
 .facility-table th {
-    background: #fafafa;
+    background: #7B1E2B;
+    color: #fff;
     font-weight: 700;
     font-size: 13px;
 }
@@ -848,3 +875,143 @@ body::after{
         margin-bottom: 10px;
     }
 }
+
+/* ===============================
+   SIDEBAR SUBMENU – MENU LOOK FIX
+================================ */
+
+/* Submenu container */
+.sidebar-submenu {
+    background: #6b1827;   /* slightly darker than sidebar */
+    padding: 0;
+}
+
+/* Submenu links */
+.sidebar-submenu > li > a {
+    padding: 10px 15px 10px 48px; /* indent */
+    font-size: 13px;
+    display: block;
+    color: #ffffff !important;
+    border-left: 4px solid transparent;
+    transition: all 0.2s ease;
+}
+
+/* Submenu icon */
+.sidebar-submenu > li > a i {
+    margin-right: 6px;
+    color: #f1d77a;
+}
+
+/* Hover */
+.sidebar-submenu > li > a:hover {
+    background-color: #D4A017;
+    color: #3A0D1C !important;
+    border-left: 4px solid #ffffff;
+}
+
+/* Active submenu */
+.sidebar-submenu > li.active > a {
+    background-color: #D4A017;
+    color: #3A0D1C !important;
+    font-weight: 700;
+    border-left: 4px solid #ffffff;
+}
+
+/* Parent active indicator */
+.sidebar-nav > li > a.active-parent {
+    background-color: #6b1827;
+}
+
+.action-btn-group{
+    margin-top: 25px;
+}
+
+/* COMMON BUTTON STYLE */
+.action-btn-group .btn{
+    padding: 12px 26px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 6px;
+    border: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+/* BACK BUTTON - MAROON */
+.btn-back{
+    background: #7B1E2B;
+    color: #fff;
+}
+
+.btn-back:hover{
+    background: #651824;
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(123,30,43,0.4);
+}
+
+/* COMPLETE BUTTON - GOLDEN */
+.btn-complete{
+    background: #D4A017;
+    color: #fff;
+    margin-left: 10px;
+}
+
+.btn-complete:hover{
+    background: #b88b14;
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(212,160,23,0.45);
+}
+
+/* ICON SPACING */
+.action-btn-group i{
+    margin-right: 6px;
+}
+
+/* ===== DISABLED STATE ===== */
+.action-btn-group .btn:disabled{
+    cursor: not-allowed;
+    opacity: 0.65;
+    box-shadow: none;
+    transform: none;
+}
+
+/* GOLD BUTTON DISABLED */
+.btn-complete:disabled{
+    background: #D4A017;
+    color: #fff;
+}
+
+/* BACK BUTTON DISABLED */
+.btn-back:disabled{
+    background: #7B1E2B;
+    color: #fff;
+}
+
+/* ===== LOADING SPINNER ===== */
+.btn-loading{
+    pointer-events: none;
+    position: relative;
+    padding-left: 44px;
+}
+
+.btn-loading:before{
+    content: "";
+    width: 18px;
+    height: 18px;
+    border: 3px solid rgba(255,255,255,0.5);
+    border-top: 3px solid #fff;
+    border-radius: 50%;
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin{
+    from{ transform: rotate(0deg); }
+    to{ transform: rotate(360deg); }
+}
+

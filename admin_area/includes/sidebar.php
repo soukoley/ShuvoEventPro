@@ -189,55 +189,207 @@ if(!isset($_SESSION['admin_email'])){
         <ul class="nav navbar-nav sidebar-nav">
 
 			<!-- Dashboard Link -->
-            <li><a href="index.php?dashboard"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a></li>
+            <li>
+                <a href="index.php?dashboard">
+                    <i class="fa fa-fw fa-dashboard"></i> Dashboard
+                </a>
+            </li>
+
 
 			<!-- Event Menu -->
             <li>
-                <a href="#" data-toggle="collapse" data-target="#eventMenu"><i class="fa fa-fw fa-calendar"></i> Event <i class="fa fa-fw fa-caret-down"></i></a>
+                <a href="#" data-toggle="collapse" data-target="#eventMenu">
+                    <i class="fa fa-fw fa-calendar"></i> Event
+                    <i class="fa fa-fw fa-caret-down pull-right"></i>
+                </a>
                 <ul id="eventMenu" class="collapse">
-                    <li><a href="index.php?insert_event">New Event</a></li>
-                    <li><a href="index.php?view_event">View Event</a></li>
-                    <li><a href="index.php?booking_calendar">Event Calander</a></li>
+                    <li><a href="index.php?insert_event"><i class="fa fa-plus"></i> New Event</a></li>
+                    <li><a href="index.php?view_event"><i class="fa fa-eye"></i> View Event</a></li>
+                    <li><a href="index.php?booking_calendar"><i class="fa fa-calendar-o"></i> Event Calendar</a></li>
                 </ul>
             </li>
+
 
 			<!-- Facility Menu -->
             <li>
-                <a href="#" data-toggle="collapse" data-target="#facilityMenu"><i class="fa fa-hotel"></i> Facility <i class="fa fa-fw fa-caret-down"></i></a>
+                <a href="#" data-toggle="collapse" data-target="#facilityMenu">
+                    <i class="fa fa-fw fa-hotel"></i> Facility
+                    <i class="fa fa-fw fa-caret-down pull-right"></i>
+                </a>
                 <ul id="facilityMenu" class="collapse">
-                    <li><a href="index.php?insert_facility">New Facility</a></li>
-                    <li><a href="index.php?view_facility">View Facility</a></li>
+                    <li><a href="index.php?insert_facility"><i class="fa fa-plus"></i> New Facility</a></li>
+                    <li><a href="index.php?view_facility"><i class="fa fa-eye"></i> View Facility</a></li>
                 </ul>
             </li>
+
 
 			<!-- Gallery Menu -->
             <li>
-                <a href="#" data-toggle="collapse" data-target="#galleryMenu"><i class="fa fa-fw fa-image"></i> Gallery <i class="fa fa-fw fa-caret-down"></i></a>
+                <a href="#" data-toggle="collapse" data-target="#galleryMenu">
+                    <i class="fa fa-fw fa-image"></i> Gallery
+                    <i class="fa fa-fw fa-caret-down pull-right"></i>
+                </a>
                 <ul id="galleryMenu" class="collapse">
-                    <li><a href="index.php?insert_event_gallery">Add Gallery</a></li>
-                    <li><a href="index.php?view_gallery">View Gallery</a></li>
+                    <li><a href="index.php?insert_event_gallery"><i class="fa fa-plus"></i> Add Gallery</a></li>
+                    <li><a href="index.php?view_gallery"><i class="fa fa-eye"></i> View Gallery</a></li>
                 </ul>
             </li>
+
 
 			<!-- Booking Menu -->
             <li>
-                <a href="#" data-toggle="collapse" data-target="#bookingMenu"><i class="fa fa-fw fa-calendar-check-o"></i> Booking <i class="fa fa-fw fa-caret-down"></i></a>
+                <a href="#" data-toggle="collapse" data-target="#bookingMenu">
+                    <i class="fa fa-fw fa-calendar-check-o"></i> Booking
+                    <i class="fa fa-fw fa-caret-down pull-right"></i>
+                </a>
                 <ul id="bookingMenu" class="collapse">
-                    <li><a href="index.php?pending">Pending Booking</a></li>
-                    <li><a href="index.php?approved">Approved Booking</a></li>
-                    <li><a href="index.php?complete">Complete Booking</a></li>
+                    <li><a href="index.php?pending"><i class="fa fa-clock-o"></i> Pending</a></li>
+                    <li><a href="index.php?approved"><i class="fa fa-check-circle"></i> Approved</a></li>
+                    <li><a href="index.php?complete"><i class="fa fa-flag-checkered"></i> Completed</a></li>
                 </ul>
             </li>
 
-			<!-- Payment Menu -->
-            <li>
-                <a href="#" data-toggle="collapse" data-target="#paymentMenu"><i class="fa fa-fw fa-credit-card"></i> Payment <i class="fa fa-fw fa-caret-down"></i></a>
-                <ul id="paymentMenu" class="collapse">
-					<li><a href="index.php?due_Payments">Due Payments</a></li>
-					<li><a href="index.php?view_Payments">View Payments</a></li>
-				</ul>
-            </li>		
+
 			
+			<!-- Invoice Menu -->
+            <li>
+                <a href="#" data-toggle="collapse" data-target="#invoiceMenu">
+                    <i class="fa fa-fw fa-file-text-o"></i> Invoice
+                    <i class="fa fa-fw fa-caret-down pull-right"></i>
+                </a>
+                <ul id="invoiceMenu" class="collapse">
+                    <li><a href="index.php?get_Invoice"><i class="fa fa-plus-circle"></i> Get Invoice</a></li>
+                    <li><a href="index.php?view_Invoice"><i class="fa fa-eye"></i> View Invoices</a></li>
+                </ul>
+            </li>
+
+
+			<!-- Payment Menu-->
+            <li>
+                <a href="#" data-toggle="collapse" data-target="#paymentMenu">
+                    <i class="fa fa-fw fa-credit-card"></i> Payment
+                    <i class="fa fa-fw fa-caret-down pull-right"></i>
+                </a>
+                <ul id="paymentMenu" class="collapse">
+
+                    <li>
+                        <a href="index.php?due_pay_input">
+                            <i class="fa fa-fw fa-exclamation-circle text-danger"></i> Due Payments
+                        </a>
+                    </li>
+
+                    <!-- <li>
+                        <a href="index.php?receive_Payment">
+                            <i class="fa fa-fw fa-money text-success"></i> Receive Payment
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="index.php?partial_Payments">
+                            <i class="fa fa-fw fa-adjust"></i> Partial Payments
+                        </a>
+                    </li> -->
+
+                    <!-- <li class="divider"></li> -->
+
+                    <li>
+                        <a href="index.php?view_Payments">
+                            <i class="fa fa-fw fa-list-alt"></i> View Payments
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#" data-toggle="collapse" data-target="#paymentReportMenu">
+                            <i class="fa fa-fw fa-bar-chart"></i> Payment Reports
+                            <i class="fa fa-fw fa-caret-down pull-right"></i>
+                        </a>
+
+                        <ul id="paymentReportMenu" class="collapse sidebar-submenu">
+
+                            <li>
+                                <a href="index.php?payment_report_date">
+                                    <i class="fa fa-fw fa-calendar"></i> Date-wise Report
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="index.php?payment_report_mode">
+                                    <i class="fa fa-fw fa-credit-card"></i> Mode-wise Report
+                                </a>
+                            </li>
+
+                            <!-- <li>
+                                <a href="index.php?payment_report_booking">
+                                    <i class="fa fa-fw fa-list"></i> Booking-wise Report
+                                </a>
+                            </li> -->
+
+                            <li>
+                                <a href="index.php?payment_report_due">
+                                    <i class="fa fa-fw fa-exclamation-triangle"></i> Due Report
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="index.php?payment_charts">
+                                    <i class="fa fa-fw fa-bar-chart"></i> Payment Charts
+                                </a>
+                            </li>
+
+
+                            <!-- <li>
+                                <a href="index.php?payment_report_discount">
+                                    <i class="fa fa-fw fa-percent"></i> Discount Report
+                                </a>
+                            </li> -->
+
+                        </ul>
+                    </li>
+
+                </ul>
+            </li>
+            
+            <!-- Admin Control Menu -->
+            <li>
+                <a href="#" data-toggle="collapse" data-target="#adminControlMenu">
+                    <i class="fa fa-fw fa-cogs"></i> Admin Control
+                    <i class="fa fa-fw fa-caret-down pull-right"></i>
+                </a>
+
+                <ul id="adminControlMenu" class="collapse">
+
+                    <!-- Financial Year -->
+                    <li>
+                        <a href="index.php?financial_year">
+                            <i class="fa fa-fw fa-calendar-o"></i> Financial Year
+                        </a>
+                    </li>
+
+                    <!-- (Future Ready – optional, comment for now) -->
+                    <!--
+                    <li>
+                        <a href="index.php?company_settings">
+                            <i class="fa fa-fw fa-building"></i> Company Settings
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="index.php?gst_settings">
+                            <i class="fa fa-fw fa-percent"></i> GST Settings
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="index.php?user_roles">
+                            <i class="fa fa-fw fa-users"></i> User Roles
+                        </a>
+                    </li>
+                    -->
+
+                </ul>
+            </li>
+
+
 		</ul>
 	</div>
 </nav>

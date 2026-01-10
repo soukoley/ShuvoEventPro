@@ -41,8 +41,8 @@ if(!isset($_SESSION['admin_email'])){
         <div class="col-lg-12 col-md-10 col-sm-12 col-xs-12 mx-auto">
             <div class="panel panel-primary">
                 <div class="panel-heading corporate-heading">
-				    <h3 class="panel-title">
-                        Booking&nbsp;&nbsp;History&nbsp;&nbsp;from&nbsp;&nbsp;<?php echo date("d M Y", strtotime($sdate)); ?> &nbsp;&nbsp;to&nbsp;&nbsp; <?php echo date("d M Y", strtotime($edate)); ?>
+				    <h3 class="panel-title"><i class="fa fa-flag-checkered"></i>
+                        Completed&nbsp;&nbsp;Booking&nbsp;&nbsp;from&nbsp;&nbsp;<?php echo date("d M Y", strtotime($sdate)); ?> &nbsp;&nbsp;to&nbsp;&nbsp; <?php echo date("d M Y", strtotime($edate)); ?>
                     </h3>
                 </div>
 

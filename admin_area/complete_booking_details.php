@@ -239,21 +239,21 @@ WHERE bf.booking_id='$booking_id'
                  <div class="row payment-summary-row">
                     <div class="col-md-4">
                         <label class="pay-label">Total Amount</label>
-                        <div class="pay-value">
+                        <div class="pay-value final">
                             ₹ <span><?= $gross_amt ?></span>
                         </div>
                     </div>
 
                     <div class="col-md-4">
                         <label class="pay-label">Discount Given</label>
-                        <div class="pay-value">
+                        <div class="pay-value discount">
                             ₹ <span><?= $disc_amt ?></span>
                         </div>
                     </div>
 
                     <div class="col-md-4">
                         <label class="pay-label">Final Net Amount</label>
-                        <div class="pay-value">
+                        <div class="pay-value payable">
                             ₹ <span><?= $net_amt ?></span>
                         </div>
                     </div>
@@ -262,14 +262,27 @@ WHERE bf.booking_id='$booking_id'
                 <div class="row payment-summary-row">
                     <div class="col-md-4">
                         <label class="pay-label">Due Amount</label>
-                        <div class="pay-value">
+                        <div class="pay-value due">
                             ₹ <span ><?= $due_amt ?></span>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <div style="margin-top: 15px;">
+            <button id="backBtn" class="btn btn-back">
+                <i class="fa fa-arrow-left"></i> Back
+            </button>
+        </div>
     </div>
 </div>
 </body>
 </html>
+
+<script>
+    
+$("#backBtn").click(function(){
+    window.history.back();
+});
+
+</script>

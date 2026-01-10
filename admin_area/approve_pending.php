@@ -520,9 +520,19 @@ WHERE bf.booking_id='$booking_id'
                 <hr class="soft-divider">
                     
                 <!-- CONFIRM BUTTON SECTION -->
-                <button id="confirmBooking" class="btn btn-success btn-lg confirm-btn">
-                    <i class="fa fa-check-circle"></i> Approve Booking
-                </button>
+                 
+                <div class="action-btn-group">
+
+                    <button id="backBtn" class="btn btn-back">
+                        <i class="fa fa-arrow-left"></i> Back
+                    </button>
+
+                    <button id="approveBooking" class="btn btn-complete">
+                        <i class="fa fa-check-circle"></i> Approve Booking
+                    </button>
+
+                </div>
+                
             </div>
         </div>
     </div>
@@ -796,11 +806,28 @@ $(document).ready(function(){
 });
 
 /* ===============================
-   CONFIRM BOOKING
+   APPROVE BOOKING
 ================================ */
-$("#confirmBooking").click(function(){
+function startLoading(){
+    $("#approveBooking")
+        .addClass("btn-loading")
+        .prop("disabled", true)
+        .text("Processing...");
+
+    $("#backBtn").prop("disabled", true);
+}
+
+function stopLoading(){
+    $("#approveBooking")
+        .removeClass("btn-loading")
+        .prop("disabled", false)
+        .html('<i class="fa fa-check-circle"></i> Complete Booking');
+
+    $("#backBtn").prop("disabled", false);
+}
+$("#approveBooking").click(function(){
     Swal.fire({
-        title:'Confirm Booking?',
+        title:'Approve Booking?',
         text:'All changes will be saved permanently',
         icon:'warning',
         showCancelButton:true,
@@ -927,6 +954,8 @@ $("#confirmBooking").click(function(){
                 facilities: facilities
             };
 
+            startLoading();
+
             /* ===============================
                AJAX SUBMIT
             ================================ */
@@ -948,18 +977,18 @@ $("#confirmBooking").click(function(){
                             window.location.href = "index.php?pending";
                         });
                     } else {
+                        stopLoading();
                         Swal.fire('Error', response.error || "Approval failed.", 'error');
                     }
                 },
                 error: function (xhr) {
+                    stopLoading();
                     Swal.fire('Error', "Error while approving booking: " + xhr.responseText, 'error');
                 }
             });
         }
     });
 });
-
-
 
 $("#paymentType").on("change", function () {
 
@@ -982,8 +1011,11 @@ $("#paymentType").on("change", function () {
     }
 });
 
-</script>
+$("#backBtn").click(function(){
+    window.history.back();
+});
 
+</script>
 
 </body>
 </html>
