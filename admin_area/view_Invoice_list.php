@@ -9,11 +9,11 @@ if(!isset($_SESSION['admin_email'])){
 } else {
     $sdate = $_SESSION['sdate'];
     $edate = $_SESSION['edate'];
-    $booking_status = "Completed"; // Default to pending if not set"
 
     $run_bookings = "SELECT bd.booking_id, bd.booking_date, c.c_name, c.c_mobile, bd.e_name, bd.start_date, bd.end_date, bd.status
                 FROM booking_details bd, customer c 
-                WHERE bd.cust_id = c.c_id AND bd.booking_date BETWEEN '$sdate' AND '$edate' AND bd.status = 'Completed'";
+                WHERE bd.cust_id = c.c_id AND bd.booking_date BETWEEN '$sdate' AND '$edate'
+                AND bd.status != 'Rejected'";
 
 
     $run_bookings .= " ORDER BY bd.booking_date";
@@ -24,7 +24,7 @@ if(!isset($_SESSION['admin_email'])){
     <!DOCTYPE html>
     <html>
     <head>
-        <title>Booking Results</title>
+        <title>Invoice List</title>
     </head>
     <body>
     <div class="row">
@@ -32,7 +32,7 @@ if(!isset($_SESSION['admin_email'])){
             <div class="breadcrumb">
                 <li class="active">
                     <i class="fa fa-fw fa-calendar-check-o"></i>
-                    Booking / Complete Booking / View Booking Results
+                    Invoice / View Invoices / Invoice List
                 </li>
             </div>
         </div>
@@ -41,8 +41,8 @@ if(!isset($_SESSION['admin_email'])){
         <div class="col-lg-12 col-md-10 col-sm-12 col-xs-12 mx-auto">
             <div class="panel panel-primary">
                 <div class="panel-heading corporate-heading">
-				    <h3 class="panel-title"><i class="fa fa-flag-checkered"></i>
-                        Completed&nbsp;&nbsp;Booking&nbsp;&nbsp;from&nbsp;&nbsp;<?php echo date("d M Y", strtotime($sdate)); ?> &nbsp;&nbsp;to&nbsp;&nbsp; <?php echo date("d M Y", strtotime($edate)); ?>
+				    <h3 class="panel-title"><i class="fa fa-check-circle"></i>
+                        Invoice List from <?php echo date("d M Y", strtotime($sdate)); ?> to <?php echo date("d M Y", strtotime($edate)); ?>
                     </h3>
                 </div>
 
@@ -58,7 +58,7 @@ if(!isset($_SESSION['admin_email'])){
                                 <th class="text-center">Event Start Date</th>
                                 <th class="text-center">Event End Date</th>
                                 <th class="text-center">Status</th>
-                                <th class="text-center">Action</th>
+                                <th class="text-center">Invoice</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -77,13 +77,24 @@ if(!isset($_SESSION['admin_email'])){
                                         <td class="text-center"><?php echo date("d M Y", strtotime($bk['start_date'])); ?></td>
                                         <td class="text-center"><?php echo date("d M Y", strtotime($bk['end_date'])); ?></td>
                                         <td class="text-center">
-                                            <span class="label label-success">Completed</span>
+                                            <?php
+                                                
+                                                if($bk['status'] == 'Pending'){
+                                                    echo '<span class="label label-warning">Pending</span>';
+                                                } elseif($bk['status'] == 'Approved'){
+                                                    echo '<span class="label label-success">Approved</span>';
+                                                } elseif($bk['status'] == 'Completed'){
+                                                    echo '<span class="label label-primary">Completed</span>';
+                                                }
+                                            ?>
+                                               
                                         </td>
                                         <td class="text-center">
-                                            <a href="index.php?complete_details=0 & id=<?php echo $bk['booking_id']; ?>"
+                                            <a href="../includes/invoice_pdf.php?id=<?php echo $bk['booking_id']; ?>" 
                                                 class="btn btn-success btn-xs"
-                                                style="background-color: #7A1E3A; color: #ffffffff;">
-                                                <i class="fa fa-edit"></i> Details
+                                                style="background-color: #7A1E3A; color: #ffffffff;"
+                                                target="_blank">
+                                                <i class="fa fa-download"></i> Download Invoice
                                             </a>
                                         </td>
                                     </tr>
@@ -96,10 +107,12 @@ if(!isset($_SESSION['admin_email'])){
                 </div>
             </div>
             <div style="margin-top: 15px;">
-            <a href="index.php?complete" class="btn" style="background-color: #7A1E3A; color: #ffffffff; font-size: 14px; font-weight: bold;">
-                <i class="fa fa-arrow-left"></i> Back
-            </a>
-        </div>
+                <a href="index.php?view_Invoice"
+                    class="btn btn-back" 
+                    style="background-color: #7A1E3A; color: #ffffffff; font-size: 14px; font-weight: bold;">
+                        <i class="fa fa-arrow-left"></i> Back
+                </a>
+            </div>
         </div>
     </div>
     </body>

@@ -70,9 +70,9 @@ if(!isset($_SESSION['admin_email'])){
                                         <th>Total Amount</th>
                                         <th>Paid</th>
                                         <th>Due</th>
-                                        <th>Status</th>
-                                        <th>Payment Date</th>
-                                        <th>Action</th>
+                                        <th class="text-center">Status</th>
+                                        <th class="text-center">Payment Date</th>
+                                        <th class="text-center">Action</th>
                                     </tr>
                                 </thead>
 
@@ -82,8 +82,8 @@ if(!isset($_SESSION['admin_email'])){
                                 while($row = mysqli_fetch_assoc($res)){ 
 
                                     $status = ($row['due_amt'] <= 0)
-                                        ? '<span class="label label-success">Paid</span>'
-                                        : '<span class="label label-warning">Due</span>';
+                                        ? '<span class="label" style="background-color: #28a745; color: #fff;">Paid</span>'
+                                        : '<span class="label" style="background-color: #fa2b06; color: #fff;">Due</span>';
                                 ?>
                                     <tr>
                                         <td><?= $i++ ?></td>
@@ -100,17 +100,23 @@ if(!isset($_SESSION['admin_email'])){
                                             ₹<?= number_format($row['due_amt'],2) ?>
                                         </td>
 
-                                        <td><?= $status ?></td>
-                                        <td><?= date("d M Y", strtotime($row['payment_date'])) ?></td>
+                                        <td class="text-center"><?= $status ?></td>
+                                        <td class="text-center"><?= date("d M Y", strtotime($row['payment_date'])) ?></td>
 
-                                        <td>
-                                            <a href="index.php?receive_Payment=0&id=<?= $row['booking_id'] ?>"
-                                            class="btn btn-xs btn-success">
-                                                <i class="fa fa-money"></i>
-                                            </a>
+                                        <td class="text-center">
+                                            <?php if($row['due_amt'] > 0){ ?>
+                                                <a href="index.php?receive_Payment=0&id=<?= $row['booking_id'] ?>"
+                                                class="btn btn-xs" 
+                                                style="background-color: #7B1E2B; color: #ffffff;"
+                                                title="Receive Payment">
+                                                    <i class="fa fa-money"></i>
+                                                </a>
+                                            <?php } ?>
 
                                             <a href="index.php?complete_details=0&id=<?= $row['booking_id'] ?>"
-                                            class="btn btn-xs btn-info">
+                                            class="btn btn-xs" 
+                                            style="background-color: #D4A017; color: #ffffff;"
+                                            title="View Complete Details">
                                                 <i class="fa fa-eye"></i>
                                             </a>
                                         </td>

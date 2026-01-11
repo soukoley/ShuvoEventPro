@@ -246,6 +246,7 @@ if(!isset($_SESSION['admin_email'])){
                     <li><a href="index.php?pending"><i class="fa fa-clock-o"></i> Pending</a></li>
                     <li><a href="index.php?approved"><i class="fa fa-check-circle"></i> Approved</a></li>
                     <li><a href="index.php?complete"><i class="fa fa-flag-checkered"></i> Completed</a></li>
+                    <li><a href="index.php?search"><i class="fa fa-search"></i> Search</a></li>
                 </ul>
             </li>
 
@@ -360,7 +361,7 @@ if(!isset($_SESSION['admin_email'])){
 
                     <!-- Financial Year -->
                     <li>
-                        <a href="index.php?financial_year">
+                        <a href="index.php?change_Finance_Year">
                             <i class="fa fa-fw fa-calendar-o"></i> Financial Year
                         </a>
                     </li>

@@ -154,6 +154,7 @@ $cur_finance_year = $c_fyear_row['f_year'];
 						'pending'       		=> 'pending_booking.php',
 						'pending_result'        => 'view_pending_result.php',
 						'approve_pending'   	=> 'approve_pending.php',
+						'reject_pending'   		=> 'reject_pending.php',
 						'booking_calendar'   	=> 'booking_calendar.php',
 
 						'approved'      		=> 'approved_booking.php',
@@ -163,6 +164,13 @@ $cur_finance_year = $c_fyear_row['f_year'];
 						'complete'      		=> 'complete_booking.php',
 						'complete_result'      	=> 'view_complete_result.php',
 						'complete_details'      => 'complete_booking_details.php',
+
+						'search'                => 'search_booking.php',
+						'check_booking_status'  => 'check_booking_status.php',
+
+						'view_Invoice'          => 'view_Invoice.php',
+						'invoice_list'          => 'view_Invoice_list.php',
+						'get_Invoice'           => 'get_Invoice.php',
 
 						'payment_report_date'   => 'payment_report_date.php',
 						'payment_report_due'    => 'payment_report_due.php',
@@ -175,7 +183,9 @@ $cur_finance_year = $c_fyear_row['f_year'];
 						'view_Payments'        	=> 'view_payments.php',
 						'view_Payments_list'    => 'view_payments_list.php',
 
-						'payment_Details'     	=> 'payment_details.php'
+						'payment_Details'     	=> 'payment_details.php',
+
+						'change_Finance_Year'   => 'changeFinanceYear.php'
 					];
 
 					foreach ($pages as $key => $file) {

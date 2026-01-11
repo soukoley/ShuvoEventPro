@@ -13,7 +13,7 @@ include ("header.php");
     <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
     <!-- Title -->
-    <title>The Palatin - Hotel &amp; Resort Template</title>
+    <title>The Greenland</title>
 
     <!-- Favicon -->
     <link rel="icon" href="img/core-img/favicon.ico">
@@ -42,14 +42,14 @@ include ("header.php");
     <!-- ##### Breadcumb Area End ##### -->
 
     <!-- ##### Book Now Area Start ##### -->
-    <div class="book-now-area">
+    <!--div class="book-now-area">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-12 col-lg-10">
                     <div class="book-now-form">
                         <form action="#">
                             <!-- Form Group -->
-                            <div class="form-group">
+                            <!--div class="form-group">
                                 <label for="select1">Check In</label>
                                 <select class="form-control" id="select1">
                                   <option>19 June</option>
@@ -63,7 +63,7 @@ include ("header.php");
                             </div>
 
                             <!-- Form Group -->
-                            <div class="form-group">
+                            <!--div class="form-group">
                                 <label for="select2">Check Out</label>
                                 <select class="form-control" id="select2">
                                   <option>20 June</option>
@@ -78,7 +78,7 @@ include ("header.php");
                             </div>
 
                             <!-- Form Group -->
-                            <div class="form-group">
+                            <!--div class="form-group">
                                 <label for="select3">Adults</label>
                                 <select class="form-control" id="select3">
                                   <option>02</option>
@@ -90,7 +90,7 @@ include ("header.php");
                             </div>
 
                             <!-- Form Group -->
-                            <div class="form-group">
+                            <!--div class="form-group">
                                 <label for="select4">Childrens</label>
                                 <select class="form-control" id="select4">
                                   <option>01</option>
@@ -102,13 +102,13 @@ include ("header.php");
                             </div>
 
                             <!-- Button -->
-                            <button type="submit">Book Now</button>
+                            <!--button type="submit">Book Now</button>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </div-->
     <!-- ##### Book Now Area End ##### -->
 
     <!-- ##### About Us Area Start ##### -->
@@ -119,16 +119,27 @@ include ("header.php");
                     <div class="about-text mb-100">
                         <div class="section-heading">
                             <div class="line-"></div>
-                            <h2>A place to remember</h2>
+                            <h2>A place for every events</h2>
                         </div>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec malesuada lorem maximus mauris sceleri sque, at rutrum nulla dictum. Ut ac ligula sapien. Suspendisse cursus faucibus finibus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec malesuada lorem maximus mauris sceleri sque, at rutrum nulla dictum. Ut ac ligula sapien. Suspendisse cursus faucibus finibus.</p>
+                        <p>This beautiful garden is a serene haven, carefully nurtured and maintained by its dedicated owner. With vibrant flowers, lush greenery, and peaceful spots for relaxation, the garden offers a perfect escape from the hustle and bustle. The owner’s passion and attention to detail shine through in every corner, ensuring visitors always feel welcomed and comfortable. Whether for events or simple picnics, this garden reflects warmth, care, and a love for nature.</p>
                         <a href="#" class="btn palatin-btn mt-50">Read More</a>
                     </div>
                 </div>
 
                 <div class="col-12 col-lg-6">
-                    <div class="about-thumbnail mb-100">
-                        <img src="img/bg-img/2.jpg" alt="">
+                    <div class="about-thumbnail homepage mb-100">
+                        <!-- First Img -->
+                        <div class="first-img wow fadeInUp" data-wow-delay="100ms">
+                            <img src="img/bg-img/3.jpeg" alt="">
+                        </div>
+                        <!-- Second Img -->
+                        <div class="second-img wow fadeInUp" data-wow-delay="600ms">
+                            <img src="img/bg-img/1.png" alt="">
+                        </div>
+                        <!-- Third Img-->
+                        <div class="third-img wow fadeInUp" data-wow-delay="1100ms">
+                            <img src="img/bg-img/2.png" alt="">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -137,7 +148,7 @@ include ("header.php");
     <!-- ##### About Us Area End ##### -->
 
     <!-- ##### Milestones Area Start ##### -->
-    <section class="our-milestones section-padding-100-0 bg-img bg-overlay bg-fixed" style="background-image: url(img/bg-img/bg-4.jpg);">
+    <!--section class="our-milestones section-padding-100-0 bg-img bg-overlay bg-fixed" style="background-image: url(img/bg-img/bg-4.jpg);">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-12 col-lg-8">
@@ -152,7 +163,7 @@ include ("header.php");
             <div class="row">
 
                 <!-- Single Cool Facts -->
-                <div class="col-12 col-sm-6 col-lg-3">
+                <!--div class="col-12 col-sm-6 col-lg-3">
                     <div class="single-cool-fact mb-100 wow fadeInUp" data-wow-delay="300ms">
                         <div class="scf-text">
                             <i class="icon-cocktail-1"></i>
@@ -163,7 +174,7 @@ include ("header.php");
                 </div>
 
                 <!-- Single Cool Facts -->
-                <div class="col-12 col-sm-6 col-lg-3">
+                <!--div class="col-12 col-sm-6 col-lg-3">
                     <div class="single-cool-fact mb-100 wow fadeInUp" data-wow-delay="500ms">
                         <div class="scf-text">
                             <i class="icon-swimming-pool"></i>
@@ -174,7 +185,7 @@ include ("header.php");
                 </div>
 
                 <!-- Single Cool Facts -->
-                <div class="col-12 col-sm-6 col-lg-3">
+                <!--div class="col-12 col-sm-6 col-lg-3">
                     <div class="single-cool-fact mb-100 wow fadeInUp" data-wow-delay="700ms">
                         <div class="scf-text">
                             <i class="icon-resort"></i>
@@ -185,7 +196,7 @@ include ("header.php");
                 </div>
 
                 <!-- Single Cool Facts -->
-                <div class="col-12 col-sm-6 col-lg-3">
+                <!--div class="col-12 col-sm-6 col-lg-3">
                     <div class="single-cool-fact mb-100 wow fadeInUp" data-wow-delay="900ms">
                         <div class="scf-text">
                             <i class="icon-restaurant"></i>
@@ -201,7 +212,7 @@ include ("header.php");
     <!-- ##### Milestones Area End ##### -->
 
     <!-- ##### Hotels Area Start ##### -->
-    <section class="our-hotels-area section-padding-100-0">
+    <!--section class="our-hotels-area section-padding-100-0">
         <div class="container">
             <div class="row">
                 <div class="col-12">
@@ -214,7 +225,7 @@ include ("header.php");
 
             <div class="row justify-content-center">
                 <!-- Single Hotel Info -->
-                <div class="col-12 col-md-6 col-lg-4">
+                <!--div class="col-12 col-md-6 col-lg-4">
                     <div class="single-hotel-info mb-100">
                         <div class="hotel-info-text">
                             <h6><span class="fa fa-check"></span> Donec malesuada lorem maximus mauris</h6>
@@ -227,7 +238,7 @@ include ("header.php");
                     </div>
                 </div>
                 <!-- Single Hotel Info -->
-                <div class="col-12 col-md-6 col-lg-4">
+                <!--div class="col-12 col-md-6 col-lg-4">
                     <div class="single-hotel-info mb-100">
                         <div class="hotel-info-text">
                             <h6><span class="fa fa-check"></span> Tempus ligula sem, id feugiat quam</h6>
@@ -240,7 +251,7 @@ include ("header.php");
                     </div>
                 </div>
                 <!-- Single Hotel Info -->
-                <div class="col-12 col-md-6 col-lg-4">
+                <!--div class="col-12 col-md-6 col-lg-4">
                     <div class="single-hotel-info mb-100">
                         <div class="hotel-info-text">
                             <h6><span class="fa fa-check"></span> Tempus ligula sem, id feugiat quam</h6>
@@ -273,16 +284,16 @@ include ("header.php");
                             
                             <!-- Single Testimonial -->
                             <div class="single-testimonial">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec malesuada lorem maximus mauris sceleri sque, at rutrum nulla dictum. Ut ac ligula sapien. Suspendisse cursus faucibus finibus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec malesuada lorem maximus mauris sceleri sque, at rutrum nulla dictum. Ut ac ligula sapien. Suspendisse cursus faucibus finibus.</p>
-                                <h6>Michael Smith, <span>Client</span></h6>
-                                <img src="img/core-img/trip.png" alt="">
+                                <p>“The garden is beautifully maintained, offering a serene and pleasant environment. The owner demonstrates professionalism and genuine care, ensuring an excellent experience for all visitors.”.</p>
+                                <h6>Mr. Soumen Kumar Koley <span>Client</span></h6>
+                               
                             </div>
                             
                             <!-- Single Testimonial -->
                             <div class="single-testimonial">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec malesuada lorem maximus mauris sceleri sque, at rutrum nulla dictum. Ut ac ligula sapien. Suspendisse cursus faucibus finibus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec malesuada lorem maximus mauris sceleri sque, at rutrum nulla dictum. Ut ac ligula sapien. Suspendisse cursus faucibus finibus.</p>
-                                <h6>Nazrul Islam, <span>Developer</span></h6>
-                                <img src="img/core-img/trip.png" alt="">
+                                <p>“The garden is very clean and peaceful. The owner is kind and takes care of everything. Visitors have a great experience here.”.</p>
+                                <h6>Mr. Prosenjit Khan <span>Client</span></h6>
+                                
                             </div>
                             
                         </div>
@@ -294,7 +305,7 @@ include ("header.php");
     <!-- ##### Testimonial Area End ##### -->
 
     <!-- ##### Footer Area Start ##### -->
-    <footer class="footer-area">
+       <footer class="footer-area">
         <div class="container">
             <div class="row">
 
@@ -302,12 +313,12 @@ include ("header.php");
                 <div class="col-12 col-lg-5">
                     <div class="footer-widget-area mt-50">
                         <a href="#" class="d-block mb-5"><img src="img/core-img/logo.png" alt=""></a>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec malesuada lorem maximus mauris sceleri sque, at rutrum nulla dictum. Ut ac ligula sapien. Suspendisse cursus faucibus finibus. </p>
+                        <p></p>
                     </div>
                 </div>
 
                 <!-- Footer Widget Area -->
-                <div class="col-12 col-md-6 col-lg-4">
+                <!--div class="col-12 col-md-6 col-lg-4">
                     <div class="footer-widget-area mt-50">
                         <h6 class="widget-title mb-5">Find us on the map</h6>
                         <img src="img/bg-img/footer-map.png" alt="">
@@ -315,7 +326,7 @@ include ("header.php");
                 </div>
 
                 <!-- Footer Widget Area -->
-                <div class="col-12 col-md-6 col-lg-3">
+                <!--div class="col-12 col-md-6 col-lg-3">
                     <div class="footer-widget-area mt-50">
                         <h6 class="widget-title mb-5">Subscribe to our newsletter</h6>
                         <form action="#" method="post" class="subscribe-form">
@@ -329,7 +340,7 @@ include ("header.php");
                 <div class="col-12">
                     <div class="copywrite-text mt-30">
                         <p><a href="#"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | Greenland
 <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
                     </div>
                 </div>

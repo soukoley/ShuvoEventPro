@@ -9,6 +9,7 @@ if(!isset($_SESSION['admin_email'])){
 }
 
 $booking_id = $_GET['id'];
+$flag = $_GET['complete_approval'];
 
 $q = mysqli_query($con,"
 SELECT bd.*,c.c_name,c.c_addr,c.c_mobile
@@ -457,10 +458,15 @@ WHERE bf.booking_id='$booking_id'
                 <!-- CONFIRM BUTTON SECTION -->
                 
                 <div class="action-btn-group">
-
-                    <button id="backBtn" class="btn btn-back">
-                        <i class="fa fa-arrow-left"></i> Back
-                    </button>
+                    <?php if($flag==5){ ?>
+                        <a href="index.php?search" class="btn btn-back" style="background-color: #7A1E3A; color: #ffffffff; font-size: 14px; font-weight: bold;">
+                            <i class="fa fa-arrow-left"></i> Back
+                        </a>
+                    <?php } else { ?>
+                        <button id="backBtn" class="btn btn-back">
+                            <i class="fa fa-arrow-left"></i> Back
+                        </button>
+                    <?php } ?>
 
                     <button id="completeBooking" class="btn btn-complete">
                         <i class="fa fa-check-circle"></i> Complete Booking

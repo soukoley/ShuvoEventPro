@@ -30,56 +30,6 @@ if(!isset($_SESSION['admin_email'])){
     <html>
         <head>
             <title>Booking Results</title>
-            <script>
-                $(document).ready(function() {
-                    $('.reject-btn').on('click', function(e) {
-                        e.preventDefault();
-
-                        var button = $(this);
-                        var bookingId = button.data('booking-id');
-                        console.log("Booking ID selected for rejection:", bookingId);
-
-                        Swal.fire({
-                            title: 'Are you sure?',
-                            text: 'Do you really want to reject this booking?',
-                            icon: 'warning',
-                            showCancelButton: true,
-                            confirmButtonText: 'Yes, reject it!',
-                            cancelButtonText: 'No, cancel',
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                //console.log("Reject confirmed. Sending AJAX...");
-                                $.ajax({
-                                url: 'delete_booking.php',
-                                type: 'POST',
-                                data: { booking_id: bookingId },
-                                success: function(response) {
-                                    // If response is JSON, parse it first
-                                    if (typeof response === "string") {
-                                        response = JSON.parse(response);
-                                    }
-
-                                    if (response.success) {
-                                        Swal.fire({
-                                            title: 'Rejected!',
-                                            text: 'booking rejected successfully.',
-                                            icon: 'success',
-                                        }).then(() => {
-                                            location.reload(); // ✅ reload only after user closes alert
-                                        });
-                                    } else {
-                                        Swal.fire('Failed', response.message || 'Failed to reject booking.', 'error');
-                                    }
-                                },
-                                error: function() {
-                                    Swal.fire('Error', 'Error communicating with the server.', 'error');
-                                }
-                                });
-                            }
-                        });
-                    });
-                });
-            </script>
         </head>
         <body>
             <div class="row">
@@ -113,7 +63,8 @@ if(!isset($_SESSION['admin_email'])){
                                         <th class="text-center">Event Start Date</th>
                                         <th class="text-center">Event End Date</th>
                                         <th class="text-center">Status</th>
-                                        <th class="text-center">Action</th>
+                                        <th class="text-center">Approve</th>
+                                        <th class="text-center">Reject</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -132,15 +83,35 @@ if(!isset($_SESSION['admin_email'])){
                                                 <td class="text-center"><?php echo date("d M Y", strtotime($bk['start_date'])); ?></td>
                                                 <td class="text-center"><?php echo date("d M Y", strtotime($bk['end_date'])); ?></td>
                                                 <td class="text-center">
-                                                    <span class="label label-warning">Pending</span>
+                                                    <span class="label"
+                                                        style="background-color:#FFC107;color:#000;">
+                                                        Pending
+                                                    </span>
+
                                                 </td>
+                                                <!-- Approve TD -->
                                                 <td class="text-center">
-                                                    <a href="index.php?approve_pending=0 & id=<?php echo $bk['booking_id']; ?>"
-                                                        class="btn btn-success btn-xs"
-                                                        style="background-color: #7A1E3A; color: #ffffffff;">
-                                                        <i class="fa fa-edit"></i> Approve
+                                                    <a href="index.php?approve_pending=0&id=<?php echo $bk['booking_id']; ?>"
+                                                    class="btn btn-xs"
+                                                    style="background-color: #1E7E34;color: #ffffff;"
+                                                    data-toggle="tooltip"
+                                                    title="Approve Booking">
+                                                        <i class="fa fa-check"></i> Approve
                                                     </a>
                                                 </td>
+
+                                                <!-- Reject TD -->
+                                                <td class="text-center">
+                                                    <a href="index.php?reject_pending=0&id=<?php echo $bk['booking_id']; ?>"
+                                                    class="btn btn-xs reject-btn"
+                                                    style="background-color:#C82333;color:#ffffff;"
+                                                    data-id="<?php echo $bk['booking_id']; ?>"
+                                                    data-toggle="tooltip"
+                                                    title="Reject Booking">
+                                                        <i class="fa fa-times"></i> Reject
+                                                    </a>
+                                                </td>
+
                                             </tr>
                                         <?php }
                                     } else {
@@ -162,3 +133,27 @@ if(!isset($_SESSION['admin_email'])){
 <?php
 }
 ?>
+
+<script>
+$(document).on("click", ".reject-btn", function(e){
+    e.preventDefault();
+
+    let bookingId = $(this).data("id");
+    let url = "index.php?reject_pending=0&id=" + bookingId;
+
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "This booking will be rejected!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#C82333',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Yes, Reject',
+        cancelButtonText: 'Cancel'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = url;
+        }
+    });
+});
+</script>

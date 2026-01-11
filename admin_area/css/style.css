@@ -725,6 +725,7 @@ body::after{
 .pay-value.due      { color: #c62828; }
 .pay-value.final      { color: #1d1aad; }
 .pay-value.advance      { color: #7B1E2B; }
+.pay-value.payment      { color: #e4b92b; }
 
 /* Inputs */
 .received-input {

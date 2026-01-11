@@ -35,9 +35,8 @@ include ("header.php");
 
     <!-- For calendar -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-
-    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+	
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
@@ -115,7 +114,7 @@ include ("header.php");
                             <div class="hero-slides-content" data-animation="fadeInUp" data-delay="100ms">
                                 <div class="line" data-animation="fadeInUp" data-delay="300ms"></div>
                                 <h2 data-animation="fadeInUp" data-delay="500ms">The Vacation Heaven</h2>
-                                <p data-animation="fadeInUp" data-delay="700ms">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec malesuada lorem maximus mauris sceleri sque, at rutrum nulla dictum. Ut ac ligula sapien. Suspendisse cursus faucibus finibus.</p>
+                                <p data-animation="fadeInUp" data-delay="700ms">Greenland is a place where love, laughter, and togetherness come alive amidst nature. Whether celebrating a wedding picnic, a child’s first rice ceremony, or a joyful family day, the green surroundings, open skies, and warm moments create memories to cherish forever. A perfect garden escape where every celebration feels peaceful, beautiful, and truly special..</p>
                                 <a href="#" class="btn palatin-btn mt-50" data-animation="fadeInUp" data-delay="900ms">Read More</a>
                             </div>
                         </div>
@@ -134,7 +133,7 @@ include ("header.php");
                             <div class="hero-slides-content" data-animation="fadeInUp" data-delay="100ms">
                                 <div class="line" data-animation="fadeInUp" data-delay="300ms"></div>
                                 <h2 data-animation="fadeInUp" data-delay="500ms">A place to remember</h2>
-                                <p data-animation="fadeInUp" data-delay="700ms">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec malesuada lorem maximus mauris sceleri sque, at rutrum nulla dictum. Ut ac ligula sapien. Suspendisse cursus faucibus finibus.</p>
+                                <p data-animation="fadeInUp" data-delay="700ms">“Surrounded by nature’s beauty, this garden is a perfect place for every celebration — be it a wedding, reception, Annaprasan, family gathering, or a peaceful picnic. With open green spaces, elegant décor, and a warm, joyful atmosphere, it creates unforgettable moments where laughter, love, and memories come together. A place to remember, where every special event begins beautifully.”</p>
                                 <a href="#" class="btn palatin-btn mt-50" data-animation="fadeInUp" data-delay="900ms">Read More</a>
                             </div>
                         </div>
@@ -153,7 +152,7 @@ include ("header.php");
                             <div class="hero-slides-content" data-animation="fadeInUp" data-delay="100ms">
                                 <div class="line" data-animation="fadeInUp" data-delay="300ms"></div>
                                 <h2 data-animation="fadeInUp" data-delay="500ms">Enjoy your life</h2>
-                                <p data-animation="fadeInUp" data-delay="700ms">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec malesuada lorem maximus mauris sceleri sque, at rutrum nulla dictum. Ut ac ligula sapien. Suspendisse cursus faucibus finibus.</p>
+                                <p data-animation="fadeInUp" data-delay="700ms">Enjoy your life in this garden, where nature wraps you in calm and every moment feels special. Surrounded by lush greenery, fresh air, and open spaces, it’s the perfect place to relax, celebrate, and create beautiful memories.</p>
                                 <a href="#" class="btn palatin-btn mt-50" data-animation="fadeInUp" data-delay="900ms">Read More</a>
                             </div>
                         </div>
@@ -358,10 +357,10 @@ include ("header.php");
                             <div class="line-"></div>
                             <h2>A place to remember</h2>
                         </div>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec malesuada lorem maximus mauris sceleri sque, at rutrum nulla dictum. Ut ac ligula sapien. Suspendisse cursus faucibus finibus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec malesuada lorem maximus mauris sceleri sque, at rutrum nulla dictum. Ut ac ligula sapien. Suspendisse cursus faucibus finibus.</p>
+                        <p>"Surrounded by nature’s beauty, this garden is a perfect place for every celebration — be it a wedding, reception, Annaprasan, family gathering, or a peaceful picnic. With open green spaces, elegant décor, and a warm, joyful atmosphere, it creates unforgettable moments where laughter, love, and memories come together. A place to remember, where every special event begins beautifully.”</p>
                         <div class="about-key-text">
-                            <h6><span class="fa fa-check"></span> Donec malesuada lorem maximus mauris sceleri</h6>
-                            <h6><span class="fa fa-check"></span> Malesuada lorem maximus mauris sceleri</h6>
+                            <h6><span class="fa fa-check"></span> The garden is beautifully managed, and the friendly behavior of the owner makes every visit comfortable and memorable.</h6>
+                            <h6><span class="fa fa-check"></span> Everything you need is available, making the place very convenient.</h6>
                         </div>
                         <a href="#" class="btn palatin-btn mt-50">Read More</a>
                     </div>
@@ -389,35 +388,38 @@ include ("header.php");
     <!-- ##### About Us Area End ##### -->
 
     <!-- ##### Pool Area Start ##### -->
-    <section class="pool-area section-padding-100 bg-img bg-fixed" style="background-image: url(img/bg-img/4.jpeg);">
+    <section class="pool-area section-padding-100 bg-img bg-fixed" style="background-image: url(img/bg-img/8.jpeg);">
         <div class="container">
             <div class="row justify-content-end">
                 <div class="col-12 col-lg-7">
                     <div class="pool-content text-center wow fadeInUp" data-wow-delay="300ms">
                         <div class="section-heading text-center white">
                             <div class="line-"></div>
-                            <h2>Infinity Pool</h2>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec malesuada lorem maximus mauris sceleri sque, at rutrum nulla dictum. Ut ac ligula sapien. Suspendisse cursus faucibus finibus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec malesuada lorem maximus mauris sceleri sque, at rutrum nulla dictum.</p>
+                            <h2>Colorful Flowers</h2>
+                            <p>A beautiful garden filled with colorful flowers creates a calm and refreshing atmosphere. The vibrant blooms add natural charm, making it a perfect place to relax, celebrate special moments, or enjoy time with family and friends.</p>
                         </div>
 
                         <div class="row">
                             <div class="col-12 col-sm-4">
+                               <div class="pool-feature">
+									<i class="fa fa-anchor"></i>
+									<p>Dolna (Swing)</p>
+								</div>
+
+                            </div>
+                            <div class="col-12 col-sm-4">
                                 <div class="pool-feature">
-                                    <i class="icon-cocktail-1"></i>
-                                    <p>Pool Beachbar</p>
+                                    <div class="pool-feature">
+										<i class="fa fa-couch"></i>
+										<p>Sleeper Seating</p>
+									</div>
                                 </div>
                             </div>
                             <div class="col-12 col-sm-4">
                                 <div class="pool-feature">
-                                    <i class="icon-swimming-pool"></i>
-                                    <p>Infinity Pool</p>
-                                </div>
-                            </div>
-                            <div class="col-12 col-sm-4">
-                                <div class="pool-feature">
-                                    <i class="icon-beach"></i>
-                                    <p>Sunbeds</p>
-                                </div>
+										<i class="fa fa-child-reaching"></i>
+										<p>Kids Playground</p>
+								</div>
                             </div>
                         </div>
                         <!-- Button -->
@@ -437,7 +439,7 @@ include ("header.php");
                     <div class="section-heading text-center">
                         <div class="line-"></div>
                         <h2>Choose an event</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec malesuada lorem maximus mauris sceleri sque, at rutrum nulla dictum. Ut ac ligula sapien.</p>
+                        <p>The gentle breeze and warm sunlight create an inviting environment where memories are made and joy blossoms. A garden picnic truly brings people closer to nature and to each other.</p>
                     </div>
                 </div>
             </div>
@@ -448,14 +450,14 @@ include ("header.php");
                 <div class="col-12 col-md-6 col-lg-4">
                     <div class="single-rooms-area wow fadeInUp" data-wow-delay="100ms">
                         <!-- Thumbnail -->
-                        <div class="bg-thumbnail bg-img" style="background-image: url(img/bg-img/1.jpg);"></div>
+                        <div class="bg-thumbnail bg-img" style="background-image: url(img/bg-img/1.png);"></div>
                         <!-- Price -->
                         <p class="price-from">From ₹15,000/night</p>
                         <!-- Rooms Text -->
                         <div class="rooms-text">
                             <div class="line"></div>
-                            <h4>Marride Reception</h4>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec malesuada lorem maximus mauris sceleri sque.</p>
+                            <h4>Marriage Reception</h4>
+                            <p>The venue is beautifully decorated with flowers, elegant drapes, and twinkling lights that create a warm and festive atmosphere.</p>
                         </div>
                         <!-- Book Room -->
                         <a href="#" class="book-room-btn btn palatin-btn">Book Now</a>
@@ -466,14 +468,14 @@ include ("header.php");
                 <div class="col-12 col-md-6 col-lg-4">
                     <div class="single-rooms-area wow fadeInUp" data-wow-delay="300ms">
                         <!-- Thumbnail -->
-                        <div class="bg-thumbnail bg-img" style="background-image: url(img/bg-img/8.jpg);"></div>
+                        <div class="bg-thumbnail bg-img" style="background-image: url(img/bg-img/2.png);"></div>
                         <!-- Price -->
                         <p class="price-from">From ₹10,000/day</p>
                         <!-- Rooms Text -->
                         <div class="rooms-text">
                             <div class="line"></div>
                             <h4>Rice Ceremony</h4>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec malesuada lorem maximus mauris sceleri sque.</p>
+                            <p>The Rice Ceremony, or Annaprasan, is a special and sacred ritual that marks a baby’s first intake of solid food, usually rice.</p>
                         </div>
                         <!-- Book Room -->
                         <a href="#" class="book-room-btn btn palatin-btn">Book Now</a>
@@ -484,14 +486,14 @@ include ("header.php");
                 <div class="col-12 col-md-6 col-lg-4">
                     <div class="single-rooms-area wow fadeInUp" data-wow-delay="500ms">
                         <!-- Thumbnail -->
-                        <div class="bg-thumbnail bg-img" style="background-image: url(img/bg-img/9.jpg);"></div>
+                        <div class="bg-thumbnail bg-img" style="background-image: url(img/bg-img/3.jpeg);"></div>
                         <!-- Price -->
                         <p class="price-from">From ₹5000/day</p>
                         <!-- Rooms Text -->
                         <div class="rooms-text">
                             <div class="line"></div>
                             <h4>Picnic</h4>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec malesuada lorem maximus mauris sceleri sque.</p>
+                            <p>It’s a perfect way to take a break from daily routines, create happy memories, and enjoy quality time with loved ones.</p>
                         </div>
                         <!-- Book Room -->
                         <a href="index.php" class="book-room-btn btn palatin-btn">Book Now</a>
@@ -516,20 +518,20 @@ include ("header.php");
             <div class="section-heading wow fadeInUp" data-wow-delay="100ms">
                 <div class="line-"></div>
                 <h2>Contact Info</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec malesuada lorem maximus mauris sceleri sque, at rutrum nulla dictum. Ut ac ligula sapien. Suspendisse cursus faucibus finibus. Lorem ipsum dolor sit amet, consectetur adipiscing.</p>
+                <p></p>
             </div>
-            <h4 class="wow fadeInUp" data-wow-delay="300ms">Los Angeles 1481 Creekside Lane Avila Beach, CA 931</h4>
-            <h5 class="wow fadeInUp" data-wow-delay="400ms">+53 345 7953 32453</h5>
-            <h5 class="wow fadeInUp" data-wow-delay="500ms">yourmail@gmail.com</h5>
+            <h4 class="wow fadeInUp" data-wow-delay="300ms">Mr. Monibesh Maity</h4>
+            <h5 class="wow fadeInUp" data-wow-delay="400ms">9088152702</h5>
+            <h5 class="wow fadeInUp" data-wow-delay="500ms">greenland@gmail.com</h5>
             <!-- Social Info -->
-            <div class="social-info mt-50 wow fadeInUp" data-wow-delay="600ms">
+            <!--div class="social-info mt-50 wow fadeInUp" data-wow-delay="600ms">
                 <a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
                 <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
                 <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
                 <a href="#"><i class="fa fa-dribbble" aria-hidden="true"></i></a>
                 <a href="#"><i class="fa fa-behance" aria-hidden="true"></i></a>
                 <a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
-            </div>
+            </div-->
         </div>
     </section>
     <!-- ##### Contact Area End ##### -->
@@ -543,12 +545,12 @@ include ("header.php");
                 <div class="col-12 col-lg-5">
                     <div class="footer-widget-area mt-50">
                         <a href="#" class="d-block mb-5"><img src="img/core-img/logo.png" alt=""></a>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec malesuada lorem maximus mauris sceleri sque, at rutrum nulla dictum. Ut ac ligula sapien. Suspendisse cursus faucibus finibus. </p>
+                        <p></p>
                     </div>
                 </div>
 
                 <!-- Footer Widget Area -->
-                <div class="col-12 col-md-6 col-lg-4">
+                <!--div class="col-12 col-md-6 col-lg-4">
                     <div class="footer-widget-area mt-50">
                         <h6 class="widget-title mb-5">Find us on the map</h6>
                         <img src="img/bg-img/footer-map.png" alt="">
@@ -556,7 +558,7 @@ include ("header.php");
                 </div>
 
                 <!-- Footer Widget Area -->
-                <div class="col-12 col-md-6 col-lg-3">
+                <!--div class="col-12 col-md-6 col-lg-3">
                     <div class="footer-widget-area mt-50">
                         <h6 class="widget-title mb-5">Subscribe to our newsletter</h6>
                         <form action="#" method="post" class="subscribe-form">
@@ -570,7 +572,7 @@ include ("header.php");
                 <div class="col-12">
                     <div class="copywrite-text mt-30">
                         <p><a href="#"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | Greenland
 <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
                     </div>
                 </div>

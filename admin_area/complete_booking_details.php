@@ -9,6 +9,7 @@ if(!isset($_SESSION['admin_email'])){
 }
 
 $booking_id = $_GET['id'];
+$flag = $_GET['complete_details'];
 
 $q = mysqli_query($con,"
 SELECT bd.*,c.c_name,c.c_addr,c.c_mobile
@@ -40,6 +41,7 @@ $disc_amt   = $pData['disc_amt'];
 $gross_amt  = $pData['gross_amt'];
 $net_amt    = $pData['net_amt'];
 $due_amt    = $pData['due_amt'];
+$payment_amt= $pData['adv_amt'];
 
 $fac_res = mysqli_query($con,"
 SELECT bf.*, f.fName, f.gst_rate
@@ -52,7 +54,7 @@ WHERE bf.booking_id='$booking_id'
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Pending Approval</title>
+    <title>Complete Details</title>
 </head>
 <body>
 
@@ -261,6 +263,12 @@ WHERE bf.booking_id='$booking_id'
 
                 <div class="row payment-summary-row">
                     <div class="col-md-4">
+                        <label class="pay-label">Payment Amount</label>
+                        <div class="pay-value payment">
+                            ₹ <span ><?= $payment_amt ?></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
                         <label class="pay-label">Due Amount</label>
                         <div class="pay-value due">
                             ₹ <span ><?= $due_amt ?></span>
@@ -270,9 +278,15 @@ WHERE bf.booking_id='$booking_id'
             </div>
         </div>
         <div style="margin-top: 15px;">
-            <button id="backBtn" class="btn btn-back">
-                <i class="fa fa-arrow-left"></i> Back
-            </button>
+            <?php if($flag==5){ ?>
+                <a href="index.php?search" class="btn btn-back" style="background-color: #7A1E3A; color: #ffffffff; font-size: 14px; font-weight: bold;">
+                    <i class="fa fa-arrow-left"></i> Back
+                </a>
+            <?php } else { ?>
+                <button id="backBtn" class="btn btn-back">
+                    <i class="fa fa-arrow-left"></i> Back
+                </button>
+            <?php } ?>
         </div>
     </div>
 </div>
