@@ -7,135 +7,145 @@ if(!isset($_SESSION['admin_email'])){
 
 <style>
     
-    /* Brand Text (NO LINK STYLE) */
-    .shuvoeventpro-brand {
-        font-size: 22px;
-        font-weight: 700;
-        letter-spacing: 1px;
-        color: #E2D9F3;
-        padding: 0px 0px;
-        display: flex;
-        align-items: center;
-        height: 70px;
-        text-shadow: 0 1px 3px rgba(0,0,0,0.45);
-        cursor: default;   /* Not clickable */
-        gap: 10px;
-    }
+    /* ================= MODERN NAVBAR ================= */
 
-    /* Icon styling */
-    .shuvoeventpro-brand i {
-        margin-right: 8px;
-        color: #C8A7FF;
-        font-size: 30px;
-        text-shadow: 0 1px 2px rgba(255, 255, 255, 0.35);
-    }
+.navbar{
+    border:none;
+    box-shadow:0 2px 8px rgba(0,0,0,0.25);
+}
 
-    .brand-logo {
-		padding-top: 5px;
-        width: 100px;      /* Size adjust as needed */
-        height: 80px;
-        object-fit: contain;
-    }
+/* -------- NAVBAR HEADER -------- */
+.navbar-header{
+    display:flex;
+    align-items:center;
+    height:70px;
+    padding-left:15px;
+}
 
-    /* English + Bengali Text Container */
-    .brand-text {
-        display: flex;
-        flex-direction: column;
-        line-height: 1.1;
-    }
+.shuvoeventpro-brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    height:70px;
+}
 
-    /* English Name */
-    .brand-text .english-name {
-        font-size: 22px;
-        font-weight: 700;
-        letter-spacing: 1px;
-    }
+.brand-logo{
+    width:90px;
+    height:55px;
+    object-fit:contain;
+}
 
-    /* Bengali Name */
-    .brand-text .bengali-name {
-        font-size: 14px;
-        font-weight: 500;
-        color: #D8C4F2;
-        letter-spacing: 0.5px;
-        margin-top: 2px;
-    }
+.brand-text .english-name{
+    font-size:20px;
+    font-weight:700;
+    color:#F2E9FF;
+    letter-spacing:0.8px;
+}
 
-    /* Dropdown hover color */
-    .dropdown-menu > li > a:hover {
-        background-color: #f0e9ff;   /* light purple shade */
-        color: #e9678eff !important;   /* dark purple text */
-        font-weight: bold;
-    }
+/* -------- TOP RIGHT NAV -------- */
+.top-nav > li > a{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    height:70px;
+    padding:0 18px;
+    color:#F4EAFB !important;
+    font-weight:600;
+}
 
-    /* Logout hover - red tint */
-    .dropdown-menu > li > a.text-danger:hover {
-        background-color: #ffe6e6;
-        color: #d9534f !important;
-    }
+.top-nav > li > a:hover{
+    background:rgba(255,255,255,0.08);
+}
 
-    .english-name {
-        font-weight: bold;
-        font-size: 18px;
-    }
+.top-nav img{
+    width:30px;
+    height:30px;
+    border-radius:50%;
+    object-fit:cover;
+    border:2px solid #D4A017;
+}
 
-    .bengali-name {
-        font-size: 14px;
-        color: #b99cd9;
-    }
+/* Dropdown */
+.dropdown-menu{
+    border-radius:10px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.2);
+    border:none;
+    margin-top:8px;
+}
+
+.dropdown-menu > li > a{
+    padding:10px 18px;
+    font-weight:600;
+}
+
+.dropdown-menu > li > a i{
+    margin-right:8px;
+    color:#7A1E3A;
+}
+
+/* Hover */
+.dropdown-menu > li > a:hover{
+    background:#f5efff;
+    color:#7A1E3A !important;
+}
+
+/* Logout hover */
+.dropdown-menu > li > a.text-danger:hover{
+    background:#ffecec;
+    color:#d9534f !important;
+}
+
 
 </style>
 
 <!-- Top Navbar -->
 <nav class="navbar navbar-inverse navbar-fixed-top" style="background: #7A1E3A;">
     <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-            <span class="sr-only">Toggle Navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </button>
-        <!-- <a href="index.php?dashboard" class="navbar-brand">User Panel</a> -->
-        <div class="shuvoeventpro-brand">
-            <img src="../img/ShuvoEventPro.png" class="brand-logo" alt="ShuvoEventPro Logo">
-            <div class="brand-text">
-                <span class="english-name">ShuvoEventPro</span>
-            </div>
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+    </button>
+
+    <div class="shuvoeventpro-brand">
+        <img src="../img/ShuvoEventPro.png" class="brand-logo" alt="ShuvoEventPro Logo">
+        <div class="brand-text">
+            <span class="english-name">ShuvoEventPro</span>
         </div>
     </div>
+</div>
+
 
     <!-- Top Right -->
     <ul class="nav navbar-right top-nav">
-        <li class="dropdown">
-            <a href="#" class="dropdown-toggle" style="color : rgba(180, 157, 209, 1); font-weight : bold;" data-toggle="dropdown">
-                <!-- PROFILE IMAGE -->
-                <img 
-                    src="<?php echo $admin_image; ?>" 
-                    alt="Profile" 
-                    style="width:25px; height:25px; border-radius:50%; object-fit:cover; margin-right:5px;"
-                >
-                <?php echo $admin_name; ?> <b class="caret"></b>
-            </a>
-            <ul class="dropdown-menu">
-                <li>
-                    <a href="index.php?user_profile&id=<?php echo $admin_id; ?>">
-                        <i class="fa fa-user-circle"></i> Profile
-                    </a>
-                </li>
-                <li>
-                    <a href="change_password.php">
-                        <i class="fa fa-key"></i> Change Password
-                    </a>
-                </li>
-                <li class="divider"></li>
-                <li>
-                    <a href="logout.php" class="text-danger">
-                        <i class="fa fa-power-off"></i> Logout
-                    </a>
-                </li>
-            </ul>
-        </li>
-    </ul>
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <img src="<?php echo $admin_image; ?>" alt="Profile">
+            <?php echo $admin_name; ?>
+            <b class="caret"></b>
+        </a>
+
+        <ul class="dropdown-menu">
+            <li>
+                <a href="index.php?user_profile&id=<?php echo $admin_id; ?>">
+                    <i class="fa fa-user-circle"></i> Profile
+                </a>
+            </li>
+            <li>
+                <a href="change_password.php">
+                    <i class="fa fa-key"></i> Change Password
+                </a>
+            </li>
+            <li class="divider"></li>
+            <li>
+                <a href="logout.php" class="text-danger">
+                    <i class="fa fa-power-off"></i> Logout
+                </a>
+            </li>
+        </ul>
+    </li>
+</ul>
+
 
     <!-- <ul class="nav navbar-right top-nav">
         <li class="dropdown">

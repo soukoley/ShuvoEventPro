@@ -134,6 +134,9 @@ $cur_finance_year = $c_fyear_row['f_year'];
                 <?php
 
 					$pages = [
+						'user_profile'	   		=> 'user_profile.php',
+						'change_password'   	=> 'change_password.php',
+
 						'dashboard'          	=> 'dashboard.php',
 						'view_event_details'    => 'view_event_details.php',
 						'insert_event'          => 'insert_event.php',
