@@ -1,4 +1,0 @@
-<?php
-	$con=mysqli_connect("localhost:3306","wbcarepl","prapti@2022","prapti");
-	//$con=mysqli_connect("localhost","root","","prapti");
-?>

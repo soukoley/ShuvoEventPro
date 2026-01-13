@@ -193,12 +193,12 @@ try {
     // ===== HEADER =====
     $pdf->SetFont('Arial','B',20);
     $pdf->SetTextColor(123,30,43);
-    $pdf->Cell(210,12,$cmp['c_name'],0,1,'C');
+    $pdf->Cell(0,12,$cmp['c_name'],0,1,'C');
     $pdf->SetFont('Arial','',11);
     $pdf->SetTextColor(0);
-    $pdf->Cell(210,6,'Event & Booking Management',0,1,'C');
-    $pdf->Cell(210,6,$cmp['c_address'],0,1,'C');
-    $pdf->Cell(210,6,'Mobile: '.$cmp['c_contact'].' | Website: '.$cmp['c_website'],0,1,'C');
+    $pdf->Cell(0,6,'Event & Booking Management',0,1,'C');
+    $pdf->Cell(0,6,$cmp['c_address'],0,1,'C');
+    $pdf->Cell(0,6,'Mobile: '.$cmp['c_contact'].' | Website: '.$cmp['c_website'],0,1,'C');
 
     $pdf->Ln(5);
     //$pdf->Line(10, 35, 200, 35);
@@ -209,12 +209,13 @@ try {
     $pdf->Ln(4);
     $pdf->SetFont('Arial','B',14);
     $pdf->SetTextColor(123,30,43); // #7B1E2B
-    $pdf->Cell(120,8,'BOOKING INVOICE',0,0,'L');
+    $pdf->Cell(80,8,'BOOKING INVOICE',0,0,'L');
 
     // ===== INVOICE META =====
     $pdf->SetFont('Arial','',10);
     $pdf->SetTextColor(0);
-    $pdf->Cell(190,6,'Booking Date : '.date("d-m-Y", strtotime($booking_date)),0,1,'R');
+    $pdf->SetX(90);
+    $pdf->Cell(110,6,'Booking Date : '.date("d-m-Y h:i A", strtotime($booking_date)),0,1,'R');
 
     $pdf->Ln(5);
 
