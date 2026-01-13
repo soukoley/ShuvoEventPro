@@ -22,26 +22,6 @@ if(!isset($_SESSION['admin_email'])){
     padding-left:15px;
 }
 
-.shuvoeventpro-brand{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    height:70px;
-}
-
-.brand-logo{
-    width:90px;
-    height:55px;
-    object-fit:contain;
-}
-
-.brand-text .english-name{
-    font-size:20px;
-    font-weight:700;
-    color:#F2E9FF;
-    letter-spacing:0.8px;
-}
-
 /* -------- TOP RIGHT NAV -------- */
 .top-nav > li > a{
     display:flex;
@@ -49,13 +29,10 @@ if(!isset($_SESSION['admin_email'])){
     gap:8px;
     height:70px;
     padding:0 18px;
-    color:#F4EAFB !important;
+    color: #f5b30e !important;
     font-weight:600;
 }
 
-.top-nav > li > a:hover{
-    background:rgba(255,255,255,0.08);
-}
 
 .top-nav img{
     width:30px;
@@ -80,19 +57,68 @@ if(!isset($_SESSION['admin_email'])){
 
 .dropdown-menu > li > a i{
     margin-right:8px;
-    color:#7A1E3A;
+    color: #7A1E3A;
 }
 
 /* Hover */
 .dropdown-menu > li > a:hover{
-    background:#f5efff;
-    color:#7A1E3A !important;
+    color: #7A1E3A !important;
 }
 
 /* Logout hover */
 .dropdown-menu > li > a.text-danger:hover{
-    background:#ffecec;
-    color:#d9534f !important;
+    color: #d9534f !important;
+}
+
+/* ===== LOGO : CIRCLE (DEFAULT) ===== */
+/* ===== BRAND CONTAINER (BADGE) ===== */
+.shuvoeventpro-brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+
+    padding:6px 14px;
+    height:58px;
+
+    transition:all 0.3s ease;
+}
+
+/* ===== BADGE LOGO IMAGE ===== */
+.brand-logo{
+    width:92px;              /* 🔥 clear & readable */
+    height:auto;
+
+    object-fit:contain;
+    padding:4px 6px;
+
+    background:#000;
+    border-radius:10px;
+    border:2px solid #D4A017;
+
+    transition:all 0.3s ease;
+}
+
+/* ===== TEXT ===== */
+.brand-text .english-name{
+    font-size:20px;
+    font-weight:700;
+    letter-spacing:1px;
+    color: #F2E9FF;
+    white-space:nowrap;
+}
+
+/* ===== SCROLL STATE ===== */
+.navbar.scrolled .shuvoeventpro-brand{
+    height:48px;
+    padding:4px 10px;
+}
+
+.navbar.scrolled .brand-logo{
+    width:76px;              /* still readable */
+}
+
+.navbar.scrolled .brand-text .english-name{
+    font-size:17px;
 }
 
 
@@ -101,63 +127,30 @@ if(!isset($_SESSION['admin_email'])){
 <!-- Top Navbar -->
 <nav class="navbar navbar-inverse navbar-fixed-top" style="background: #7A1E3A;">
     <div class="navbar-header">
-    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-    </button>
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
 
-    <div class="shuvoeventpro-brand">
-        <img src="../img/ShuvoEventPro.png" class="brand-logo" alt="ShuvoEventPro Logo">
-        <div class="brand-text">
-            <span class="english-name">ShuvoEventPro</span>
+        <div class="shuvoeventpro-brand">
+            <img src="../img/ShuvoEventPro.png" class="brand-logo" alt="ShuvoEventPro Logo">
+            <div class="brand-text">
+                <span class="english-name">ShuvoEventPro</span>
+            </div>
         </div>
     </div>
-</div>
 
 
     <!-- Top Right -->
     <ul class="nav navbar-right top-nav">
-    <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <img src="<?php echo $admin_image; ?>" alt="Profile">
-            <?php echo $admin_name; ?>
-            <b class="caret"></b>
-        </a>
-
-        <ul class="dropdown-menu">
-            <li>
-                <a href="index.php?user_profile&id=<?php echo $admin_id; ?>">
-                    <i class="fa fa-user-circle"></i> Profile
-                </a>
-            </li>
-            <li>
-                <a href="change_password.php">
-                    <i class="fa fa-key"></i> Change Password
-                </a>
-            </li>
-            <li class="divider"></li>
-            <li>
-                <a href="logout.php" class="text-danger">
-                    <i class="fa fa-power-off"></i> Logout
-                </a>
-            </li>
-        </ul>
-    </li>
-</ul>
-
-
-    <!-- <ul class="nav navbar-right top-nav">
         <li class="dropdown">
-            <a href="#" class="dropdown-toggle" style="color : #E2D9F3; font-weight : bold;" data-toggle="dropdown">
-                
-                <img 
-                    src="<?php echo $admin_image; ?>" 
-                    alt="Profile" 
-                    style="width:25px; height:25px; border-radius:50%; object-fit:cover; margin-right:5px;"
-                >
-                <?php echo $admin_name; ?> <b class="caret"></b>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <img src="<?php echo $admin_image; ?>" alt="Profile">
+                <?php echo $admin_name; ?>
+                <b class="caret"></b>
             </a>
+
             <ul class="dropdown-menu">
                 <li>
                     <a href="index.php?user_profile&id=<?php echo $admin_id; ?>">
@@ -169,21 +162,6 @@ if(!isset($_SESSION['admin_email'])){
                         <i class="fa fa-key"></i> Change Password
                     </a>
                 </li>
-                <li>
-                    <a href="index.php?view_product">
-                        <i class="fa fa-fw fa-cube"></i> Products
-                    </a>
-                </li>
-                <li>
-                    <a href="index.php?view_customer">
-                        <i class="fa fa-fw fa-users"></i> Customers
-                    </a>
-                </li>
-                <li>
-                    <a href="index.php?view_cat">
-                        <i class="fa fa-fw fa-tags"></i> Categories
-                    </a>
-                </li>
                 <li class="divider"></li>
                 <li>
                     <a href="logout.php" class="text-danger">
@@ -192,13 +170,13 @@ if(!isset($_SESSION['admin_email'])){
                 </li>
             </ul>
         </li>
-    </ul> -->
+    </ul>
 
     <!-- Sidebar -->
     <div class="collapse navbar-collapse navbar-ex1-collapse">
         <ul class="nav navbar-nav sidebar-nav">
 
-			<!-- Dashboard Link -->
+            <!-- Dashboard Link -->
             <li>
                 <a href="index.php?dashboard">
                     <i class="fa fa-fw fa-dashboard"></i> Dashboard
@@ -206,7 +184,7 @@ if(!isset($_SESSION['admin_email'])){
             </li>
 
 
-			<!-- Event Menu -->
+            <!-- Event Menu -->
             <li>
                 <a href="#" data-toggle="collapse" data-target="#eventMenu">
                     <i class="fa fa-fw fa-calendar"></i> Event
@@ -220,7 +198,7 @@ if(!isset($_SESSION['admin_email'])){
             </li>
 
 
-			<!-- Facility Menu -->
+            <!-- Facility Menu -->
             <li>
                 <a href="#" data-toggle="collapse" data-target="#facilityMenu">
                     <i class="fa fa-fw fa-hotel"></i> Facility
@@ -233,7 +211,7 @@ if(!isset($_SESSION['admin_email'])){
             </li>
 
 
-			<!-- Gallery Menu -->
+            <!-- Gallery Menu -->
             <li>
                 <a href="#" data-toggle="collapse" data-target="#galleryMenu">
                     <i class="fa fa-fw fa-image"></i> Gallery
@@ -242,11 +220,13 @@ if(!isset($_SESSION['admin_email'])){
                 <ul id="galleryMenu" class="collapse">
                     <li><a href="index.php?insert_event_gallery"><i class="fa fa-plus"></i> Add Gallery</a></li>
                     <li><a href="index.php?view_gallery"><i class="fa fa-eye"></i> View Gallery</a></li>
+					<li><a href="index.php?insert_event_video"><i class="fa fa-plus"></i> Add Video</a></li>
+                    <li><a href="index.php?view_video"><i class="fa fa-eye"></i> View Video</a></li>
                 </ul>
             </li>
 
 
-			<!-- Booking Menu -->
+            <!-- Booking Menu -->
             <li>
                 <a href="#" data-toggle="collapse" data-target="#bookingMenu">
                     <i class="fa fa-fw fa-calendar-check-o"></i> Booking
@@ -261,8 +241,8 @@ if(!isset($_SESSION['admin_email'])){
             </li>
 
 
-			
-			<!-- Invoice Menu -->
+            
+            <!-- Invoice Menu -->
             <li>
                 <a href="#" data-toggle="collapse" data-target="#invoiceMenu">
                     <i class="fa fa-fw fa-file-text-o"></i> Invoice
@@ -275,7 +255,7 @@ if(!isset($_SESSION['admin_email'])){
             </li>
 
 
-			<!-- Payment Menu-->
+            <!-- Payment Menu-->
             <li>
                 <a href="#" data-toggle="collapse" data-target="#paymentMenu">
                     <i class="fa fa-fw fa-credit-card"></i> Payment
@@ -401,8 +381,8 @@ if(!isset($_SESSION['admin_email'])){
             </li>
 
 
-		</ul>
-	</div>
+        </ul>
+    </div>
 </nav>
 
 <?php 

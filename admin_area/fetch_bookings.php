@@ -1,35 +1,48 @@
 <?php
-include('./includes/db.php');
-$hall=$_GET['hall'] ?? '';
+include("includes/db.php");
+header('Content-Type: application/json');
 
-$where="";
-if($hall!="") $where="AND bd.e_name='$hall'";
+$result = mysqli_query($con, "SELECT * FROM booking_details");
 
-$q=mysqli_query($con,"
-SELECT bd.*,c.c_name
-FROM booking_details bd
-JOIN customer c ON bd.cust_id=c.c_id
-WHERE bd.booking_status!='Cancelled' $where
-");
+$events = [];
 
-$data=[];
-while($r=mysqli_fetch_assoc($q)){
-    $color='#3788d8';
-    if($r['booking_status']=='Partially Paid') $color='#f0ad4e';
-    if($r['booking_status']=='Fully Paid') $color='#5cb85c';
-    if($r['booking_status']=='Rescheduled') $color='#5bc0de';
+while ($row = mysqli_fetch_assoc($result)) {
 
-    $data[]=[
-        "id"=>$r['booking_id'],
-        "title"=>$r['e_name'],
-        "start"=>$r['start_date'].'T'.$r['start_time'],
-        "end"=>$r['end_date'].'T'.$r['end_time'],
-        "backgroundColor"=>$color,
-        "extendedProps"=>[
-            "customer"=>$r['c_name'],
-            "status"=>$r['booking_status'],
-            "max_guest"=>$r['max_guest']
+    // Normalize DB status
+    $statusRaw = strtolower(trim($row['status']));
+    $statusClass = 'status-approved'; // default = green
+
+   $statusRaw = strtolower(trim($row['status']));
+	$statusClass = 'status-approved'; // default
+
+	if ($statusRaw === 'pending') {
+		$statusClass = 'status-pending';
+	}
+	elseif ($statusRaw === 'completed') {
+		$statusClass = 'status-completed';
+	}
+	elseif ($statusRaw === 'cancelled') {
+		$statusClass = 'status-cancelled';
+	}
+	elseif ($statusRaw === 'rejected') {
+		$statusClass = 'status-rejected';
+	}
+	elseif ($statusRaw === 'approved') {
+		$statusClass = 'status-approved';
+	}
+
+
+    $events[] = [
+        "id" => $row['id'],
+        "title" => $row['e_name'] . " (" . $row['status'] . ")",
+        "start" => $row['start_date'],
+        "end" => $row['end_date'],
+		"max_guest" => $row['max_guest'],
+        "classNames" => [$statusClass],
+        "extendedProps" => [
+            "status" => $row['status']
         ]
     ];
 }
-echo json_encode($data);
+
+echo json_encode($events);

@@ -10,7 +10,7 @@ if ($eventName === '' || $noOfPeople === '') {
 }
 
 // Example query — adjust logic to match your table columns
-$sql = "SELECT id, fName, fPrice FROM facility 
+$sql = "SELECT id, fName, fPrice, gst_rate FROM facility 
         WHERE ((max_people = $noOfPeople AND eName = '$eventName')
         OR (eName = 'ALL'))";
 

@@ -154,6 +154,10 @@ $cur_finance_year = $c_fyear_row['f_year'];
 						'edit_gallery'          => 'edit_gallery.php',
 						'delete_gallery'        => 'delete_gallery.php',
 						
+						'insert_event_video'  	=> 'insert_event_video.php',
+						'view_video'  			=> 'view_video.php',
+						'delete_video'  		=> 'delete_video.php',
+						
 						'pending'       		=> 'pending_booking.php',
 						'pending_result'        => 'view_pending_result.php',
 						'approve_pending'   	=> 'approve_pending.php',

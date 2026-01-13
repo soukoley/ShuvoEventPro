@@ -1,10 +1,17 @@
 <?php
-include('./includes/db.php');
+include("includes/db.php");
+header("Content-Type:text/plain");
 
-$q=mysqli_query($con,"
-SELECT COUNT(*) c FROM booking_details
-WHERE start_date=CURDATE()
-AND booking_status!='Cancelled'
+$today = date("Y-m-d");
+
+$q = $con->prepare("
+    SELECT COUNT(*) 
+    FROM booking_details 
+    WHERE event_date>=? AND status='Confirmed'
 ");
-$r=mysqli_fetch_assoc($q);
-echo $r['c'];
+$q->bind_param("s",$today);
+$q->execute();
+$q->bind_result($count);
+$q->fetch();
+
+echo $count;

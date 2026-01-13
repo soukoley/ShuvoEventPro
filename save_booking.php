@@ -1,5 +1,5 @@
 <?php
-
+ob_start();
 header('Content-Type: application/json');
 include("includes/db.php"); // your DB connection setup
 
@@ -11,6 +11,8 @@ require 'vendor/phpmailer/src/Exception.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
+
+date_default_timezone_set('Asia/Kolkata');
 
 // Read JSON body
 $data = json_decode(file_get_contents("php://input"), true);
@@ -81,10 +83,6 @@ try {
     $start_time   = $fromDateTime->format("H:i:s");
     $end_time     = $toDateTime->format("H:i:s");
 
-    /* $start_date = date("d-m-Y", strtotime($fbdate));
-    $start_time = date("h:i A", strtotime($fbdate));
-    $end_date = date("d-m-Y", strtotime($tbdate));
-    $end_time = date("h:i A", strtotime($tbdate)); */
     $status = 'Pending';
 
     // Insert into booking_details table
@@ -99,18 +97,21 @@ try {
     $stmt->execute();
 
     // Insert facilities
-    $sql2 = "INSERT INTO booking_facilities (booking_id, facility_id, qty, rate, tot_amt) 
-             VALUES (?, ?, ?, ?, ?)";
+    $sql2 = "INSERT INTO booking_facilities (booking_id, facility_id, qty, rate, taxableAmt, gstAmt, netAmt) 
+             VALUES (?, ?, ?, ?, ?, ?, ?)";
     $stmt2 = $con->prepare($sql2);
 
     foreach ($facilities as $fac) {
         $fid        = intval($fac['id']);
         $fprice     = floatval($fac['price']);
         $qty        = intval($fac['quantity']);
-        $tot_amt    = $fprice * $qty;
+        $gst_rate   = intval($fac['gst_rate']);
+        $taxable    = $fprice * $qty;
+        $gstAmt     = ($taxable * $gst_rate) / 100;
+        $net_amt    = $taxable + $gstAmt;
 
         // Insert each facility booking
-        $stmt2->bind_param("siidd", $booking_id, $fid, $qty, $fprice, $tot_amt);
+        $stmt2->bind_param("siidddd", $booking_id, $fid, $qty, $fprice, $taxable, $gstAmt, $net_amt);
         $stmt2->execute();
     }
 
@@ -128,18 +129,21 @@ try {
         'aadhaarPan' => $userId
     ];
 
+    $startTimeAMPM = date("h:i A", strtotime($start_time));
+    $endTimeAMPM   = date("h:i A", strtotime($end_time));
+
     $booking = [
         'booking_id' => $booking_id,
         'date' => $booking_date,
-        'startDateTime' => $start_date . ' ' . $start_time,
-        'endDateTime' => $end_date . ' ' . $end_time,
+        'startDateTime' => date("d-m-Y", strtotime($start_date)) . ' ' . $startTimeAMPM,
+        'endDateTime'   => date("d-m-Y", strtotime($end_date)) . ' ' . $endTimeAMPM,
         'max_people' => $maxPeople,
         'event' => $event,
         'status' => $status
     ];
 
     // ------------------- Fetch Facilities -------------------
-    $sql2 = "SELECT f.fName, bf.qty, bf.rate, bf.tot_amt
+    $sql2 = "SELECT f.fName, bf.qty, bf.rate, bf.taxableAmt, bf.gstAmt, bf.netAmt
             FROM booking_facilities bf
             JOIN facility f ON bf.facility_id = f.id
             WHERE bf.booking_id = ?";
@@ -153,88 +157,168 @@ try {
             'name'      => $row['fName'],
             'quantity'  => $row['qty'],
             'rate'      => $row['rate'],
-            'totalAmt'  => $row['tot_amt']
+            'taxableAmt'=> $row['taxableAmt'],
+            'gstAmt'    => $row['gstAmt'],
+            'netAmt'    => $row['netAmt']
         ];
     }
 
-    // ------------------- Generate PDF -------------------
-    $pdf = new FPDF();
-    $pdf->AddPage();
-    $pdf->SetFont('Arial','B',18);
-    $pdf->SetTextColor(203, 134, 112); // #cb8670
-    $pdf->Cell(0,10,'Greenland',0,1,'C');  // Top Center
+    // -------------------- Company Details ------------------------------------
+    $cmp_qry = mysqli_query($con,"SELECT * FROM company LIMIT 1");
+    $cmp = mysqli_fetch_assoc($cmp_qry);
 
-    $pdf->SetFont('Arial','B',16);
-    // Reset color for rest of the text
-    $pdf->SetTextColor(0,0,0); // black
-    $pdf->Cell(0,10,'Booking Confirmation',0,1,'C');
+    // ------------------- Generate Professional Invoice PDF -------------------
+    class PDF extends FPDF{
+        function Footer()
+        {
+            $this->SetY(-10);
+            $this->SetFont('Arial','I',8);
+            $this->SetTextColor(120);
+            $this->Cell(0,10,'Page '.$this->PageNo(),0,0,'C');
+        }
 
-    // Customer Details
-    $pdf->Ln(5);
-    $pdf->SetFont('Arial','B',12);
-    $pdf->Cell(0,8,'Customer Details',0,1);
-    $pdf->SetFont('Arial','',11);
-    $pdf->Cell(50,6,'Name :'); $pdf->Cell(0,6,$customer['name'],0,1);
-    $pdf->Cell(50,6,'Address :'); $pdf->Cell(0,6,$customer['address'],0,1);
-    $pdf->Cell(50,6,'Contact Number :'); $pdf->Cell(0,6,$customer['phone'],0,1);
-    $pdf->Cell(50,6,'Email :'); $pdf->Cell(0,6,$customer['email'],0,1);
-    $pdf->Cell(50,6,'Aadhaar/PAN :'); $pdf->Cell(0,6,$customer['aadhaarPan'],0,1);
-
-    // Booking Details
-    $pdf->Ln(5);
-    $pdf->SetFont('Arial','B',12);
-    $pdf->Cell(0,8,'Booking Details',0,1);
-    $pdf->SetFont('Arial','',11);
-    $pdf->Cell(50,6,'Event Name :'); $pdf->Cell(0,6,$booking['event'],0,1);
-    $pdf->Cell(50,6,'Booking ID :'); $pdf->Cell(0,6,$booking['booking_id'],0,1);
-    $pdf->Cell(50,6,'Booking Date :'); $pdf->Cell(0,6,$booking['date'],0,1);
-    $pdf->Cell(50,6,'Event Start Date :'); $pdf->Cell(0,6,$booking['startDateTime'],0,1);
-    $pdf->Cell(50,6,'Event End Date :'); $pdf->Cell(0,6,$booking['endDateTime'],0,1);
-    $pdf->Cell(50,6,'Max People :'); $pdf->Cell(0,6,$booking['max_people'],0,1);
-    $pdf->Cell(50,6,'Status :'); $pdf->Cell(0,6,$booking['status'],0,1);
-
-    // Facilities Table
-    $pdf->Ln(5);
-    $pdf->SetFont('Arial','B',12);
-    $pdf->Cell(0,8,'Facilities Details',0,1);
-    $pdf->SetFont('Arial','B',11);
-    $pdf->Cell(80,7,'Facility',1,0,'L');
-    $pdf->Cell(30,7,'Quantity',1,0,'C');
-    $pdf->Cell(40,7,'Rate',1,0,'R');
-    $pdf->Cell(40,7,'Total',1,0,'R');
-    $pdf->Ln();
-
-    $pdf->SetFont('Arial','',11);
-    $totalAmount = 0;
-    foreach($facilities as $fac){
-        $totalAmount += $fac['totalAmt'];
-        $pdf->Cell(80,6,$fac['name'],1,0,'L');
-        $pdf->Cell(30,6,$fac['quantity'],1,0,'C');
-        $pdf->Cell(40,6,number_format($fac['rate'],2),1,0,'R');
-        $pdf->Cell(40,6,number_format($fac['totalAmt'],2),1,0,'R');
-        $pdf->Ln();
+        function SectionTitle($title)
+        {
+            $this->SetTextColor(123,30,43); // #7B1E2B
+            $this->SetTextColor(255);
+            $this->SetFont('Arial','B',11);
+            $this->Cell(0,8,$title,0,1,'L',true);
+            $this->Ln(2);
+        }
     }
 
-    // Total Amount
+    $pdf = new FPDF();
+    $pdf->AddPage();
+
+    // ===== HEADER =====
+    $pdf->SetFont('Arial','B',20);
+    $pdf->SetTextColor(123,30,43);
+    $pdf->Cell(210,12,$cmp['c_name'],0,1,'C');
+    $pdf->SetFont('Arial','',11);
+    $pdf->SetTextColor(0);
+    $pdf->Cell(210,6,'Event & Booking Management',0,1,'C');
+    $pdf->Cell(210,6,$cmp['c_address'],0,1,'C');
+    $pdf->Cell(210,6,'Mobile: '.$cmp['c_contact'].' | Website: '.$cmp['c_website'],0,1,'C');
+
+    $pdf->Ln(5);
+    //$pdf->Line(10, 35, 200, 35);
+    $pdf->SetDrawColor(212,160,23);
+    $pdf->Line(10,$pdf->GetY(),200,$pdf->GetY());
+
+    // ===== INVOICE TITLE =====
+    $pdf->Ln(4);
+    $pdf->SetFont('Arial','B',14);
+    $pdf->SetTextColor(123,30,43); // #7B1E2B
+    $pdf->Cell(120,8,'BOOKING INVOICE',0,0,'L');
+
+    // ===== INVOICE META =====
+    $pdf->SetFont('Arial','',10);
+    $pdf->SetTextColor(0);
+    $pdf->Cell(190,6,'Booking Date : '.date("d-m-Y", strtotime($booking_date)),0,1,'R');
+
+    $pdf->Ln(5);
+
+    // ===== CUSTOMER DETAILS =====
+    $pdf->SetFont('Arial','B',12);
+    $pdf->SetTextColor(123,30,43); // #7B1E2B
+    $pdf->Cell(0,8,'Customer Details',0,1);
+
+    $pdf->SetFont('Arial','',11);
+    $pdf->SetTextColor(0);
+    $pdf->Cell(35,6,'Name',0,0);      $pdf->Cell(0,6,": ".$customer['name'],0,1);
+    $pdf->Cell(35,6,'Address',0,0);   $pdf->MultiCell(0,6,": ".$customer['address']);
+    $pdf->Cell(35,6,'Phone',0,0);     $pdf->Cell(0,6,": ".$customer['phone'],0,1);
+    $pdf->Cell(35,6,'Email',0,0);     $pdf->Cell(0,6,": ".$customer['email'],0,1);
+
+    $pdf->Ln(4);
+
+    // ===== BOOKING DETAILS =====
+    $pdf->SetFont('Arial','B',12);
+    $pdf->SetTextColor(123,30,43); // #7B1E2B
+    $pdf->Cell(0,8,'Booking Details',0,1);
+
+    $pdf->SetFont('Arial','',11);
+    $pdf->SetTextColor(0);
+    $pdf->Cell(50,6,'Event Name',0,0); $pdf->Cell(0,6,": ".$booking['event'],0,1);
+    $pdf->Cell(50,6,'Event Duration',0,0);
+    $pdf->Cell(0,6,": ".$booking['startDateTime']."  to  ".$booking['endDateTime'],0,1);
+    $pdf->Cell(50,6,'Max Guests',0,0); $pdf->Cell(0,6,": ".$booking['max_people'],0,1);
+    $pdf->Cell(50,6,'Status',0,0);     $pdf->Cell(0,6,": ".$booking['status'],0,1);
+
+    $pdf->Ln(6);
+
+    // ===== FACILITY TABLE HEADER =====
+    $pdf->SetFillColor(123,30,43); // #7B1E2B
+    $pdf->SetTextColor(0);
     $pdf->SetFont('Arial','B',11);
-    $pdf->Cell(150,7,'Total Amount',1);
-    $pdf->Cell(40,7,number_format($totalAmount,2),1,0,'R');
+    $pdf->Cell(70,8,'Facility',1,0,'L',true);
+    $pdf->Cell(10,8,'Qty',1,0,'C',true);
+    $pdf->Cell(25,8,'Rate',1,0,'R',true);
+    $pdf->Cell(30,8,'Taxable',1,0,'R',true);
+    $pdf->Cell(25,8,'GST',1,0,'R',true);
+    $pdf->Cell(30,8,'Total',1,1,'R',true);
 
-    // PDF string এ নিলাম (save করলাম না)
-    $pdfData = $pdf->Output('S');  // S = return as string
+    // ===== FACILITY ROWS =====
+    $pdf->SetFont('Arial','',11);
+    $totalTaxable = 0;
+    $totalGST = 0;
+    $totalNet = 0;
 
-    // ✅ Mail পাঠানো with PDF attachment
+    foreach($facilities as $fac){
+        $totalTaxable += $fac['taxableAmt'];
+        $totalGST     += $fac['gstAmt'];
+        $totalNet     += $fac['netAmt'];
+
+        $pdf->Cell(70,7,$fac['name'],1);
+        $pdf->Cell(10,7,$fac['quantity'],1,0,'C');
+        $pdf->Cell(25,7,number_format($fac['rate'],2),1,0,'R');
+        $pdf->Cell(30,7,number_format($fac['taxableAmt'],2),1,0,'R');
+        $pdf->Cell(25,7,number_format($fac['gstAmt'],2),1,0,'R');
+        $pdf->Cell(30,7,number_format($fac['netAmt'],2),1,1,'R');
+    }
+
+    // ===== TOTAL SUMMARY =====
+    $pdf->Ln(4);
+    $pdf->SetFont('Arial','B',11);
+
+    $pdf->SetFillColor(123,30,43); // #7B1E2B
+    $pdf->Cell(130,8,'Total Taxable Amount',1,0,'R');
+    $pdf->SetTextColor(0);
+    $pdf->Cell(60,8,number_format($totalTaxable,2),1,1,'R');
+
+    $pdf->SetFillColor(123,30,43); // #7B1E2B
+    $pdf->Cell(130,8,'Total GST Amount',1,0,'R');
+    $pdf->SetTextColor(0);
+    $pdf->Cell(60,8,number_format($totalGST,2),1,1,'R');
+
+    $pdf->SetFont('Arial','B',12);
+    $pdf->SetFillColor(123,30,43); // #7B1E2B
+    $pdf->Cell(130,9,'Grand Total',1,0,'R');
+    $pdf->SetTextColor(0);
+    $pdf->Cell(60,9,number_format($totalNet,2),1,1,'R');
+
+    // ===== FOOTER =====
+    $pdf->Ln(10);
+    $pdf->SetFont('Arial','I',10);
+    $pdf->Cell(0,6,'This is a system generated invoice. No signature required.',0,1,'C');
+    $pdf->Cell(0,6,'Thank you for choosing '.$cmp['c_name'].'.',0,1,'C');
+
+    // ===== OUTPUT =====
+    $pdfData = $pdf->Output('S');
+    ob_end_flush();
+
+    // ✅ Sending Mail with PDF attachment
     $mail = new PHPMailer(true);
     try {
         $mail->isSMTP();
         $mail->Host         = "smtp.gmail.com";
         $mail->SMTPAuth     = true;
-        $mail->Username     = "smnkmrkl80@gmail.com"; // তোমার email
-        $mail->Password     = "hghrhljlvsypbppw"; // App password use করবে
+        $mail->Username     = "greenlandgarden.howrah@gmail.com"; // তোমার email
+        $mail->Password     = "gcotyxhtkhewgpvr"; // App password use করবে
         $mail->SMTPSecure   = "tls";
         $mail->Port         = 587;
 
-        $mail->setFrom("smnkmrkl80@gmail.com", "Booking System");
+        $mail->setFrom("greenlandgarden.howrah@gmail.com", "Booking System");
         $mail->addAddress($userEmail, $userName);
 
         $mail->isHTML(true);

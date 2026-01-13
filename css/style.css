@@ -1,0 +1,1018 @@
+/* ===============================
+   GLOBAL STYLE
+================================ */
+body{
+	margin-top: 100px;
+	background-color: #F9F7F3;
+	position: relative;
+	font-family: "Segoe UI", Arial, sans-serif;
+}
+
+@media (min-width: 768px){
+	body{
+		margin-top: 50px;
+	}
+}
+
+#wrapper{
+	padding-left: 0;
+	position: relative;
+	z-index: 1;
+}
+
+#page-wrapper{
+	width: 100%;
+	padding: 15px;
+	background-color: #F9F7F3;
+	position: relative;
+	z-index: 1;
+}
+
+/* ===============================
+   WATERMARK LOGO (ALL PAGES)
+================================ */
+body::after{
+	content: "";
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 580px;
+	height: 480px;
+	background: url("../../img/ShuvoEventPro.png") no-repeat center;
+	background-size: contain;
+	opacity: 0.25;
+	z-index: 0;
+	pointer-events: none;
+}
+
+/* Mobile watermark size */
+@media (max-width: 768px){
+	body::after{
+		width: 180px;
+		height: 180px;
+		opacity: 0.06;
+	}
+}
+
+/* ===============================
+   TOP NAVBAR / HEADER
+================================ */
+.navbar,
+.navbar-inverse{
+	background-color: #7B1E2B !important;
+	border: none !important;
+}
+
+.navbar-brand{
+	color: #7B1E2B !important;
+	font-weight: bold;
+	font-size: 18px;
+}
+
+.navbar-inverse .navbar-nav>li>a{
+	color: #7B1E2B !important;
+}
+
+.navbar-inverse .navbar-nav>li>a:hover,
+.navbar-inverse .navbar-nav>li>a:focus{
+	color: #380214 !important;
+	background: transparent !important;
+}
+
+/* ===============================
+   TOP NAV RIGHT MENU
+================================ */
+.top-nav{
+	padding: 0 15px;
+	display: flex;
+	align-items: center;
+}
+
+.top-nav>li{
+	float: none;
+}
+
+.top-nav>li>a{
+	padding-top: 15px;
+	padding-bottom: 15px;
+	line-height: 20px;
+	color: #F9F7F3;
+}
+
+/* ===============================   SIDEBAR  ================================ */
+/* ===============================
+   Common Sidebar Styles (All sizes)
+   =============================== */
+
+.sidebar-nav {
+    background-color: #7B1E2B;
+    /* font-weight: bold; */
+}
+
+/* =====================================
+   MAIN & SUB MENU LINKS (FORCE WHITE)
+   ===================================== */
+
+.sidebar-nav > li > a,
+.sidebar-nav > li > a i,
+.sidebar-nav > li > ul > li > a,
+.sidebar-nav > li > ul > li > a i {
+    color: #ffffff !important;
+    text-decoration: none;
+}
+
+/* =====================================
+   HOVER & FOCUS STATES
+   ===================================== */
+
+.sidebar-nav > li > a:hover,
+.sidebar-nav > li > a:focus,
+.sidebar-nav > li > ul > li > a:hover,
+.sidebar-nav > li > ul > li > a:focus {
+    background-color: #D4A017;
+    color: #f8f6f7 !important;
+    outline: none;
+}
+
+/* =====================================
+   ACTIVE MENU ITEM
+   ===================================== */
+
+.sidebar-nav > li.active > a,
+.sidebar-nav > li.active > a i,
+.sidebar-nav > li > ul > li.active > a {
+    background-color: #7B1E2B;
+    color: #ffffff !important;
+}
+
+/* =====================================
+   SUBMENU STRUCTURE
+   ===================================== */
+
+.sidebar-nav > li > ul {
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-nav > li > ul > li > a {
+    display: block;
+    padding: 10px 15px 10px 38px;
+    font-size: 13px;
+}
+
+/* =====================================
+   DESKTOP ONLY (≥ 768px)
+   ===================================== */
+
+@media (min-width: 768px) {
+
+    .sidebar-nav {
+        position: fixed;
+        top: 70px;
+        bottom: 0;
+        width: 255px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding-bottom: 40px;
+        z-index: 2;
+    }
+
+    .sidebar-nav > li > a {
+        width: 255px;
+        font-size: 14px;
+    }
+}
+
+/* ===============================
+   SIDEBAR ICON & SUBMENU ALIGN FIX
+================================ */
+
+/* Make all sidebar icons same width */
+.sidebar-nav li a i {
+    width: 20px;
+    text-align: center;
+}
+
+/* Submenu indentation & font */
+.sidebar-nav .collapse li a {
+    padding-left: 35px;
+    font-size: 13px;
+}
+
+
+/* ===============================
+   PANELS / DASHBOARD
+================================ */
+.huge{
+	font-size: 40px;
+	line-height: normal;
+}
+
+.panel{
+	border-radius: 10px;
+	border: none;
+}
+
+.panel-heading{
+	background-color: #7B1E2B !important;
+	color: #FFFFFF !important;
+	font-weight: bold;
+}
+
+.panel a{
+	color: #D4A017;
+}
+
+.corporate-heading {
+	font-family: 'Montserrat', sans-serif;
+	font-size: 15px;
+	background-color: #7B1E2B !important;
+	color: #FFFFFF	 !important;
+	font-weight: bold;
+	text-transform: uppercase;
+	text-align: center;
+	letter-spacing: 3px;
+}
+
+/* ===============================
+   TABLES
+================================ */
+.table{
+	margin-bottom: 0 !important;
+	background-color: #FFFFFF;
+}
+
+.table thead{
+	background-color: #7B1E2B;
+	color: #FFFFFF;
+}
+
+.table tbody tr:hover{
+	background-color: #F3E6EA;
+}
+
+.table td, .table th {
+    vertical-align: middle !important;
+}
+/* ===============================
+   IMAGES
+================================ */
+.row .table-responsive .table tbody tr td img{
+	width: 50px;
+	border-radius: 6px;
+}
+
+/* ===============================
+   BUTTONS
+================================ */
+.btn-primary{
+	background-color: #7B1E2B;
+	border-color: #7B1E2B;
+}
+
+.btn-primary:hover{
+	background-color: #D4A017;
+	border-color: #D4A017;
+	color: #3A0D1C;
+}
+
+/* ===============================
+   FOOTER (OPTIONAL)
+================================ */
+.footer{
+	background-color: #1E1E1E;
+	color: #D4A017;
+	padding: 10px;
+	text-align: center;
+}
+
+.breadcrumb {
+	background-color: #7B1E2B;
+	position: relative;
+	border-radius: 4px;
+	padding: 10px 15px;
+	font-size: 14px;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between; /* Or use start/center as needed */
+	align-items: center;
+}
+
+/* LI text color */
+.breadcrumb > li,
+.breadcrumb > li.active {
+    color: #D4A017;
+}
+
+/* Icon color */
+.breadcrumb > li i {
+    color: #D4A017;
+}
+
+/* ===============================
+   FORCE SIDEBAR TEXT VISIBILITY
+   =============================== */
+
+/* Main menu links */
+.nav.sidebar-nav > li > a {
+    color: #F5F5F5 !important;
+    background-color: transparent;
+}
+
+/* Icons inside links */
+.nav.sidebar-nav > li > a i {
+    color: #F5F5F5 !important;
+}
+
+/* Submenu links */
+.nav.sidebar-nav > li > ul > li > a {
+    color: #F5F5F5 !important;
+}
+
+/* Hover / Focus */
+.nav.sidebar-nav > li > a:hover,
+.nav.sidebar-nav > li > a:focus,
+.nav.sidebar-nav > li > ul > li > a:hover,
+.nav.sidebar-nav > li > ul > li > a:focus {
+    background-color: #D4A017;
+    color: #F5F5F5 !important;
+}
+
+/* Active item */
+.nav.sidebar-nav > li.active > a,
+.nav.sidebar-nav > li.active > a i {
+    background-color: #7B1E2B;
+    color: #F5F5F5 !important;
+}
+
+#start_date, #start_time {
+    background: #fff7e6;
+    border: 1px solid #7B1E2B;
+	padding: 8px;
+}
+
+#end_date, #end_time {
+    background: #e8f5e9;
+    border: 1px solid #369739;
+	padding: 8px;
+}
+
+#start_date:focus,
+#end_date:focus {
+    outline: none;
+    box-shadow: 0 0 6px rgba(123,30,43,0.5);
+}
+/* =========================
+   BASE DATEPICKER
+========================= */
+.ui-datepicker {
+    font-family: "Segoe UI", sans-serif;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+/* Datepicker header background */
+.ui-datepicker .ui-datepicker-header {
+    background: linear-gradient(135deg, #7B1E2B, #9c2738);
+    border: none;
+    color: #fff;
+    border-radius: 8px;
+}
+
+/* Month & Year text */
+.ui-datepicker .ui-datepicker-title {
+    color: #3b1111;
+    font-weight: bold;
+	font-weight: 600;
+}
+
+/* Prev / Next arrow */
+.ui-datepicker .ui-datepicker-prev span,
+.ui-datepicker .ui-datepicker-next span {
+    filter: brightness(0) invert(1); /* white arrow */
+}
+
+/* =========================
+   WEEK DAY HEADER
+========================= */
+.ui-datepicker th {
+    color: #7B1E2B;
+    font-weight: 600;
+}
+
+/* All date cells */
+.ui-datepicker td a {
+    background: #f4f4f4;
+    color: #333;
+    border-radius: 6px;
+    padding: 6px;
+    transition: all 0.2s ease;
+}
+
+/* Hover date */
+.ui-datepicker td a:hover {
+    background: #7B1E2B;   /* hover yellow */
+    color: #000;
+}
+/*  WEEKEND RED */
+.weekend-date a {
+    background: #ffe5e5 !important;
+    color: #c62828 !important;
+    font-weight: 600;
+}
+
+/* Today's date */
+.ui-datepicker .ui-datepicker-today a {
+    background: #4CAF50 !important;
+    color: #fff !important;
+    font-weight: bold;
+}
+
+/* SELECTED */
+.ui-datepicker .ui-datepicker-current-day a {
+    background: #7B1E2B !important;
+    color: #fff !important;
+}
+
+/* Disabled dates */
+.ui-datepicker .ui-state-disabled span {
+    background: #a1a1a1;
+    color: #414040;
+    border-radius: 6px;
+}
+
+/* ===============================
+   CONFIRM BOOKING BUTTON
+================================ */
+.confirm-btn {
+    background: linear-gradient(135deg, #7B1E2B 0%, #b8963e 45%, #e2c46a 100%);
+    border: none;
+    padding: 14px 40px;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: #fff;
+    border-radius: 50px;
+
+    box-shadow:
+        0 6px 16px rgba(123, 30, 43, 0.45),
+        inset 0 1px 0 rgba(255, 255, 255, 0.35);
+
+    transition: 
+        background 0.35s ease,
+        box-shadow 0.35s ease,
+        transform 0.2s ease;
+}
+
+/* Hover */
+.confirm-btn:hover {
+    background: linear-gradient(135deg, #5f1520 0%, #af8721 55%, #f1d77a 100%);
+    
+    box-shadow:
+        0 12px 28px rgba(123, 30, 43, 0.6),
+        0 0 18px rgba(175, 135, 33, 0.6);
+
+    transform: translateY(-2px);
+}
+
+/* Active click */
+.confirm-btn:active {
+    transform: scale(0.96);
+    box-shadow:
+        0 6px 14px rgba(123, 30, 43, 0.45),
+        inset 0 3px 8px rgba(0, 0, 0, 0.25);
+}
+
+/* Focus */
+.confirm-btn:focus {
+    outline: none;
+    box-shadow:
+        0 0 0 3px rgba(175, 135, 33, 0.35),
+        0 8px 20px rgba(123, 30, 43, 0.5);
+}
+
+/* Optional icon support */
+.confirm-btn i {
+    margin-right: 8px;
+}
+
+
+/* Optional – Full width on mobile */
+@media (max-width: 768px) {
+    .confirm-btn {
+        width: 100%;
+        padding: 16px;
+    }
+}
+/* Discount section */
+#discountType,
+#discountValue,
+#payableAmount {
+    border-radius: 6px;
+    padding: 8px;
+}
+
+#discountValue {
+    border: 1px solid #7B1E2B;
+}
+
+#discountType {
+    border: 1px solid #ef6c00;
+}
+
+#payableAmount {
+    background: #f1f8e9;
+    border: 1px solid #2e7d32;
+    font-weight: 600;
+}
+
+#finalPayable {
+    background: #e8f5e9;
+    border: 1px solid #2e7d32;
+    font-weight: 600;
+}
+
+/* ADVANCE / DUE PAYMENT */
+#advancePaid {
+    border: 1px solid #1565c0;
+}
+
+#dueAmount {
+    background: #fff3e0;
+    border: 1px solid #ef6c00;
+    font-weight: 600;
+}
+
+.payment-box {
+    margin-top: 15px;
+    padding: 10px;
+    background: #f9f9f9;
+    border-left: 4px solid #7B1E2B;
+    border-radius: 4px;
+}
+
+/* ===============================
+   BOOKING VIEW BOX
+================================ */
+/* Remove outer styling */
+.booking-view-box {
+    padding: 0;
+    margin-top: 10px;
+}
+
+/* Label */
+.view-label {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 4px;
+    display: block;
+    font-weight: 600;
+}
+
+/* Value look (only inner boxes) */
+.view-value {
+    padding: 6px 0;
+    font-size: 15px;
+    font-weight: 600;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Icon color */
+.view-value i {
+    color: #7B1E2B;
+}
+
+@media (max-width: 767px) {
+    .view-value {
+        padding: 10px 0;
+        border-bottom: 1px dashed #ddd;
+    }
+}
+
+
+/* ===============================
+   CUSTOMER DETAILS CARD
+================================ */
+/* Section title */
+.section-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin: 10px 0 12px;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Row layout */
+.customer-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    border-bottom: 1px dashed #ddd;
+}
+
+.customer-row:last-child {
+    border-bottom: none;
+}
+
+/* Label */
+.customer-row .label {
+    font-weight: 600;
+    color: #555;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Value */
+.customer-row .value {
+    font-weight: 600;
+    color: #222;
+    text-align: right;
+    max-width: 65%;
+}
+
+/* Icon color */
+.customer-row i,
+.section-title i {
+    color: #7B1E2B;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .customer-row {
+        flex-direction: column;
+        gap: 4px;
+    }
+    .customer-row .value {
+        text-align: left;
+        max-width: 100%;
+    }
+}
+
+.booking-view-box {
+    padding: 0;
+    margin-top: 10px;
+}
+
+.view-label {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 4px;
+    display: block;
+    font-weight: 600;
+}
+
+.view-value {
+    padding: 6px 0;
+    font-size: 15px;
+    font-weight: 600;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.view-value i {
+    color: #7B1E2B;
+}
+
+/* ===============================
+   PAYMENT SUMMARY CARD
+================================ */
+/* Section title */
+.section-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #333;
+}
+
+.section-title i {
+    color: #7B1E2B;
+}
+
+/* Labels */
+.pay-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 4px;
+    display: block;
+}
+
+/* Value display */
+.pay-value {
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.pay-value.discount { color: #ef6c00; }
+.pay-value.payable  { color: #2e7d32; }
+.pay-value.due      { color: #c62828; }
+.pay-value.final      { color: #1d1aad; }
+.pay-value.advance      { color: #7B1E2B; }
+.pay-value.payment      { color: #e4b92b; }
+
+/* Inputs */
+.received-input {
+    font-weight: 600;
+}
+
+/* Payment conditional boxes */
+.payment-box {
+    margin-top: 12px;
+}
+
+/* Cash note */
+.cash-note {
+    margin-top: 8px;
+    color: #2e7d32;
+    font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .payment-summary-row > div {
+        margin-bottom: 10px;
+    }
+}
+
+/* Table wrapper */
+.facility-table-wrap {
+    margin-top: 10px;
+}
+
+/* Table look */
+.facility-table th {
+    background: #7B1E2B;
+    color: #fff;
+    font-weight: 700;
+    font-size: 13px;
+}
+
+.facility-table td {
+    vertical-align: middle !important;
+    font-size: 13px;
+}
+
+/* Qty input */
+.facility-table .qty {
+    padding: 4px;
+    height: 32px;
+}
+
+/* Grand total row */
+.grand-row th {
+    font-size: 14px;
+    font-weight: 800;
+    border-top: 2px solid #7B1E2B !important;
+}
+
+/* Divider */
+.soft-divider {
+    border: none;
+    height: 1px;
+    background: #D4A017;
+    margin: 18px 0;
+}
+
+/* Add facility section */
+.add-facility-row {
+    margin-top: 10px;
+}
+
+/* Action button */
+.removeRow {
+    padding: 4px 8px;
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+    .facility-table th,
+    .facility-table td {
+        font-size: 12px;
+    }
+
+    .add-facility-row .btn {
+        margin-top: 10px;
+    }
+}
+
+/* FORCE TABLE HEADER TO SHOW */
+#facilityTable thead {
+    display: table-header-group !important;
+}
+
+#facilityTable th {
+    background: #bb932f;
+    font-weight: 700;
+    font-size: 13px;
+    color: #7B1E2B;
+    vertical-align: middle !important;
+}
+
+/* Section title */
+.section-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #333;
+}
+
+.section-title i {
+    color: #7B1E2B;
+}
+
+/* Labels */
+.edit-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 4px;
+    display: block;
+}
+
+/* Row spacing */
+.booking-edit-row {
+    margin-top: 8px;
+}
+
+/* Calendar icon */
+.calendar-icon {
+    cursor: pointer;
+    background: #fff;
+}
+
+.calendar-icon i {
+    color: #7B1E2B;
+}
+
+/* Inputs */
+.booking-edit-row .form-control {
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .booking-edit-row > div {
+        margin-bottom: 10px;
+    }
+}
+
+/* ===============================
+   SIDEBAR SUBMENU – MENU LOOK FIX
+================================ */
+
+/* Submenu container */
+.sidebar-submenu {
+    background: #6b1827;   /* slightly darker than sidebar */
+    padding: 0;
+}
+
+/* Submenu links */
+.sidebar-submenu > li > a {
+    padding: 10px 15px 10px 48px; /* indent */
+    font-size: 13px;
+    display: block;
+    color: #ffffff !important;
+    border-left: 4px solid transparent;
+    transition: all 0.2s ease;
+}
+
+/* Submenu icon */
+.sidebar-submenu > li > a i {
+    margin-right: 6px;
+    color: #f1d77a;
+}
+
+/* Hover */
+.sidebar-submenu > li > a:hover {
+    background-color: #D4A017;
+    color: #3A0D1C !important;
+    border-left: 4px solid #ffffff;
+}
+
+/* Active submenu */
+.sidebar-submenu > li.active > a {
+    background-color: #D4A017;
+    color: #3A0D1C !important;
+    font-weight: 700;
+    border-left: 4px solid #ffffff;
+}
+
+/* Parent active indicator */
+.sidebar-nav > li > a.active-parent {
+    background-color: #6b1827;
+}
+
+.action-btn-group{
+    margin-top: 25px;
+}
+
+/* COMMON BUTTON STYLE */
+.action-btn-group .btn{
+    padding: 12px 26px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 6px;
+    border: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+/* BACK BUTTON - MAROON */
+.btn-back{
+    background: #7B1E2B;
+    color: #fff;
+}
+
+.btn-back:hover{
+    background: #651824;
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(123,30,43,0.4);
+}
+
+/* COMPLETE BUTTON - GOLDEN */
+.btn-complete{
+    background: #D4A017;
+    color: #fff;
+    margin-left: 10px;
+}
+
+.btn-complete:hover{
+    background: #b88b14;
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(212,160,23,0.45);
+}
+
+/* ICON SPACING */
+.action-btn-group i{
+    margin-right: 6px;
+}
+
+/* ===== DISABLED STATE ===== */
+.action-btn-group .btn:disabled{
+    cursor: not-allowed;
+    opacity: 0.65;
+    box-shadow: none;
+    transform: none;
+}
+
+/* GOLD BUTTON DISABLED */
+.btn-complete:disabled{
+    background: #D4A017;
+    color: #fff;
+}
+
+/* BACK BUTTON DISABLED */
+.btn-back:disabled{
+    background: #7B1E2B;
+    color: #fff;
+}
+
+/* ===== LOADING SPINNER ===== */
+.btn-loading{
+    pointer-events: none;
+    position: relative;
+    padding-left: 44px;
+}
+
+.btn-loading:before{
+    content: "";
+    width: 18px;
+    height: 18px;
+    border: 3px solid rgba(255,255,255,0.5);
+    border-top: 3px solid #fff;
+    border-radius: 50%;
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin{
+    from{ transform: rotate(0deg); }
+    to{ transform: rotate(360deg); }
+}
+

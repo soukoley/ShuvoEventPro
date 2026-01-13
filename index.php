@@ -115,7 +115,7 @@ include ("header.php");
                                 <div class="line" data-animation="fadeInUp" data-delay="300ms"></div>
                                 <h2 data-animation="fadeInUp" data-delay="500ms">The Vacation Heaven</h2>
                                 <p data-animation="fadeInUp" data-delay="700ms">Greenland is a place where love, laughter, and togetherness come alive amidst nature. Whether celebrating a wedding picnic, a child’s first rice ceremony, or a joyful family day, the green surroundings, open skies, and warm moments create memories to cherish forever. A perfect garden escape where every celebration feels peaceful, beautiful, and truly special..</p>
-                                <a href="#" class="btn palatin-btn mt-50" data-animation="fadeInUp" data-delay="900ms">Read More</a>
+                                <!--a href="#" class="btn palatin-btn mt-50" data-animation="fadeInUp" data-delay="900ms">Read More</a-->
                             </div>
                         </div>
                     </div>
@@ -134,7 +134,7 @@ include ("header.php");
                                 <div class="line" data-animation="fadeInUp" data-delay="300ms"></div>
                                 <h2 data-animation="fadeInUp" data-delay="500ms">A place to remember</h2>
                                 <p data-animation="fadeInUp" data-delay="700ms">“Surrounded by nature’s beauty, this garden is a perfect place for every celebration — be it a wedding, reception, Annaprasan, family gathering, or a peaceful picnic. With open green spaces, elegant décor, and a warm, joyful atmosphere, it creates unforgettable moments where laughter, love, and memories come together. A place to remember, where every special event begins beautifully.”</p>
-                                <a href="#" class="btn palatin-btn mt-50" data-animation="fadeInUp" data-delay="900ms">Read More</a>
+                                 <!--a href="#" class="btn palatin-btn mt-50" data-animation="fadeInUp" data-delay="900ms">Read More</a-->
                             </div>
                         </div>
                     </div>
@@ -153,7 +153,7 @@ include ("header.php");
                                 <div class="line" data-animation="fadeInUp" data-delay="300ms"></div>
                                 <h2 data-animation="fadeInUp" data-delay="500ms">Enjoy your life</h2>
                                 <p data-animation="fadeInUp" data-delay="700ms">Enjoy your life in this garden, where nature wraps you in calm and every moment feels special. Surrounded by lush greenery, fresh air, and open spaces, it’s the perfect place to relax, celebrate, and create beautiful memories.</p>
-                                <a href="#" class="btn palatin-btn mt-50" data-animation="fadeInUp" data-delay="900ms">Read More</a>
+                                <!--a href="#" class="btn palatin-btn mt-50" data-animation="fadeInUp" data-delay="900ms">Read More</a-->
                             </div>
                         </div>
                     </div>
@@ -174,13 +174,13 @@ include ("header.php");
                             <!-- Form Group -->
                             <div class="form-group">
                                 <label for="fbdate">Booking From</label>
-                                <input type="text" name="fbdate" id="fbdate" class="form-control datetime-input"" required readonly>
+                                <input type="text" name="fbdate" id="fbdate" class="form-control datetime-input" required readonly>
                             </div>
 
                             <!-- Form Group -->
                             <div class="form-group">
                                 <label for="tbdate">Booking To</label>
-                                <input type="text" name="tbdate" id="tbdate" class="form-control datetime-input"" required readonly>
+                                <input type="text" name="tbdate" id="tbdate" class="form-control datetime-input" required readonly>
                             </div>
 
                             <!-- Form Group -->
@@ -337,7 +337,9 @@ include ("header.php");
                     </div>
 
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-success">Confirm Booking</button>
+                        <button type="submit" class="btn btn-success" id="confirmBookingBtn">
+                            Confirm Booking
+                        </button>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                     </div>
                 </form>
@@ -362,7 +364,7 @@ include ("header.php");
                             <h6><span class="fa fa-check"></span> The garden is beautifully managed, and the friendly behavior of the owner makes every visit comfortable and memorable.</h6>
                             <h6><span class="fa fa-check"></span> Everything you need is available, making the place very convenient.</h6>
                         </div>
-                        <a href="#" class="btn palatin-btn mt-50">Read More</a>
+                        <!--a href="#" class="btn palatin-btn mt-50">Read More</a-->
                     </div>
                 </div>
 
@@ -388,7 +390,7 @@ include ("header.php");
     <!-- ##### About Us Area End ##### -->
 
     <!-- ##### Pool Area Start ##### -->
-    <section class="pool-area section-padding-100 bg-img bg-fixed" style="background-image: url(img/bg-img/8.jpeg);">
+    <section class="pool-area section-padding-100 bg-img bg-fixed" style="background-image: url(img/bg-img/4.jpeg);">
         <div class="container">
             <div class="row justify-content-end">
                 <div class="col-12 col-lg-7">
@@ -423,7 +425,7 @@ include ("header.php");
                             </div>
                         </div>
                         <!-- Button -->
-                        <a href="#" class="btn palatin-btn mt-50">Read More</a>
+                        <!--a href="#" class="btn palatin-btn mt-50">Read More</a-->
                     </div>
                 </div>
             </div>
@@ -460,7 +462,7 @@ include ("header.php");
                             <p>The venue is beautifully decorated with flowers, elegant drapes, and twinkling lights that create a warm and festive atmosphere.</p>
                         </div>
                         <!-- Book Room -->
-                        <a href="#" class="book-room-btn btn palatin-btn">Book Now</a>
+                        <a href="#bookingForm" class="book-room-btn btn palatin-btn">Book Now</a>
                     </div>
                 </div>
 
@@ -478,7 +480,7 @@ include ("header.php");
                             <p>The Rice Ceremony, or Annaprasan, is a special and sacred ritual that marks a baby’s first intake of solid food, usually rice.</p>
                         </div>
                         <!-- Book Room -->
-                        <a href="#" class="book-room-btn btn palatin-btn">Book Now</a>
+                        <a href="#bookingForm" class="book-room-btn btn palatin-btn">Book Now</a>
                     </div>
                 </div>
 
@@ -493,10 +495,10 @@ include ("header.php");
                         <div class="rooms-text">
                             <div class="line"></div>
                             <h4>Picnic</h4>
-                            <p>It’s a perfect way to take a break from daily routines, create happy memories, and enjoy quality time with loved ones.</p>
+                            <p>It’s a perfect way to take a break from daily routines, create happy memories, and enjoy quality time with loved ones. Greenland is the best for all Events.</p>
                         </div>
                         <!-- Book Room -->
-                        <a href="index.php" class="book-room-btn btn palatin-btn">Book Now</a>
+                        <a href="#bookingForm" class="book-room-btn btn palatin-btn">Book Now</a>
                     </div>
                 </div>
 
@@ -669,19 +671,25 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 
                     facilities.forEach(function (facility) {
                         let row = `
-                            <tr>
-                                <td><input type="checkbox" class="facility-checkbox" name="facility_id[]" value="${facility.id}"></td>
-                                <td>
-                                    ${facility.fName}
-                                    <input type="hidden" name="facility_name[${facility.id}]" value="${facility.fName}">
-                                </td>
-                                <td>
-                                    ${facility.fPrice}
-                                    <input type="hidden" name="facility_price[${facility.id}]" value="${facility.fPrice}">
-                                </td>
-                                <td><input type="number" name="quantity[${facility.id}]" class="form-control" min="1"></td>
-                            </tr>
+                        <tr>
+                            <td>
+                                <input type="checkbox" class="facility-checkbox" value="${facility.id}">
+                            </td>
+                            <td>
+                                ${facility.fName}
+                                <input type="hidden" class="facility-name" value="${facility.fName}">
+                                <input type="hidden" class="facility-gst" value="${facility.gst_rate}">
+                            </td>
+                            <td>
+                                ${facility.fPrice}
+                                <input type="hidden" class="facility-price" value="${facility.fPrice}">
+                            </td>
+                            <td>
+                                <input type="number" class="form-control facility-qty" min="1">
+                            </td>
+                        </tr>
                         `;
+
                         tableBody.append(row);
                     });
                     
@@ -696,6 +704,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 
     document.getElementById('finalBookingForm').addEventListener('submit', function(e) {
         e.preventDefault(); // Prevent normal form submission
+        const confirmBtn = document.getElementById("confirmBookingBtn");
 
         // Collect main booking info
         let fbdate = $("input[name='fbdate']").val();
@@ -712,22 +721,28 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
         // Collect selected facilities
         let selectedFacilities = [];
 
-        $(".facility-checkbox:checked").each(function() {
+        $(".facility-checkbox:checked").each(function () {
             let row = $(this).closest("tr");
+
             let id = $(this).val();
-            let name = row.find("td:eq(1)").text();
-            let price = row.find("td:eq(2)").text();
-            let qty = row.find("input[type='number']").val();
+            let name = row.find(".facility-name").val();
+            let price = row.find(".facility-price").val();
+            let gstRate = row.find(".facility-gst").val();   // ✅ GST
+            let qty = row.find(".facility-qty").val();
 
             selectedFacilities.push({
                 id: id,
                 name: name,
                 price: price,
+                gst_rate: gstRate,
                 quantity: qty
             });
         });
 
+
         //console.log("Sending facilities:", selectedFacilities);
+        confirmBtn.disabled = true;
+        confirmBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Processing...';
 
         $.ajax({
             url: 'save_booking.php',  // Your backend PHP script that will save to DB
@@ -750,23 +765,24 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
             success: function(response) {
                 // Assuming your PHP returns JSON like { success: true, message: "Saved" }
                 console.log("Raw response from PHP:", response); 
+                // 🔓 button enable again
+                confirmBtn.disabled = false;
+                confirmBtn.innerHTML = 'Confirm Booking';
+
                 try {
                     
                     if (response.success) {
                         alert(response.message);
-                        
-                        // Hide the modal
+
                         let modalEl = document.getElementById('facilityModal');
-                        console.log("bootstrap.Modal:", bootstrap.Modal);
                         let modal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
                         modal.hide();
 
                         $('#finalBookingForm')[0].reset();
                         $("#facilityTableBody").empty();
 
-                         // ✅ Auto download PDF
+                        // PDF auto download (যেমন আছে তেমনই থাকবে)
                         if (response.pdf_base64) {
-                            // base64 কে binary Blob বানাও
                             const byteCharacters = atob(response.pdf_base64);
                             const byteNumbers = new Array(byteCharacters.length);
                             for (let i = 0; i < byteCharacters.length; i++) {
@@ -775,15 +791,12 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
                             const byteArray = new Uint8Array(byteNumbers);
                             const blob = new Blob([byteArray], { type: "application/pdf" });
 
-                            // Auto download trigger
                             const link = document.createElement("a");
                             link.href = URL.createObjectURL(blob);
-                            link.download = "Booking.pdf";   // filename set করো
+                            link.download = "Booking.pdf";
                             document.body.appendChild(link);
                             link.click();
                             document.body.removeChild(link);
-
-                            // Memory free
                             URL.revokeObjectURL(link.href);
                         }
 
@@ -797,10 +810,14 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
                 }
             },
             error: function(xhr, status, error) {
+
+                confirmBtn.disabled = false;
+                confirmBtn.innerHTML = 'Confirm Booking';
+
                 console.error("AJAX Error:", status, error);
-                console.error("Server said:", xhr.responseText);
                 alert("AJAX error while saving booking.");
             }
+
         });
     });
 

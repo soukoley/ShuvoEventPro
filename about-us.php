@@ -122,7 +122,7 @@ include ("header.php");
                             <h2>A place for every events</h2>
                         </div>
                         <p>This beautiful garden is a serene haven, carefully nurtured and maintained by its dedicated owner. With vibrant flowers, lush greenery, and peaceful spots for relaxation, the garden offers a perfect escape from the hustle and bustle. The owner’s passion and attention to detail shine through in every corner, ensuring visitors always feel welcomed and comfortable. Whether for events or simple picnics, this garden reflects warmth, care, and a love for nature.</p>
-                        <a href="#" class="btn palatin-btn mt-50">Read More</a>
+                        <!--a href="#" class="btn palatin-btn mt-50">Read More</a-->
                     </div>
                 </div>
 

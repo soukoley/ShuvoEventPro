@@ -16,6 +16,32 @@
 
     <!-- Core Stylesheet -->
     <link rel="stylesheet" href="style.css">
+	
+	<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    // Get current page name
+    let currentPage = window.location.pathname.split("/").pop();
+
+    // Default to index.php if empty
+    if (currentPage === "") {
+        currentPage = "index.php";
+    }
+
+    // Select all nav links
+    const navLinks = document.querySelectorAll("#nav li a");
+
+    navLinks.forEach(link => {
+        const linkPage = link.getAttribute("href");
+
+        if (linkPage === currentPage) {
+            link.parentElement.classList.add("active");
+        }
+    });
+
+});
+</script>
+
 
 </head>
 
@@ -54,18 +80,34 @@
 
                             <!-- Nav Start -->
                             <div class="classynav">
-                                <ul>
+							
+							
+							<ul id="nav">
+							<li><a href="index.php">Home</a></li>
+							<li><a href="about-us.php">About Us</a></li>
+							<li><a href="gallery.php">Gallery</a></li>
+							<li><a href="contact.php">Contact</a></li>
+						</ul>
+
+							
+							
+						
+
+						
+
+							
+                                <!--ul>
                                     <li class="active"><a href="index.php">Home</a></li>
                                     <li><a href="about-us.php">About Us</a></li>
                                     <li><a href="gallery.php">Gallery</a></li>
-                                    <li><a href="services.php">Services</a></li>
+                                    <!--li><a href="services.php">Services</a></li>
                                     <li><a href="contact.php">Contact</a></li>
 									<li><a href="login.php">Login</a></li>
                                 </ul>
 
                                 <!-- Button -->
                                 <div class="menu-btn">
-                                    <a href="#" class="btn palatin-btn">Make a Reservation</a>
+                                    <a href="#" class="btn palatin-btn">Contact: 9088152702</a>
                                 </div>
 
                             </div>

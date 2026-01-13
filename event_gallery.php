@@ -3,15 +3,27 @@ include ("includes/db.php");
 include ("header.php");
 
 if(isset($_GET['event_gallery'])){
- 	$event_id=$_GET['event_gallery'];
+ 	$event_id1=$_GET['event_gallery'];
 	
-	$get_event="select * from event where id=$event_id";
+	$get_event="select * from event where id=$event_id1";
 	$run_event=mysqli_query($con,$get_event);
 	while($row_event=mysqli_fetch_array($run_event)){
 		$event_id=$row_event['id'];
 		$event_title=$row_event['e_name'];
 	}
 
+}
+?>
+<?php
+
+/* FUNCTION TO EXTRACT YOUTUBE VIDEO ID */
+function getYouTubeId($url) {
+    preg_match(
+        '%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i',
+        $url,
+        $matches
+    );
+    return $matches[1] ?? '';
 }
 ?>
 <!DOCTYPE html>
@@ -32,6 +44,88 @@ if(isset($_GET['event_gallery'])){
 
     <!-- Core Stylesheet -->
     <link rel="stylesheet" href="style.css">
+	
+	
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+        }
+
+        .video-box {
+            background: #fff;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            cursor: pointer;
+        }
+
+        .video-box img {
+            width: 100%;
+            border-radius: 8px;
+        }
+
+        .video-title {
+            text-align: center;
+            font-weight: bold;
+            margin-top: 8px;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+        }
+
+        .modal-content {
+            width: 90%;
+            max-width: 700px;
+            background: #000;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .modal iframe {
+            width: 100%;
+            height: 400px;
+            border-radius: 10px;
+        }
+
+        .close {
+            position: absolute;
+            top: -35px;
+            right: 0;
+            font-size: 30px;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        @media (max-width: 600px) {
+            .modal iframe {
+                height: 220px;
+            }
+        }
+    </style>
+	
+	
 
 </head>
 
@@ -55,7 +149,7 @@ if(isset($_GET['event_gallery'])){
 		
 		 <div class="row justify-content-center">
 			<?php  
-					$get_event="select * from event_gallery where event_id=$event_id";
+					$get_event="select * from event_gallery where event_id=$event_id1";
 					$run_event=mysqli_query($con,$get_event);
 					while($row_event=mysqli_fetch_array($run_event)){
 						$event_id=$row_event['id'];
@@ -85,15 +179,58 @@ if(isset($_GET['event_gallery'])){
                 
 
             </div>
-			
+			<h2>🎬 Video Gallery</h2>
+
+			<div class="gallery">
+			<?php
+			$sql = "SELECT * FROM event_gallery_video where event_id=$event_id1";
+			$result = mysqli_query($con, $sql);
+
+			while ($row = mysqli_fetch_assoc($result)) {
+
+				$videoId = getYouTubeId($row['youtube_url']);
+				if (!$videoId) continue;
+			?>
+				<div class="video-box" onclick="openVideo('<?php echo $videoId; ?>')">
+					<img src="https://img.youtube.com/vi/<?php echo $videoId; ?>/hqdefault.jpg">
+					<div class="video-title"><?php echo htmlspecialchars($row['title']); ?></div>
+				</div>
+			<?php } ?>
+			</div>
+
+			<!-- MODAL -->
+			<div class="modal" id="videoModal">
+				<div class="modal-content">
+					<span class="close" onclick="closeVideo()">&times;</span>
+					<iframe id="videoFrame" src="" allowfullscreen></iframe>
+				</div>
+			</div>
+
+			<script>
+			function openVideo(videoId) {
+				document.getElementById("videoFrame").src =
+					"https://www.youtube.com/embed/" + videoId + "?autoplay=1";
+				document.getElementById("videoModal").style.display = "flex";
+			}
+
+			function closeVideo() {
+				document.getElementById("videoFrame").src = "";
+				document.getElementById("videoModal").style.display = "none";
+			}
+			</script>
+
            
         </div>
+		
+		
+		
     </section>
+	
+	
     <!-- ##### About Us Area End ##### -->
 
 
-    <!-- ##### Footer Area Start ##### -->
-    <footer class="footer-area">
+     <footer class="footer-area">
         <div class="container">
             <div class="row">
 
@@ -101,12 +238,12 @@ if(isset($_GET['event_gallery'])){
                 <div class="col-12 col-lg-5">
                     <div class="footer-widget-area mt-50">
                         <a href="#" class="d-block mb-5"><img src="img/core-img/logo.png" alt=""></a>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec malesuada lorem maximus mauris sceleri sque, at rutrum nulla dictum. Ut ac ligula sapien. Suspendisse cursus faucibus finibus. </p>
+                        <p></p>
                     </div>
                 </div>
 
                 <!-- Footer Widget Area -->
-                <div class="col-12 col-md-6 col-lg-4">
+                <!--div class="col-12 col-md-6 col-lg-4">
                     <div class="footer-widget-area mt-50">
                         <h6 class="widget-title mb-5">Find us on the map</h6>
                         <img src="img/bg-img/footer-map.png" alt="">
@@ -114,7 +251,7 @@ if(isset($_GET['event_gallery'])){
                 </div>
 
                 <!-- Footer Widget Area -->
-                <div class="col-12 col-md-6 col-lg-3">
+                <!--div class="col-12 col-md-6 col-lg-3">
                     <div class="footer-widget-area mt-50">
                         <h6 class="widget-title mb-5">Subscribe to our newsletter</h6>
                         <form action="#" method="post" class="subscribe-form">
@@ -128,7 +265,7 @@ if(isset($_GET['event_gallery'])){
                 <div class="col-12">
                     <div class="copywrite-text mt-30">
                         <p><a href="#"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | Greenland
 <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
                     </div>
                 </div>

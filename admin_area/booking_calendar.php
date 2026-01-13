@@ -2,7 +2,6 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-
 if(!isset($_SESSION['admin_email'])){
     echo "<script>window.open('login.php','_self')</script>";
     exit;
@@ -21,47 +20,143 @@ if(!isset($_SESSION['admin_email'])){
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <style>
-body{background:#f4f6f9;font-family:Segoe UI}
-.dark body{background:#121212;color:#eee}
+body{
+    background:#f4f6f9;
+    font-family:Segoe UI
+}
+.dark body{
+    background:#121212;
+    color:#eee
+}
 
 .calendar-card{
-    background:#fff;border-radius:12px;
-    padding:12px;box-shadow:0 4px 10px rgba(0,0,0,.08)
+    background:#fff;
+    border-radius:12px;
+    padding:12px;
+    box-shadow:0 4px 10px rgba(0,0,0,.08)
 }
-.dark .calendar-card{background:#1e1e1e}
+.dark .calendar-card{
+    background:#1e1e1e
+}
 
-.fc-event{font-size:11px;border-radius:6px;padding:2px}
-.fc-toolbar-title{font-size:18px}
+/* ===== FORCE FULLCALENDAR v6 STATUS COLORS ===== */
 
-.top-bar{
-    display:flex;gap:10px;align-items:center;margin-bottom:10px
+.fc .fc-daygrid-event.fc-event.status-approved,
+.fc .fc-timegrid-event.fc-event.status-approved,
+.fc .fc-list-event.fc-event.status-approved {
+    background-color: #28a745 !important;
+    border-color: #28a745 !important;
+    color: #ffffff !important;
+}
+
+.fc .fc-daygrid-event.fc-event.status-pending,
+.fc .fc-timegrid-event.fc-event.status-pending,
+.fc .fc-list-event.fc-event.status-pending {
+    background-color: #9d36f7 !important;
+    border-color: #9d36f7 !important;
+    color: #000000 !important;
+}
+
+.fc .fc-daygrid-event.fc-event.status-completed,
+.fc .fc-timegrid-event.fc-event.status-completed,
+.fc .fc-list-event.fc-event.status-completed {
+    background-color: #06c0c9 !important;
+    border-color: #06c0c9 !important;
+    color: #ffffff !important;
+}
+
+.fc .fc-daygrid-event.fc-event.status-rejected,
+.fc .fc-timegrid-event.fc-event.status-rejected,
+.fc .fc-list-event.fc-event.status-rejected {
+    background-color: #f7366a !important;
+    border-color: #f7366a !important;
+    color: #ffffff !important;
+}
+
+
+.fc-tooltip {
+    position: absolute;
+    z-index: 9999;
+    background: rgba(0, 0, 0, 0.85);
+    color: #fff;
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    pointer-events: none;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    max-width: 220px;
+}
+
+.calendar-header {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    background: #f2f2f2;
+}
+
+/* Normal mode text */
+.calendar-header h4 {
+    margin: 0;
+    color: #222;
+    font-weight: 600;
+}
+
+/* Button */
+#darkToggle {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    background: #333;
+    color: #fff;
+    font-size: 14px;
+}
+
+/* 🔥 DARK MODE */
+.calendar-header.dark {
+    background: #111;          /* Dark background */
+    border: 1px solid #444;
+}
+
+.calendar-header.dark h4 {
+    color: #ffffff;            /* TEXT VISIBLE */
+}
+
+.calendar-header.dark #darkToggle {
+    background: #ffffff;       /* BUTTON VISIBLE */
+    color: #000;
+}
+
+
+
 }
 </style>
 </head>
 
 <body>
 
-<div class="container-fluid" style="padding:15px">
-    <div class="top-bar">
-        <h4 class="text-primary">📅 Booking Calendar</h4>
+<div style="padding:15px">
 
-        <select id="hallFilter" class="form-control" style="width:180px">
-            <option value="">All Halls</option>
-            <?php
-            include('./includes/db.php');
-            $h=mysqli_query($con,"SELECT DISTINCT e_name FROM booking_details");
-            while($x=mysqli_fetch_assoc($h)){
-                echo "<option>{$x['e_name']}</option>";
-            }
-            ?>
-        </select>
+	<div class="calendar-header">
+		<h4>📅 Booking Calendar</h4>
+		<button id="darkToggle">🌙 Dark</button>
+	</div>
 
-        <button id="darkToggle" class="btn btn-sm btn-default">
-            🌙 Dark
-        </button>
+    <!--div style="display:flex;gap:10px;align-items:center;margin-bottom:10px">
+        <h4>📅 Booking Calendar</h4>
 
-        <span class="label label-danger" id="upcomingBadge"></span>
-    </div>
+        <button id="darkToggle">🌙 Dark</button>
+    </div-->
+
+    <!-- LEGEND >
+    <div style="margin-bottom:10px">
+        <span class="fc-event status-confirmed">Confirmed</span>
+        <span class="fc-event status-pending">Pending</span>
+        <span class="fc-event status-cancelled">Cancelled</span>
+    </div-->
 
     <div class="calendar-card">
         <div id="calendar"></div>
@@ -76,16 +171,14 @@ $("#darkToggle").click(()=>{
 });
 
 function getView(){
-    if(innerWidth<576) return 'listDay';
-    if(innerWidth<992) return 'timeGridWeek';
+    if(window.innerWidth<576) return 'listDay';
+    if(window.innerWidth<992) return 'timeGridWeek';
     return 'dayGridMonth';
 }
 
-let calendar=new FullCalendar.Calendar(
+let calendar = new FullCalendar.Calendar(
 document.getElementById('calendar'),{
     initialView:getView(),
-    editable:true,   // 🔥 Drag enabled
-    selectable:true,
     height:'auto',
 
     headerToolbar:{
@@ -94,59 +187,19 @@ document.getElementById('calendar'),{
         right:'dayGridMonth,timeGridWeek,listDay'
     },
 
-    events:function(info,success){
-        $.get('fetch_bookings.php',{
-            hall:$("#hallFilter").val()
-        },success);
-    },
-
-    eventDrop:function(info){
-        Swal.fire({
-            title:'Reschedule booking?',
-            text:'Do you want to move this booking?',
-            showCancelButton:true
-        }).then(r=>{
-            if(!r.isConfirmed){
-                info.revert();
-                return;
-            }
-
-            $.post("reschedule_drag.php",{
-                booking_id:info.event.id,
-                start:info.event.start.toISOString(),
-                end:info.event.end.toISOString()
-            },function(res){
-                if(res!=="OK"){
-                    Swal.fire("Conflict!",res,"error");
-                    info.revert();
-                }
-            });
-        });
-    },
+    events:'fetch_bookings.php',
 
     eventClick:function(info){
         Swal.fire({
             title:info.event.title,
-            html:`
-            Customer: ${info.event.extendedProps.customer}<br>
-            Guests: ${info.event.extendedProps.max_guest}<br>
-            Status: ${info.event.extendedProps.status}
-            `,
-            confirmButtonText:'Open Booking'
-        }).then(()=>{
-            location="confirm_booking.php?id="+info.event.id;
+            html:`Status: <b>${info.event.extendedProps.status}</b>`,
+			html:`Guest: <b>${info.event.extendedProps.max_guest}</b>`,
+            confirmButtonText:'OK'
         });
     }
 });
 
 calendar.render();
-
-$("#hallFilter").change(()=>calendar.refetchEvents());
-
-// 🔔 Upcoming badge
-$.get("upcoming_count.php",c=>{
-    if(c>0) $("#upcomingBadge").text("Upcoming: "+c);
-});
 </script>
 
 </body>
