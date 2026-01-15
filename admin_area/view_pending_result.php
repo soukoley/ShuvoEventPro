@@ -47,7 +47,7 @@ if(!isset($_SESSION['admin_email'])){
                     <div class="panel panel-primary">
                         <div class="panel-heading corporate-heading">
                             <h3 class="panel-title"><i class="fa fa-clock-o"></i>
-                                Pending&nbsp;&nbsp;Booking&nbsp;&nbsp;from&nbsp;&nbsp;<?php echo date("d M Y", strtotime($sdate)); ?> &nbsp;&nbsp;to&nbsp;&nbsp; <?php echo date("d M Y", strtotime($edate)); ?>
+                                Pending Booking from <?php echo date("d M Y", strtotime($sdate)); ?>  to  <?php echo date("d M Y", strtotime($edate)); ?>
                             </h3>
                         </div>
 

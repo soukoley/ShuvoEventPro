@@ -53,6 +53,15 @@ body::after{
 		height: 180px;
 		opacity: 0.06;
 	}
+    .breadcrumb {
+        margin-top: 20px;
+    }
+    .corporate-heading {
+        white-space: normal;        /* wrapping allow */
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        line-height: 1.4;
+    }
 }
 
 /* ===============================

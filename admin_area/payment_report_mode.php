@@ -8,34 +8,48 @@ $from = isset($_GET['from_date']) ? $_GET['from_date'] : '';
 $to   = isset($_GET['to_date']) ? $_GET['to_date'] : '';
 ?>
 
-<h4 class="section-title">
-    <i class="fa fa-credit-card"></i> Mode-wise Payment Report
-</h4>
+<div class="row">
+	<div class="col-lg-12 col-md-10 col-sm-12 col-xs-12 mx-auto">
+		<div class="breadcrumb">
+			<li class="active">
+				<i class="fa fa-fw fa-credit-card"></i>
+				Payment / Payment Reports / Mode-wise Report
+			</li>
+		</div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12 col-md-10 col-sm-12 col-xs-12 mx-auto">
+        <div class="panel-heading corporate-heading">
+            <h3 class="panel-title">
+                <i class="fa fa-credit-card"></i> Mode-wise Payment Report
+            </h3>
+        </div>
+        <div class="panel-body" style="padding-top: 20px;">
 
-<!-- FILTER -->
-<div class="panel panel-default">
-    <div class="panel-body">
-        <form method="GET" class="row">
-            <input type="hidden" name="payment_report_mode">
+            <form class="form-horizontal" method="GET" class="row">
+                <input type="hidden" name="payment_report_mode">
+                <div class="form-group">
+                    <label class="col-md-2 control-label" style="text-align : right;">Start Date :</label>
+                    <div class="col-md-3">
+                        <input type="date" name="from_date" class="form-control"
+                        value="<?php echo $from; ?>">
+                    </div>
 
-            <div class="col-md-3">
-                <label class="edit-label">From Date</label>
-                <input type="date" name="from_date" class="form-control"
-                       value="<?php echo $from; ?>">
-            </div>
-
-            <div class="col-md-3">
-                <label class="edit-label">To Date</label>
-                <input type="date" name="to_date" class="form-control"
-                       value="<?php echo $to; ?>">
-            </div>
-
-            <div class="col-md-3" style="margin-top:20px;">
-                <button class="btn btn-primary">
-                    <i class="fa fa-search"></i> Generate
-                </button>
-            </div>
-        </form>
+                    <label class="col-md-2 control-label" style="text-align : right;">End Date :</label>
+                    <div class="col-md-3">
+                        <input type="date" name="to_date" class="form-control"
+                        value="<?php echo $to; ?>">
+                    </div>
+                    
+                    <div class="col-md-2">
+                        <button class="btn btn-primary">
+                            <i class="fa fa-search"></i> Generate
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 

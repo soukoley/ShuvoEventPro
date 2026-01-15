@@ -28,7 +28,7 @@ if(!isset($_SESSION['admin_email'])){
 		<div class="panel panel-primary">
 			<div class="panel-heading corporate-heading">
 				<h3 class="panel-title">
-					Date&nbsp;&nbsp;Range&nbsp;&nbsp;For&nbsp;&nbsp;Approved&nbsp;&nbsp;Booking
+					Date Range For Approved Booking
 				</h3>
 			</div>
 			<div class="panel-body" style="padding-top: 20px;">
