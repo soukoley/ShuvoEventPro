@@ -19,8 +19,7 @@ if(!isset($_SESSION['admin_email'])){
 	<div class="col-lg-12 col-md-10 col-sm-12 col-xs-12 mx-auto">
 		<div class="breadcrumb">
 			<li class="active">
-				<i class="fa fa-fw fa-calendar"></i>
-				Dashboard / Edit Event
+				<i class="fa fa-fw fa-calendar"></i> Event / Edit Event
 			</li>
 		</div>
 		<div class="row">

@@ -6,11 +6,11 @@ if(!isset($_SESSION['admin_email'])){
 ?>
 <div class="row">
 	<div class="col-lg-12 col-md-10 col-sm-12 col-xs-12 mx-auto">
-		<ol class="breadcrumb">
+		<div class="breadcrumb">
 			<li class="active">
 				<i class="fa fa-fw fa-calendar"></i> Event / View Event
 			</li>
-		</ol>
+		</div>
 	</div>
 </div>
 <div class="row">
@@ -57,10 +57,15 @@ if(!isset($_SESSION['admin_email'])){
 							<td class="text-center"><img src="event_category/<?php echo $e_cat_img ?>" width="30" width="40"></td>
 							
 							<td>
-								<a href="index.php?edit_event=<?php echo $id ?>"><i class="fa fa-pencil" style="font-size:16px; font-weight: bold; color:green;"> Edit</i></a>
+								<a href="index.php?edit_event=<?php echo $id; ?>">
+									<i class="fa fa-pencil" style="font-size:16px; font-weight: bold; color:green;"> Edit</i>
+								</a>
 							</td>
+
 							<td>
-								<a href="index.php?delete_event=<?php echo $id ?>"><i class="fa fa-trash-o" style="font-size:16px; font-weight: bold; color:red;"> Delete</i></a>
+								<a href="#" onclick="deleteEvent(<?php echo $id; ?>)" >
+									<i class="fa fa-trash" style="font-size:16px; font-weight: bold; color:red;"> Delete</i>
+								</a>
 							</td>
 						</tr>
 						<?php } ?>
@@ -73,5 +78,24 @@ if(!isset($_SESSION['admin_email'])){
 		</div>
 	</div>
 </div>
+
+<script>
+function deleteEvent(id) {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "This event will be permanently deleted!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'Cancel'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = "index.php?delete_event=" + id;
+        }
+    });
+}
+</script>
 
 <?php } ?>

@@ -53,6 +53,20 @@ if (!isset($_SESSION['admin_email'])) {
 							</div>
 						</div>
 
+						<!-- Compulsory field -->
+						<div class="form-group">
+							<label class="col-md-3 control-label">Is it compulsory?</label>
+							<div class="col-md-6">
+								<label class="radio-inline" style="margin-right:15px;">
+									<input type="radio" name="compulsory" value="1"> Yes
+								</label>
+								<label class="radio-inline">
+									<input type="radio" name="compulsory" value="0" checked> No
+								</label>
+							</div>
+						</div>
+
+
 						<!-- Price -->
 						<div class="form-group">
 							<label class="col-md-3 control-label">Price :</label>
@@ -61,11 +75,19 @@ if (!isset($_SESSION['admin_email'])) {
 							</div>
 						</div>
 
+						<!-- Special Price -->
+						<div class="form-group">
+							<label class="col-md-3 control-label">Special Price :</label>
+							<div class="col-md-6">
+								<input type="number" name="specialPrice" class="form-control" value="0.00" required>
+							</div>
+						</div>
+
 						<!-- GST -->
 						<div class="form-group">
 							<label class="col-md-3 control-label">GST Rate :</label>
 							<div class="col-md-6">
-								<input type="number" name="gst_rate" class="form-control" min="0" required>
+								<input type="number" name="gst_rate" class="form-control" value="0.00" required>
 							</div>
 						</div>
 
@@ -92,6 +114,7 @@ if (!isset($_SESSION['admin_email'])) {
 							<div class="col-md-6">
 								<select name="max_people" class="form-control">
 									<option value="">-- Select --</option>
+									<option value="0"> 0 </option>
 									<?php
 									$run = mysqli_query($con,"SELECT * FROM guest ORDER BY max_guest");
 									while($row=mysqli_fetch_assoc($run)){

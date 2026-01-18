@@ -355,6 +355,25 @@ if(!isset($_SESSION['admin_email'])){
                             <i class="fa fa-fw fa-calendar-o"></i> Financial Year
                         </a>
                     </li>
+                    <li>
+                        <a href="#" data-toggle="collapse" data-target="#holidaysMenu">
+                            <i class="fa fa-gift"></i> Manage Holidays
+                            <i class="fa fa-fw fa-caret-down pull-right"></i>
+                        </a>
+
+                        <ul id="holidaysMenu" class="collapse sidebar-submenu">
+                            <li>
+                                <a href="index.php?holidays">
+                                    <i class="fa fa-fw fa-plus"></i> Add Holiday
+                                </a>
+                            </li>
+                            <li>
+                                <a href="index.php?view_holidays">
+                                    <i class="fa fa-fw fa-eye"></i> View Holidays
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
 
                     <!-- (Future Ready – optional, comment for now) -->
                     <!--

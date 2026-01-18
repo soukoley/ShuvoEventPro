@@ -190,13 +190,89 @@ document.getElementById('calendar'),{
     events:'fetch_bookings.php',
 
     eventClick:function(info){
+
+        let p = info.event.extendedProps;
+
+        // Fallback values
+        let cname   = p.customer_name   || "N/A";
+        let mobile  = p.customer_mobile || "";
+        let bdate   = p.booking_date   || "N/A";
+        let status  = (p.status || "N/A").toLowerCase();
+        let guests  = p.max_guest || "N/A";
+        let bid     = p.booking_id || "N/A";
+
+        // Status color mapping
+        let statusColor = "#6c757d"; // default gray
+        if(status === "approved")  statusColor = "#28a745";
+        if(status === "pending")   statusColor = "#9d36f7";
+        if(status === "completed")statusColor = "#06c0c9";
+        if(status === "rejected" || status === "cancelled") statusColor = "#f7366a";
+
+        // Format links
+        let phoneLink = mobile ? `tel:${mobile}` : "#";
+        let waLink = mobile 
+            ? `https://wa.me/${mobile}?text=${encodeURIComponent(
+                "Hello " + cname + ", regarding your booking (ID: " + bid + ")."
+            )}`
+            : "#";
+
         Swal.fire({
-            title:info.event.title,
-            html:`Status: <b>${info.event.extendedProps.status}</b>`,
-			html:`Guest: <b>${info.event.extendedProps.max_guest}</b>`,
-            confirmButtonText:'OK'
+            title: "",
+            html: `
+            <div style="
+                background: #d39da3;
+                border-radius:12px;
+                box-shadow:0 8px 20px #7B1E2B;
+                padding:16px;
+                font-family:Segoe UI, Arial, sans-serif;
+            ">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+                    <h3 style="margin:0;font-size:18px">
+                        <i class="fa fa-calendar"></i> Booking Details
+                    </h3>
+                    <span style="
+                        background:${statusColor};
+                        color:#fff;
+                        padding:4px 10px;
+                        border-radius:20px;
+                        font-size:12px;
+                        text-transform:capitalize;
+                    ">
+                        ${status}
+                    </span>
+                </div>
+
+                <div style="font-size:14px;line-height:1.7">
+                    <p><i class="fa fa-hashtag"></i> <b>Booking ID:</b> ${bid}</p>
+                    <p><i class="fa fa-calendar-check-o"></i> <b>Booking Date:</b> ${bdate}</p>
+                    <p><i class="fa fa-user"></i> <b>Name:</b> ${cname}</p>
+                    <p><i class="fa fa-phone"></i> <b>Mobile:</b> ${mobile || "N/A"}</p>
+                    <p><i class="fa fa-users"></i> <b>Guests:</b> ${guests}</p>
+                </div>
+
+                <hr style="margin:12px 0">
+
+                <div style="display:flex;gap:10px;justify-content:center">
+                    <a href="${phoneLink}" 
+                    class="swal2-confirm swal2-styled" 
+                    style="text-decoration:none; color: #7B1E2B">
+                        <i class="fa fa-phone"></i> Call
+                    </a>
+
+                    <a href="${waLink}" 
+                    target="_blank"
+                    class="swal2-cancel swal2-styled" 
+                    style="text-decoration:none; color: #068522">
+                        <i class="fa fa-whatsapp"></i> WhatsApp
+                    </a>
+                </div>
+            </div>
+            `,
+            showConfirmButton: false,
+            showCloseButton: true
         });
     }
+
 });
 
 calendar.render();

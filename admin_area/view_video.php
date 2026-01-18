@@ -35,7 +35,7 @@ if(!isset($_SESSION['admin_email'])){
 									<th>ID</th>
 									<th>Event Name</th>
 									<th>Video Details</th>
-									<th>Video URL</th>
+									<!-- <th>Video URL</th> -->
 									<th class="text-center">Watch Video</th>
 									<th class="text-center">Remove</th>
 								</tr>
@@ -64,7 +64,7 @@ if(!isset($_SESSION['admin_email'])){
 									<td><?php echo $i ?></td>
 									<td><?php echo $e_name ?></td>
 									<td><?php echo $title ?></td>
-									<td><?php echo $youtube_url ?></td>
+									<!-- <td><?php echo $youtube_url ?></td> -->
 									<td class="text-center">
 										<a href="<?php echo htmlspecialchars($youtube_url); ?>"<i class="fa fa-play-circle" style="font-size:16px; font-weight: bold; color:green;" target="_blank">
 											Watch

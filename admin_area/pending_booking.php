@@ -34,13 +34,13 @@ if(!isset($_SESSION['admin_email'])){
 			<div class="panel-body" style="padding-top: 20px;">
 				<form class="form-horizontal" method="post" action="" enctype="multipart/form-data">
 					<div class="form-group">
-						<label class="col-md-3 control-label">Start Date :</label>
+						<label class="col-md-3 control-label">Booking Start Date :</label>
 						<div class="col-md-6">
 							<input type="date" name="sdate"  class="form-control" required="">
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-md-3 control-label">End Date :</label>
+						<label class="col-md-3 control-label">Booking End Date :</label>
 						<div class="col-md-6">
 							<input type="date" name="edate" value="<?php $currentDate = date('Y-m-d'); echo $currentDate; ?>" class="form-control" required="">
 						</div>

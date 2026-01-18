@@ -14,9 +14,10 @@ use PHPMailer\PHPMailer\Exception;
 
 date_default_timezone_set('Asia/Kolkata');
 
-// Read JSON body
+// Read JSON input
 $data = json_decode(file_get_contents("php://input"), true);
 
+// Validate required fields
 if (!$data || !isset($data['fbdate'], $data['event'], $data['tbdate'], $data['maxPeople'], $data['userName'], $data['userEmail'], $data['userPhone'], $data['userId'], $data['userAddress'])) {
     echo json_encode(['success' => false, 'message' => 'Invalid request or missing fields']);
     exit;
@@ -35,11 +36,11 @@ $userId     = $data['userId'];
 $userAddress = $data['userAddress'];
 $facilities = isset($data['facilities']) ? $data['facilities'] : [];
 $booking_date = date('Y-m-d H:i:s');
+$clientTotal = isset($data['grandTotal']) ? floatval($data['grandTotal']) : 0;
+$useSpecial = isset($data['useSpecial']) ? (bool)$data['useSpecial'] : false;
 
 try {
 
-    // Read JSON input
-    $data = json_decode(file_get_contents("php://input"), true);
     if (!$data) throw new Exception("Invalid input");
 
     // Start transaction
@@ -55,10 +56,10 @@ try {
         $last_id = 0; // Default if no records found
     }
     $new_id = $last_id + 1;
-    $fyear = str_replace("", "", $cur_finance_year); // Remove dashes if any
+    $fyear = str_replace("-", "", $cur_finance_year); // Remove dashes if any
     // Create new booking ID
     //$booking_id = "GL-". $fyear. str_pad($new_id, 6, '0', STR_PAD_LEFT);
-    $booking_id = $companyShortName. $fyear. str_pad($new_id, 6, '0', STR_PAD_LEFT);
+    $booking_id = $companyShortName."-". $fyear. str_pad($new_id, 6, '0', STR_PAD_LEFT);
 
     $sql = "UPDATE booking_counter SET current_no = current_no + 1 where fyear = '$cur_finance_year'";
     $con->query($sql);
@@ -96,27 +97,79 @@ try {
     $stmt->bind_param("sssiisssss", $booking_id, $booking_date, $event, $maxPeople, $newCustomerId, $start_date, $start_time, $end_date, $end_time, $status);
     $stmt->execute();
 
-    // Insert facilities
-    $sql2 = "INSERT INTO booking_facilities (booking_id, facility_id, qty, rate, taxableAmt, gstAmt, netAmt) 
-             VALUES (?, ?, ?, ?, ?, ?, ?)";
+    // ---------- INSERT FACILITIES SECURELY ----------
+    $sql2 = "INSERT INTO booking_facilities 
+        (booking_id, facility_id, qty, rate, taxableAmt, gstAmt, netAmt) 
+        VALUES (?, ?, ?, ?, ?, ?, ?)";
+
     $stmt2 = $con->prepare($sql2);
-
-    foreach ($facilities as $fac) {
-        $fid        = intval($fac['id']);
-        $fprice     = floatval($fac['price']);
-        $qty        = intval($fac['quantity']);
-        $gst_rate   = intval($fac['gst_rate']);
-        $taxable    = $fprice * $qty;
-        $gstAmt     = ($taxable * $gst_rate) / 100;
-        $net_amt    = $taxable + $gstAmt;
-
-        // Insert each facility booking
-        $stmt2->bind_param("siidddd", $booking_id, $fid, $qty, $fprice, $taxable, $gstAmt, $net_amt);
-        $stmt2->execute();
+    $serverTotal = 0.0;
+    // Prepare once
+    if($useSpecial){
+        $priceCol = 'splPrice';
+    } else {
+        $priceCol = 'fPrice';
+    }
+    $stmtFetch = $con->prepare("SELECT $priceCol, gst_rate FROM facility WHERE id = ?");
+    if (!$stmtFetch) {
+        throw new Exception("Fetch prepare failed: " . $con->error);
     }
 
-    // If everything is fine, commit
+    foreach ($facilities as $fac) {
+
+        $fid = intval($fac['id']);
+        $qty = max(1, intval($fac['quantity']));
+        /* $fPrice = floatval($fac['price']);
+        $gst_rate = floatval($fac['gst_rate']); */
+
+        // 🔐 Always fetch real price + GST from DB
+        $stmtFetch->bind_param("i", $fid);
+        $stmtFetch->execute();
+        $stmtFetch->store_result();
+        $stmtFetch->bind_result($dbPrice, $dbGst);
+
+        if (!$stmtFetch->fetch()) {
+            throw new Exception("Invalid facility ID: " . $fid);
+        }
+
+        // Server-side calculation
+        $taxable = $dbPrice * $qty;
+        $gstAmt  = ($taxable * $dbGst) / 100;
+        $net_amt = $taxable + $gstAmt;
+
+        $serverTotal += $net_amt;
+
+        // Insert facility row
+        $stmt2->bind_param(
+            "siidddd",
+            $booking_id,
+            $fid,
+            $qty,
+            $dbPrice,      // ✅ Correct variable
+            $taxable,
+            $gstAmt,
+            $net_amt
+        );
+
+        if (!$stmt2->execute()) {
+            throw new Exception("Facility insert failed: " . $stmt2->error);
+        }
+
+        $stmtFetch->free_result(); // ✅ IMPORTANT
+    }
+
+    // Close after loop
+    $stmtFetch->close();
+    $stmt2->close();
+    
+    // ✅ COMMIT TRANSACTION (MOST IMPORTANT LINE)
     $con->commit();
+
+
+    // ---------- VERIFY TOTAL (ANTI TAMPERING) ----------
+    if (abs($serverTotal - $clientTotal) > 0.5) {
+        throw new Exception("Security violation: Total mismatch detected ".$serverTotal." vs ".$clientTotal);
+    }
 
     // ✅ FPDF generate (in memory)
 
@@ -190,6 +243,33 @@ try {
     $pdf = new FPDF();
     $pdf->AddPage();
 
+    // ===== SPECIAL DAY RIBBON =====
+// ===== SPECIAL DAY RIBBON =====
+/* if ($useSpecial) {
+
+    // Ribbon background (Red)
+    $pdf->SetFillColor(220, 53, 69); // Red
+    $pdf->SetTextColor(255,255,255);
+    $pdf->SetFont('Arial','B',10);
+
+    // Main ribbon rectangle (Top Right)
+    $pdf->SetXY(140, 12);
+    $pdf->Cell(55, 10, 'SPECIAL DAY PRICING', 0, 1, 'C', true);
+
+    // ----- Ribbon tail (manual triangle using lines) -----
+    $pdf->SetDrawColor(180, 30, 40);
+
+    // Coordinates for small triangle
+    $x = 140;
+    $y = 22;
+
+    // Draw triangle outline
+    $pdf->Line($x, $y, $x + 10, $y);      // top
+    $pdf->Line($x, $y, $x + 5, $y + 6);   // left slope
+    $pdf->Line($x + 10, $y, $x + 5, $y + 6); // right slope
+}
+ */
+
     // ===== HEADER =====
     $pdf->SetFont('Arial','B',20);
     $pdf->SetTextColor(123,30,43);
@@ -215,6 +295,9 @@ try {
     $pdf->SetFont('Arial','',10);
     $pdf->SetTextColor(0);
     $pdf->SetX(90);
+    $pdf->Cell(110,6,'Booking ID : '.$booking_id,0,1,'R');
+    $y = $pdf->GetY();
+    $pdf->SetXY(90, $y+2);
     $pdf->Cell(110,6,'Booking Date : '.date("d-m-Y h:i A", strtotime($booking_date)),0,1,'R');
 
     $pdf->Ln(5);
@@ -247,10 +330,17 @@ try {
     $pdf->Cell(50,6,'Status',0,0);     $pdf->Cell(0,6,": ".$booking['status'],0,1);
 
     $pdf->Ln(6);
+    if ($useSpecial) {
+    $pdf->SetTextColor(220, 53, 69);
+    $pdf->SetFont('Arial','B',11);
+    $pdf->Cell(0,6,'Special Pricing Applied (Sunday / Holiday)',0,1);
+    $pdf->SetTextColor(0);
+}
+    $pdf->Ln(4);
 
     // ===== FACILITY TABLE HEADER =====
-    $pdf->SetFillColor(123,30,43); // #7B1E2B
-    $pdf->SetTextColor(0);
+    $pdf->SetFillColor(255,255,255);
+    $pdf->SetTextColor(123,30,43);
     $pdf->SetFont('Arial','B',11);
     $pdf->Cell(70,8,'Facility',1,0,'L',true);
     $pdf->Cell(10,8,'Qty',1,0,'C',true);
@@ -260,6 +350,7 @@ try {
     $pdf->Cell(30,8,'Total',1,1,'R',true);
 
     // ===== FACILITY ROWS =====
+    $pdf->SetTextColor(0);
     $pdf->SetFont('Arial','',11);
     $totalTaxable = 0;
     $totalGST = 0;
@@ -351,25 +442,3 @@ try {
     echo json_encode($response);
 }
 exit;
-
-
-?>
-
-// Start DB transaction or your insert logic here
-/* try {
-    // Example: insert booking master record
-    $stmt = $pdo->prepare("INSERT INTO bookings (fbdate, event, eventTime, maxPeople) VALUES (?, ?, ?, ?)");
-    $stmt->execute([$fbdate, $event, $eventTime, $maxPeople]);
-    $booking_id = $pdo->lastInsertId();
-
-    // Insert selected facilities
-    foreach ($facility_ids as $fid) {
-        $qty = isset($quantities[$fid]) ? intval($quantities[$fid]) : 1;
-        $stmt2 = $pdo->prepare("INSERT INTO booking_facilities (booking_id, facility_id, quantity) VALUES (?, ?, ?)");
-        $stmt2->execute([$booking_id, $fid, $qty]);
-    }
-
-    echo json_encode(['success' => true, 'message' => 'Booking saved']);
-} catch (Exception $e) {
-    echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);
-} */

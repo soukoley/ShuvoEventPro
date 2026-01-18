@@ -55,6 +55,9 @@ $cur_finance_year = $c_fyear_row['f_year'];
 
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+	<!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	
 	<!-- Favicon Logo -->
 	<link rel="apple-touch-icon" sizes="180x180" href="../images/favicon_io/apple-touch-icon.png">
@@ -142,10 +145,12 @@ $cur_finance_year = $c_fyear_row['f_year'];
 						'insert_event'          => 'insert_event.php',
 						'view_event'            => 'view_event.php',
 						'edit_event'            => 'edit_event.php',
+						'delete_event'          => 'delete_event.php',
 
 						'insert_facility'	  	=> 'insert_facility.php',
 						'view_facility'       	=> 'view_facility.php',
 						'delete_facility'   	=> 'delete_facility.php',
+						'edit_facility'   		=> 'edit_facility.php',
 
 						'user_profile'			=>	'user_profile.php',
 
@@ -192,7 +197,11 @@ $cur_finance_year = $c_fyear_row['f_year'];
 
 						'payment_Details'     	=> 'payment_details.php',
 
-						'change_Finance_Year'   => 'changeFinanceYear.php'
+						'change_Finance_Year'   => 'changeFinanceYear.php',
+						'holidays'              => 'insert_holidays.php',
+						'view_holidays'         => 'view_holidays.php',
+						'delete_holiday'        => 'delete_holiday.php',
+						'edit_holiday'          => 'edit_holiday.php'
 					];
 
 					foreach ($pages as $key => $file) {

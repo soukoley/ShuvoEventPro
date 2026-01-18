@@ -9,11 +9,27 @@ if(!isset($_SESSION['admin_email'])){
 } else {
     $sdate = $_SESSION['sdate'];
     $edate = $_SESSION['edate'];
+    $startDateTime = $sdate . ' 00:00:00';
+    $endDateTime   = date('Y-m-d', strtotime($edate . ' +1 day')) . ' 00:00:00';
     $booking_status = "Pending"; // Default to pending if not set"
 
-    $run_bookings = "SELECT bd.booking_id, bd.booking_date, c.c_name, c.c_mobile, bd.e_name, bd.start_date, bd.end_date, bd.status
-                FROM booking_details bd, customer c 
-                WHERE bd.cust_id = c.c_id AND bd.booking_date BETWEEN '$sdate' AND '$edate' AND bd.status = 'Pending'";
+    $run_bookings = "
+    SELECT 
+        bd.booking_id,
+        bd.booking_date,
+        c.c_name,
+        c.c_mobile,
+        bd.e_name,
+        bd.start_date,
+        bd.end_date,
+        bd.status
+    FROM booking_details bd
+    JOIN customer c ON bd.cust_id = c.c_id
+    WHERE bd.booking_date >= '$startDateTime'
+    AND bd.booking_date <  '$endDateTime'
+    AND bd.status = '$booking_status'
+    ";
+
 
     /* if ($booking_status == 'pending') {
         $run_bookings .= " AND status = Pending";

@@ -86,6 +86,7 @@ document.addEventListener("DOMContentLoaded", function () {
 							<li><a href="index.php">Home</a></li>
 							<li><a href="about-us.php">About Us</a></li>
 							<li><a href="gallery.php">Gallery</a></li>
+							<li><a href="price_list.php">Price List</a></li>
 							<li><a href="login.php">Login</a></li>
 						</ul>
 

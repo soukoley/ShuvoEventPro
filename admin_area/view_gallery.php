@@ -67,10 +67,8 @@ if(!isset($_SESSION['admin_email'])){
 									<td><?php echo $e_desc ?></td>
 									<td><img src="event_gallery/<?php echo $e_img ?>" width="30" width="40"></td>
 									<td>
-										<a href="index.php?delete_gallery=<?php echo $id ?>"
-											onclick="return confirm('Are you sure you want to delete?');">
-											<i class="fa fa-trash-o" style="font-size:15px; font-weight: bold; color:red;">
-											Delete</i>
+										<a href="#" onclick="deleteGallery(<?php echo $id; ?>)">
+											<i class="fa fa-trash-o" style="color:red; font-size:15px; font-weight: bold;"> Delete</i>
 										</a>
 									</td>
 								</tr>
@@ -83,5 +81,24 @@ if(!isset($_SESSION['admin_email'])){
 		</div>
 	</body>
 </html>
+
+<script>
+	function deleteGallery(id) {
+		Swal.fire({
+			title: 'Are you sure?',
+			text: "This picture will be permanently deleted!",
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#d33',
+			cancelButtonColor: '#3085d6',
+			confirmButtonText: 'Yes, delete it!',
+			cancelButtonText: 'Cancel'
+		}).then((result) => {
+			if (result.isConfirmed) {
+				window.location.href = "index.php?delete_gallery=" + id;
+			}
+		});
+	}
+</script>
 
 <?php } ?>

@@ -612,7 +612,7 @@ $("#addFacility").click(function(){
             <tr data-id="${fid}" data-rate="${rate}" data-gst-rate="${gstRate}"
                 data-taxable="${taxableAmt}" data-tax-amt="${gstAmt}" data-net-amt="${netAmt}">
                 <td class="text-left">${cleanName}</td>
-                <td><input type="number" class="form-control qty" value="${qty}" min="1"></td>
+                <td class="text-center" style="width:90px;"><input type="number" class="form-control qty text-center" value="${qty}" min="1"></td>
                 <td class="rate text-right">${rate.toFixed(2)}</td>
                 <td class="taxable text-right">${taxableAmt.toFixed(2)}</td>
                 <td class="taxRate text-right">${gstRate.toFixed(2)}</td>

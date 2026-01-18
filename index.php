@@ -200,28 +200,17 @@ include ("header.php");
                             </div>
 
                             <!-- Form Group -->
-                            <!-- <div class="form-group">
-                                <label for="select3">Event Time</label>
-                                <select class="form-control" id="eventTime">
-                                    <option>Morning</option>
-                                    <option>Noon</option>
-                                    <option>Night</option>                                  
-                                </select>
-                            </div> -->
-
-                            <!-- Form Group -->
                             <div class="form-group">
                                 <label for="select4">Maximum People</label>
-                                <select class="form-control" id="maxPeople">
-                                    <option>50</option>
-                                    <option>100</option>
-                                    <option>200</option>
-                                    <option>300</option>
-                                    <option>400</option>
-                                    <option>500</option>
-                                    <option>700</option>
-                                    <option>1000</option>
-                                </select>
+                                <select name="max_people" id="maxPeople" class="form-control">
+									<option value="">-- Select --</option>
+									<?php
+									$run = mysqli_query($con,"SELECT * FROM guest ORDER BY max_guest");
+									while($row=mysqli_fetch_assoc($run)){
+										echo "<option value='{$row['max_guest']}'>{$row['max_guest']}</option>";
+									}
+									?>
+								</select>
                             </div>
 
                             <!-- Button -->
@@ -251,55 +240,54 @@ include ("header.php");
                     <div class="modal-body">
                     
                         <!-- Summary preview -->
-                         
-                        <div class="row mb-2">
+                        <div class="row mb-3">
                             <div class="col-md-6">
-                                <p><strong>Booking From : </strong> <span id="modal_fbdate"></span></p>
+                                <p><strong><i class="fa fa-calendar-check text-success"></i> Booking From:</strong> <span id="modal_fbdate"></span></p>
                             </div>
                             <div class="col-md-6">
-                                <p><strong>Booking To : </strong> <span id="modal_tbdate"></span></p>
+                                <p><strong><i class="fa fa-calendar-xmark text-danger"></i> Booking To:</strong> <span id="modal_tbdate"></span></p>
                             </div>
                         </div>
 
-                        <div class="row mb-2">
+                        <div class="row mb-4">
                             <div class="col-md-6">
-                                <p><strong>Event : </strong> <span id="modal_event"></span></p>
+                                <p><strong><i class="fa fa-star text-warning"></i> Event:</strong> <span id="modal_event"></span></p>
                             </div>
                             <div class="col-md-6">
-                                <p><strong>Maximum People : </strong> <span id="modal_maxPeople"></span></p>
+                                <p><strong><i class="fa fa-users text-primary"></i> Maximum People:</strong> <span id="modal_maxPeople"></span></p>
                             </div>
                         </div>
 
                         <!-- User Details Inputs -->
+                        <h5 class="modal-title user-details-heading"><i class="fa fa-user-circle"></i> Your Details</h5><br/>
                         
-                        <h5 class="modal-title user-details-heading">Your Details</h5><br/>
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label for="userName" class="form-label">Name</label>
+                                <label for="userName" class="form-label"><i class="fa fa-user"></i> Name</label>
                                 <input type="text" id="userName" name="userName" class="form-control" placeholder="Full Name" required>
                             </div>
                             <div class="col-md-6">
-                                <label for="userEmail" class="form-label">Email</label>
+                                <label for="userEmail" class="form-label"><i class="fa fa-envelope"></i> Email</label>
                                 <input type="email" id="userEmail" name="userEmail" class="form-control" placeholder="example@mail.com">
                             </div>
                         </div>
 
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label for="userPhone" class="form-label">Phone</label>
+                                <label for="userPhone" class="form-label"><i class="fa fa-phone"></i> Phone</label>
                                 <input type="tel" id="userPhone" name="userPhone" class="form-control" placeholder="Mobile number" maxlength="10" required>
                                 <div class="form-text">Enter 10-digit mobile number</div>
                             </div>
                             <div class="col-md-6">
-                                <label for="userId" class="form-label">Aadhaar / PAN</label>
+                                <label for="userId" class="form-label"><i class="fa fa-id-card"></i> Aadhaar / PAN</label>
                                 <input type="text" id="userId" name="userId" class="form-control" placeholder="Aadhaar or PAN number" maxlength="12" required>
                                 <div class="form-text">Enter Aadhaar (12 digits) or PAN (10 characters)</div>
                             </div>
                         </div>
 
-                        <div class="row mb-3">
+                        <div class="row mb-4">
                             <div class="col-12">
-                                <label for="userAddress" class="form-label">Address</label>
+                                <label for="userAddress" class="form-label"><i class="fa fa-location-dot"></i> Address</label>
                                 <textarea id="userAddress" name="userAddress" class="form-control" rows="3" placeholder="Enter your address" required></textarea>
                             </div>
                         </div>
@@ -320,12 +308,19 @@ include ("header.php");
                                     <th>Facilities</th>
                                     <th>Price</th>
                                     <th>Quantity</th>
+                                    <th class="text-right">Net Amount</th>
                                 </tr>
                                 </thead>
                                 <tbody id="facilityTableBody">
                                 <!-- Filled via JS if needed -->
                                 </tbody>
                             </table>
+                            <div class="d-flex justify-content-end mt-3">
+                                <h5>
+                                    Grand Total: 
+                                    <span id="grandTotal" class="badge fs-5">₹ 0.00</span>
+                                </h5>
+                            </div>
 
                             <!-- Hidden fields to submit all -->
                             <input type="hidden" name="fbdate" id="hidden_fbdate">
@@ -596,6 +591,9 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 
 <script>
 
+    // 🔥 Global flag for Special Day Pricing
+    let useSpecialGlobal = false;
+
     const phoneInput = document.getElementById('userPhone');
 
     phoneInput.addEventListener('input', function () {
@@ -638,6 +636,12 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
             const eventName  = document.getElementById("event").value;
             //const eventTime = document.getElementById("eventTime").value;
             const maxPeople = document.getElementById("maxPeople").value;
+
+            if (!fbdate || !tbdate) {
+                event.preventDefault();
+                alert("Please select Booking From and To date first!");
+                return;
+            }
             
             // Customer details
             const userName = document.getElementById("userName").value;
@@ -663,20 +667,50 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
             $.ajax({
                 url: "get_facilities.php",
                 type: "GET",
-                data: { eventName: eventName , noOfPeople: maxPeople },
+                dataType: "json",
+                data: { 
+                    eventName: eventName,
+                    noOfPeople: maxPeople,
+                    fbdate: fbdate,
+                    tbdate: tbdate
+                },
                 success: function (response) {
-                    let facilities = JSON.parse(response);
+                    const useSpecial = response.useSpecial;
+                    const facilities = response.facilities;
+
+                    useSpecialGlobal = useSpecial; // 🔥 store globally for final submit
+                    
+                    console.log("Facilities received:", facilities);
+                    
                     let tableBody = $("#facilityTableBody");
                     tableBody.empty(); // Clear old rows
 
+                    if (useSpecial) {
+                        $("#specialBadge").remove(); 
+                        $("#itemTable").before(
+                            `<div id="specialBadge" class="alert alert-warning text-center">
+                                <i class="fa fa-star"></i>
+                                Special Day Pricing Applied (Sunday / Holiday)
+                            </div>`
+                        );
+                    }
+
                     facilities.forEach(function (facility) {
+
+                        // Check if compulsory
+                        let isCompulsory = facility.compulsory == 1;
+
                         let row = `
-                        <tr>
+                        <tr class="${isCompulsory ? 'table-warning' : ''}">
                             <td>
-                                <input type="checkbox" class="facility-checkbox" value="${facility.id}">
+                                <input type="checkbox" 
+                                    class="facility-checkbox"
+                                    value="${facility.id}"
+                                    ${isCompulsory ? 'checked' : ''}>
                             </td>
                             <td>
                                 ${facility.fName}
+                                ${isCompulsory ? '<span class="badge bg-danger ms-2">Compulsory</span>' : ''}
                                 <input type="hidden" class="facility-name" value="${facility.fName}">
                                 <input type="hidden" class="facility-gst" value="${facility.gst_rate}">
                             </td>
@@ -685,18 +719,81 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
                                 <input type="hidden" class="facility-price" value="${facility.fPrice}">
                             </td>
                             <td>
-                                <input type="number" class="form-control facility-qty" min="1">
+                                <input type="number" 
+                                    class="form-control facility-qty"
+                                    min="1"
+                                    value="${isCompulsory ? 1 : ''}"
+                                    ${isCompulsory ? 'readonly' : ''}>
+                            </td>
+                            <td>
+                                <input type="text"
+                                    class="form-control facility-net text-right"
+                                    value="0.00"
+                                    readonly>
                             </td>
                         </tr>
                         `;
 
                         tableBody.append(row);
                     });
-                    
-                    // Select All functionality
-                    $("#selectAllFacilities").off("click").on("click", function () {
-                        $(".facility-checkbox").prop("checked", this.checked);
+
+                    // Select All functionality (won't affect compulsory because disabled)
+                    $("#selectAllFacilities").off("change").on("change", function () {
+
+                        const isChecked = this.checked;
+
+                        $(".facility-checkbox").each(function () {
+                            let row = $(this).closest("tr");
+                            let qtyInput = row.find(".facility-qty");
+
+                            // If compulsory row → always checked
+                            if (row.hasClass("table-warning")) {
+                                this.checked = true;
+                            } else {
+                                this.checked = isChecked;
+                            }
+
+                            // If checked & qty empty → set 1
+                            if (this.checked) {
+                                if (!qtyInput.val() || qtyInput.val() <= 0) {
+                                    qtyInput.val(1);
+                                }
+                            }
+                        });
+
+                        // 🔥 Force recalculation
+                        calculateTotals();
                     });
+
+                    // Live update when checkbox or qty changes
+                    // FORCE compulsory rows to stay checked + live total update
+                    $("#facilityTableBody")
+                    .off()
+                    .on("change", ".facility-checkbox", function () {
+
+                        let row = $(this).closest("tr");
+                        let qtyInput = row.find(".facility-qty");
+
+                        // If compulsory → force checked
+                        if (row.hasClass("table-warning")) {
+                            this.checked = true;
+                        }
+
+                        // If checked & qty empty → set 1
+                        if (this.checked) {
+                            if (!qtyInput.val() || qtyInput.val() <= 0) {
+                                qtyInput.val(1);
+                            }
+                        }
+
+                        calculateTotals();
+                    })
+                    .on("input", ".facility-qty", function () {
+                        calculateTotals();
+                    });
+
+                    // Initial calculation
+                    calculateTotals();
                 }
             });
         });
@@ -709,14 +806,14 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
         // Collect main booking info
         let fbdate = $("input[name='fbdate']").val();
         let tbdate = $("input[name='tbdate']").val();
-        let event = $("input[name='event']").val();
-        //let eventTime = $("input[name='eventTime']").val();
-        let maxPeople = $("input[name='maxPeople']").val();
+        let event = $("#hidden_event").val();
+        let maxPeople = $("#hidden_maxPeople").val();
         let userName = $("#userName").val();
         let userEmail = $("#userEmail").val();
         let userPhone = $("#userPhone").val();
         let userId = $("#userId").val();
         let userAddress = $("#userAddress").val(); 
+        let gTotal = $("#grandTotal").text().replace('₹', '').trim();
 
         // Collect selected facilities
         let selectedFacilities = [];
@@ -753,13 +850,14 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
                 fbdate: fbdate,
                 tbdate: tbdate,
                 event: event,
-                //eventTime: eventTime,
                 maxPeople: maxPeople,
                 userName: userName,
                 userEmail: userEmail,
                 userPhone: userPhone,
                 userId: userId,
                 userAddress: userAddress,
+                grandTotal: gTotal,
+                useSpecial: useSpecialGlobal,   // ⭐ ADD THIS
                 facilities: selectedFacilities
             }),
             success: function(response) {
@@ -820,6 +918,74 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 
         });
     });
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        // ===== 1. Set Today's Date & Time =====
+        function formatDateTime(dt) {
+            let yyyy = dt.getFullYear();
+            let mm = String(dt.getMonth() + 1).padStart(2, '0');
+            let dd = String(dt.getDate()).padStart(2, '0');
+
+            let hh = String(dt.getHours()).padStart(2, '0');
+            let min = String(dt.getMinutes()).padStart(2, '0');
+
+            return `${yyyy}-${mm}-${dd} ${hh}:${min}`;
+        }
+
+        let now = new Date();
+        let formatted = formatDateTime(now);
+
+        document.getElementById("fbdate").value = formatted;
+        document.getElementById("tbdate").value = formatted;
+
+        // ===== 2. Set Middle Value for Maximum People =====
+        let maxPeopleSelect = document.querySelector("select[name='max_people']");
+        
+        if (maxPeopleSelect && maxPeopleSelect.options.length > 1) {
+            // ignore first option (-- Select --)
+            let totalOptions = maxPeopleSelect.options.length - 1;
+            let middleIndex = Math.floor(totalOptions / 2) + 1;
+            maxPeopleSelect.selectedIndex = middleIndex;
+        }
+
+    });
+
+    function calculateTotals() {
+        let grandTotal = 0;
+
+        $("#facilityTableBody tr").each(function () {
+            let row = $(this);
+
+            let checkbox = row.find(".facility-checkbox")[0];
+            let qtyInput = row.find(".facility-qty");
+            let netInput = row.find(".facility-net");
+
+            let price = parseFloat(row.find(".facility-price").val());
+            let gstRate = parseFloat(row.find(".facility-gst").val());
+            let qty = parseInt(qtyInput.val());
+
+            // Fallbacks
+            if (isNaN(price)) price = 0;
+            if (isNaN(gstRate)) gstRate = 0;
+            if (isNaN(qty) || qty <= 0) qty = 0;
+
+            // Net = price × qty
+            let netAmount = price * qty;
+            netInput.val(netAmount.toFixed(2));
+
+            // Only count checked rows
+            if (checkbox && checkbox.checked) {
+                let gstAmount = (netAmount * gstRate) / 100;
+                grandTotal += netAmount + gstAmount;
+            }
+        });
+
+        console.log("💰 Grand Total:", grandTotal); // DEBUG
+        $("#grandTotal").text("₹ " + grandTotal.toFixed(2));
+    }
+
+
 
 
 </script>

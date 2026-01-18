@@ -15,7 +15,9 @@ if (!isset($_SESSION['admin_email'])) {
 
 /* ================= INPUT ================= */
 $facility   = isset($_POST['facility']) ? trim($_POST['facility']) : '';
+$compulsory = isset($_POST['compulsory']) ? intval($_POST['compulsory']) : 0;
 $price      = isset($_POST['price']) ? (float)$_POST['price'] : 0;
+$splPrice   = isset($_POST['specialPrice']) ? (float)$_POST['specialPrice'] : 0;
 $gst_rate   = isset($_POST['gst_rate']) ? (float)$_POST['gst_rate'] : 0;
 $event      = isset($_POST['event']) ? trim($_POST['event']) : '';
 $max_people = isset($_POST['max_people']) && $_POST['max_people'] !== ''
@@ -23,7 +25,7 @@ $max_people = isset($_POST['max_people']) && $_POST['max_people'] !== ''
                 : 0;
 
 /* ================= VALIDATION ================= */
-if ($facility == '' || $event == '' || $price < 0 || $gst_rate < 0) {
+if ($facility == '' || $event == '' || $price < 0 || $gst_rate < 0 || $splPrice < 0) {
     echo json_encode(array(
         "status" => "error",
         "message" => "Invalid input data"
@@ -35,7 +37,7 @@ if ($facility == '' || $event == '' || $price < 0 || $gst_rate < 0) {
 if ($event === "ALL") {
     $max_people = 0;
 } else {
-    if ($max_people <= 0) {
+    if ($max_people < 0) {
         echo json_encode(array(
             "status" => "error",
             "message" => "Please select maximum people for this event"
@@ -65,17 +67,19 @@ $chk->close();
 
 /* ================= INSERT ================= */
 $stmt = $con->prepare(
-    "INSERT INTO facility (fName, fPrice, gst_rate, eName, max_people)
-     VALUES (?, ?, ?, ?, ?)"
+    "INSERT INTO facility (fName, fPrice, splPrice, gst_rate, eName, max_people, compulsory)
+     VALUES (?, ?, ?, ?, ?, ?, ?)"
 );
 
 $stmt->bind_param(
-    "sddsi",
+    "sdddsii",
     $facility,
     $price,
+    $splPrice,
     $gst_rate,
     $event,
-    $max_people
+    $max_people,
+    $compulsory
 );
 
 if ($stmt->execute()) {

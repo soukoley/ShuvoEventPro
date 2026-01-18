@@ -8,11 +8,11 @@ if (!isset($_SESSION['admin_email'])) {
     exit();
 }
 
-if (isset($_GET['delete_gallery'])) {
+if (isset($_GET['delete_facility'])) {
 
-    $delete_id = intval($_GET['delete_gallery']); // Security
+    $delete_id = intval($_GET['delete_facility']); // Security
 
-    $delete_query = "DELETE FROM event_gallery WHERE id = ?";
+    $delete_query = "DELETE FROM facility WHERE id = ?";
     $stmt = mysqli_prepare($con, $delete_query);
     mysqli_stmt_bind_param($stmt, "i", $delete_id);
 
@@ -21,11 +21,11 @@ if (isset($_GET['delete_gallery'])) {
         <script>
         Swal.fire({
             title: 'Deleted!',
-            text: 'Your picture has been deleted successfully.',
+            text: 'The selected facility has been deleted successfully.',
             icon: 'success',
             confirmButtonText: 'OK'
         }).then(() => {
-            window.location.href = 'index.php?view_gallery';
+            window.location.href = 'index.php?view_facility';
         });
         </script>";
     } else {
@@ -33,7 +33,7 @@ if (isset($_GET['delete_gallery'])) {
         <script>
         Swal.fire({
             title: 'Error!',
-            text: 'Failed to delete the picture. Please try again.',
+            text: 'Something went wrong. Please try again.',
             icon: 'error',
             confirmButtonText: 'OK'
         });
